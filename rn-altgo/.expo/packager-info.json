@@ -1,1 +1,14 @@
+<<<<<<< HEAD
 {}
+=======
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 5093,
+  "expoServerNgrokUrl": "https://us-xv9.anonymous.rn-altgo.exp.direct",
+  "packagerNgrokUrl": "https://packager.us-xv9.anonymous.rn-altgo.exp.direct",
+  "ngrokPid": 5107,
+  "webpackServerPort": null
+}
+>>>>>>> 76749c9df8da87f74bfa0a2a518cee0a78624900
