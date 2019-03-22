@@ -1,56 +1,21 @@
 import { 
-    createBottomTabNavigator,
     createAppContainer,
+    createSwitchNavigator
 } from "react-navigation";
-import React, { Component } from 'react'
-import { Text, View, Image } from 'react-native'
-import { Icon } from 'native-base'
-// import { Icon } from 'expo'
 
 // Screens
-import Home from '../screens/Home'
-import Profile from '../screens/Profile'
-import Friend from '../screens/Friends'
+import Signin from '../screens/SignIn'
+import Regis from '../screens/Regis'
+import BottomNav from './BottomNav'
+import AddFriend from '../screens/AddFriends'
 
-const RootNav = createBottomTabNavigator({
-    Home: {
-        screen: Home,
-        navigationOptions: {
-            title: 'Home',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name='home' style={{ color: tintColor }}/>
-            )
-            
-        }
-    },
-    Friend: {
-        screen: Friend,
-        navigationOptions: {
-            title: 'Social',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="people" style={{ color: tintColor }}/>
-            )
-        }
-    },
-    Profile: {
-        screen: Profile,
-        navigationOptions: {
-            title: 'Profile',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="person" style={{ color: tintColor }}/>
-            )
-        }
-    }
+const SwitchNav = createSwitchNavigator({
+    App: BottomNav,
+    Auth: Signin,
+    Regis: Regis,
+    AddFriend
 }, {
-    initialRouteName: 'Home',
-    tabBarOptions: {
-        showLabel: false, // hide labels
-        activeTintColor: 'white',
-        inactiveTintColor: 'grey',  // inactive icon color
-        style: {
-            backgroundColor: '#5b0c29' // TabBar background
-        }
-    }
+    initialRouteName: 'App'
 })
 
-export default createAppContainer(RootNav)
+export default createAppContainer(SwitchNav)

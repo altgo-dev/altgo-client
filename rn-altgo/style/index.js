@@ -8,12 +8,54 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerLoc: {
-      flex: 3,
-      backgroundColor: '#5e0f2c',
-      minHeight: win.height/6,
-    //   hei
-
+  resList: {
+      flex: 1,
+      backgroundColor: 'black',
+      height:  500,
+      width: win.width
+  },
+  panel: {
+    flex: 1,
+    backgroundColor: 'black',
+    position: 'relative'
+  },
+  panelHeader: {
+    height: 120,
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  favoriteIcon: {
+    position: 'absolute',
+    top: -24,
+    right: 24,
+    backgroundColor: 'grey',
+    width: 48,
+    height: 48,
+    padding: 8,
+    borderRadius: 24,
+    zIndex: 1
+  },
+  searchHead: {
+      backgroundColor: 'black',
+  },
+  ml5: {
+      marginTop: 8,
+      marginBottom: 8,
+      marginLeft: 8,
+      backgroundColor: 'black',
+      height: 40
+  },
+  textLight: {
+    color: '#cccccc',
+  },
+  searhBox: {
+      width: win.width - win.width/5
+  },
+  inputEmailSearch: {
+    width: win.width - 60,
+    marginLeft: 10,
+    height: 40
   }
 });
 
