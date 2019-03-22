@@ -3,7 +3,6 @@ import {
     createSwitchNavigator
 } from "react-navigation";
 
-// Screens
 import Signin from '../screens/SignIn'
 import Regis from '../screens/Regis'
 import BottomNav from './BottomNav'
