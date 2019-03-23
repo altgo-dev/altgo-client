@@ -10,6 +10,7 @@ import { Icon } from 'native-base'
 import Home from '../screens/Home'
 import Profile from '../screens/Profile'
 import Friend from '../screens/Friends'
+import RouteOptimizer from '../screens/RouteOptimizer'
 
 
 const RootNav = createBottomTabNavigator({
@@ -24,7 +25,7 @@ const RootNav = createBottomTabNavigator({
         }
     },
     Friend: {
-        screen: Friend,
+        screen: RouteOptimizer,
         navigationOptions: {
             title: 'Social',
             tabBarIcon: ({tintColor}) => (

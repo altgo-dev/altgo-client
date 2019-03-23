@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, StyleSheet, View, Text } from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import axios from 'axios'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -21,12 +22,12 @@ class Example extends Component {
         this.state = {
             coordinates: [
                 // {
-                //   latitude: 37.3317876,
-                //   longitude: -122.0054812,
+                //     latitude: 37.3317876,
+                //     longitude: -122.0054812,
                 // },
                 // {
-                //   latitude: 37.771707,
-                //   longitude: -122.4053769,
+                //     latitude: 37.771707,
+                //     longitude: -122.4053769,
                 // },
             ],
         };
@@ -43,6 +44,25 @@ class Example extends Component {
         });
     }
 
+    async componentDidMount() {
+        let response = await axios({
+            url: 'http://localhost:3000/route/routeOptimizer',
+            method: 'POST',
+            data: {
+                addresses: ["hacktiv8", "ancol", "cinere", "monumen nasional", "ragunan"]
+            }
+        })
+        this.setState({
+            coordinates: response.data.route.map(e => {
+                return {
+                    latitude: e.lat,
+                    longitude: e.lng,
+                    name: e.geocodingData.formatted_address,
+                }
+            })
+        })
+    }
+
     render() {
         return (
             <MapView
@@ -57,7 +77,7 @@ class Example extends Component {
                 onPress={this.onMapPress}
             >
                 {this.state.coordinates.map((coordinate, index) =>
-                    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{backgroundColor:'white'}}>{index}</Text></MapView.Marker>
+                    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'white' }}>[{index}] {coordinate.name}</Text></MapView.Marker>
                 )}
                 {(this.state.coordinates.length >= 2) && (
                     <MapViewDirections
@@ -67,14 +87,13 @@ class Example extends Component {
                         apikey={GOOGLE_MAPS_APIKEY}
                         strokeWidth={3}
                         strokeColor="hotpink"
-                        optimizeWaypoints={true}
+                        optimizeWaypoints={false}
                         onStart={(params) => {
                             console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
                         }}
                         onReady={result => {
                             console.log(`Distance: ${result.distance} km`)
                             console.log(`Duration: ${result.duration} min.`)
-                            console.log(result)
 
                             this.mapView.fitToCoordinates(result.coordinates, {
                                 edgePadding: {
