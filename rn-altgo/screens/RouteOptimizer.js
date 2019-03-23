@@ -46,7 +46,7 @@ class Example extends Component {
 
     async componentDidMount() {
         let response = await axios({
-            url: 'http://localhost:3000/route/routeOptimizer',
+            url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
             method: 'POST',
             data: {
                 addresses: ["hacktiv8", "ancol", "cinere", "monumen nasional", "ragunan"]
