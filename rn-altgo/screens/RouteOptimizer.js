@@ -30,26 +30,19 @@ class Example extends Component {
                 //     longitude: -122.4053769,
                 // },
             ],
+            addresses: ["hacktiv8", "monumen nasional"],
+            routeOptimizerResponse: {}
         };
 
         this.mapView = null;
     }
 
-    onMapPress = (e) => {
-        this.setState({
-            coordinates: [
-                ...this.state.coordinates,
-                e.nativeEvent.coordinate,
-            ],
-        });
-    }
-
-    async componentDidMount() {
+    findRoute = async () => {
         let response = await axios({
             url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
             method: 'POST',
             data: {
-                addresses: ["hacktiv8", "ancol", "cinere", "monumen nasional", "ragunan"]
+                addresses: this.state.addresses
             }
         })
         this.setState({
@@ -59,8 +52,23 @@ class Example extends Component {
                     longitude: e.lng,
                     name: e.geocodingData.formatted_address,
                 }
-            })
+            }),
+            routeOptimizerResponse: response.data
         })
+    }
+
+    onMapPress = (e) => {
+        console.log(e.nativeEvent.coordinate)
+        this.setState({
+            addresses: [
+                ...this.state.addresses,
+                `${e.nativeEvent.coordinate.latitude},${e.nativeEvent.coordinate.longitude}`
+            ],
+        }, () => { this.findRoute() });
+    }
+
+    componentDidMount() {
+        this.findRoute()
     }
 
     render() {
