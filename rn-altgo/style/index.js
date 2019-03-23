@@ -10,18 +10,18 @@ const s = StyleSheet.create({
   },
   resList: {
       flex: 1,
-      backgroundColor: 'black',
+      backgroundColor: '#620042',
       height:  500,
       width: win.width
   },
   panel: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: '#620042',
     position: 'relative'
   },
   panelHeader: {
     height: 120,
-    backgroundColor: 'black',
+    backgroundColor: '#620042',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -37,13 +37,13 @@ const s = StyleSheet.create({
     zIndex: 1
   },
   searchHead: {
-      backgroundColor: 'black',
+      backgroundColor: '#620042',
   },
   ml5: {
       marginTop: 8,
       marginBottom: 8,
       marginLeft: 8,
-      backgroundColor: 'black',
+      backgroundColor: '#620042',
       height: 40
   },
   textLight: {
@@ -62,6 +62,22 @@ const s = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     marginBottom: 10
+  },
+  collapMenu: {
+    marginBottom: 5,
+    // marginTop: 5,
+    // borderBottomColor: 'lightgrey',
+    // borderBottomWidth: 1,
+    width: win.width,
+    flex:1, 
+    justifyContent: 'center',
+    alignSelf: 'center',
+    height: 50
+  },
+  collapText: {
+    fontSize: 20,
+    fontWeight: '300',
+    textAlign: 'center'
   }
 });
 

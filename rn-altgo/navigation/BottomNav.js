@@ -43,13 +43,13 @@ const RootNav = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Friend',
+    initialRouteName: 'Home',
     tabBarOptions: {
         showLabel: false, // hide labels
         activeTintColor: 'white',
         inactiveTintColor: 'grey',  // inactive icon color
         style: {
-            backgroundColor: 'black' // TabBar background
+            backgroundColor: '#620042' // TabBar background
         }
     }
 })
