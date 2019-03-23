@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, Animated, Dimensions, ScrollView, TouchableHighlight } from 'react-native'
-import { Content, Container, Header, Text, Button } from 'native-base'
+import { SafeAreaView, View, Animated, Dimensions, ScrollView, TouchableHighlight, Text, } from 'react-native'
+import { Content, Container, Header, Button } from 'native-base'
 import s from '../style'
 import SlidingUpPanel from 'rn-sliding-up-panel'
 const {height, width} = Dimensions.get('window')
 import { db } from '../api/firestore'
-
+import { LinearGradient } from 'expo'
 //COMPONENTS
 import ResList from '../components/ResList'
 import MyMap from '../components/MyMap'
@@ -27,7 +27,7 @@ export default class Home extends Component {
         friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
         myList: [{},1,1,1,1,1],
         cat: 'food',
-        showPanel: true,
+        showPanel: false,
         members: [{}, {},],
     }
 
@@ -64,6 +64,11 @@ export default class Home extends Component {
         }
     }
 
+    toPage1 = () => {
+        this.setState({
+            page: 1
+        })
+    }
     toPageFriends =() => {
         this.setState({
             inviteFriends: !this.state.inviteFriends
@@ -104,7 +109,9 @@ export default class Home extends Component {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <Container style={{ flex: 1, flexDirection: 'column', backgroundColor: '#A2CCCD' }}>
+
+            <Container >
+                <LinearGradient colors={['black', '#1f1135', '#391f60', '#4c2982','#603f91', '#7b57af', '#B9ABCF']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}>
                 <Content>
                     {
                         page === 1 && <SearchHead toPageFriends={this.toPageFriends}/>
@@ -117,22 +124,22 @@ export default class Home extends Component {
                     }
                     {
                         ((!inviteFriends && page === 1) || (members.length === 0 && page === 1)) ?   <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                        <Button onPress={this.toPageRecom} style={{ backgroundColor: 'teal', marginRight: 20 }}>
-                            <Text>
+                        <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 60, justifyContent: 'center', alignSelf: 'center' }}>
+                            <Text style={{ color: 'white', fontSize: 22}}>
                                 Go
                             </Text>
                         </Button>
                     </View> : (inviteFriends && page ===1) ? <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                            <Button onPress={this.toPageMap} style={{ backgroundColor: 'teal', marginRight: 20 }}>
-                                <Text>
+                            <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                <Text style={{ color: 'white', fontSize: 22, textAlign: 'center'}}>
                                     Hangout 
                                 </Text>
                             </Button>
                         </View>
                         <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                            <Button onPress={this.toPageRecom} style={{ backgroundColor: 'teal', marginRight: 20 }}>
-                                <Text>
+                            <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 70, justifyContent: 'center' }}>
+                                <Text style={{ color: 'white', fontSize: 22}}>
                                     Travel
                                 </Text>
                             </Button>
@@ -140,12 +147,13 @@ export default class Home extends Component {
                         </View> : null
                     }
                    
-
                     {
                         inviteFriends && <View>
-                                <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 5 }}>
-                                    My friends
-                                </Text>
+                                <View style={{ backgroundColor: 'rgba(245, 245, 245, 0.6)'}}>
+                                    <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 5 }}>
+                                        My friends
+                                    </Text>
+                                </View>
                                 <ScrollView style={{ height: 500}}>
                                     { friendsList[0] && this.state.friendsList.map((el, i) =>{
                                         return <TouchableHighlight  key={i} onPress={() => this.addMember(el)}>
@@ -157,7 +165,7 @@ export default class Home extends Component {
                         </View> 
                     }
                     {
-                        page === 2 && <Recom toPageDetail={this.toPageDetail }/>
+                        page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail }/>
                     }
                     {
                         page === 3 && <DetailCat toPageRecom={this.toPageRecom} cat={cat}/>
@@ -186,7 +194,7 @@ export default class Home extends Component {
 
                             </View>
                             <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
-                            <Button onPress={this.toPageMap} style={{ backgroundColor: 'teal', marginRight: 20 }}>
+                            <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20 }}>
                                 <Text>
                                     Lets go!
                                 </Text>
@@ -202,6 +210,7 @@ export default class Home extends Component {
                    }
                    
                 </Content>
+        </LinearGradient>
             </Container>
         </SafeAreaView>
     )

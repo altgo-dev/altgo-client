@@ -13,12 +13,14 @@ export default class SearchHead extends Component {
       <View style={s.searchHead}>
         <View style={{ flex: 1, flexDirection: 'row'}}>
             <Item style={{...s.ml5, ...s.searhBox}}>
-                <Input style={{...s.textLight}} placeholder="Destination"/>
+                <Input style={{...s.textLight, color: 'white'}} placeholderTextColor="#dddddd" placeholder="Destination"/>
             </Item>
-            <Icon style={{...s.textLight, fontSize: 37, marginHorizontal: 25, marginTop: 8}} name="search" />
+            <TouchableHighlight>
+              <Icon style={{...s.textLight, fontSize: 37, marginHorizontal: 25, marginTop: 8}} name="search" />
+            </TouchableHighlight>
         </View>
         <TouchableHighlight underlayColor="#ffffff00" onPress={this.props.toPageFriends}>
-          <Text style={{ textAlign: 'center', color: 'black', marginTop: 30 }}>
+          <Text style={{ textAlign: 'center', color: 'white', marginTop: 30 , fontWeight: '500'}}>
             Invite friends 
           </Text>
         </TouchableHighlight>

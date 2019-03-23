@@ -10,18 +10,18 @@ const s = StyleSheet.create({
   },
   resList: {
       flex: 1,
-      backgroundColor: '#A2CCCD',
+      // backgroundColor: '#CDC1FF',
       height:  500,
       width: win.width
   },
   panel: {
     flex: 1,
-    backgroundColor: '#A2CCCD',
+    backgroundColor: '#CDC1FF',
     position: 'relative'
   },
   panelHeader: {
     height: 120,
-    backgroundColor: '#A2CCCD',
+    backgroundColor: '#CDC1FF',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -37,14 +37,14 @@ const s = StyleSheet.create({
     zIndex: 1
   },
   searchHead: {
-      backgroundColor: '#A2CCCD',
+      // backgroundColor: '#CDC1FF',
       marginTop: 50
   },
   ml5: {
       marginTop: 8,
       marginBottom: 8,
       marginLeft: 8,
-      backgroundColor: '#A2CCCD',
+      // backgroundColor: '#CDC1FF',
       height: 40
   },
   textLight: {

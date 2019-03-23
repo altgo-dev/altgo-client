@@ -1,49 +1,49 @@
 import axios from 'axios'
-
-const baseURL = 'http://172.20.10.5:3000'
-
-export function register(userInfo) {
-  return dispatch => {
+import {AsyncStorage} from 'react-native';
+import { db } from '../../api/firestore'
+const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
+export  function register(userInfo) {
+  return async dispatch => {
     // alert(JSON.stringify(userInfo))
-    axios
-      .post(`${baseURL}/register`, {
+    try {
+      const { data } = await axios
+        .post(`${baseURL}/register`, {
         name: userInfo.name,
         email: userInfo.email,
-        password: userInfo.password
+        password: userInfo.password,
+        id
       })
-      .then(({ data }) => {
-        dispatch({
-          type: 'REGISTRATION_SUCCESS', payload: {
-            name: data.user.name,
-            email: data.user.email,
-            profilePicture: data.user.profilePicture
-          }
-        })
-        alert('Welcome To Altgo')
+      
+      await AsyncStorage.setItem('token', data.token)
+      dispatch({
+        type: 'REGISTRATION_SUCCESS', payload: {
+          name: data.user.name,
+          email: data.user.email,
+          profilePicture: data.user.profilePicture,
+          token: data.token
+        }
       })
-      .catch(error => {
-        console.log(JSON.stringify(error,null,2))
-        dispatch({ type: 'ERROR', payload: error.data.err })
-      })
+      alert('Welcome To Altgo')
+      
+    } catch (error) {
+      dispatch({ type: 'ERROR', payload: error.data.err })
+    }
   }
 }
 
-export function login(userInfo) {
-  return dispatch => {
-    axios
+export  function login(userInfo) {
+  return async dispatch => {
+    try {
+      const { data } = await axios
       .post(`${baseURL}/login`, {
         email: userInfo.email,
-        password: userInfo.password
+        password: userInfo.password,
+        token: data.token
       })
-      .then(({ data }) => {
-        dispatch({type: 'SIGNIN_SUCCESS', payload: {
-          name: data.name,
-          email: data.email, 
-        }})
-        alert('Welcome To Altgo')
-      })
-      .catch(error => {
-        dispatch({type: 'ERROR', payload: {message: `sorry, we can't find your account`}})
-      })
+      await AsyncStorage.setItem('token', data.token)
+      alert('Welcome To Altgo')
+    } catch (error) {
+      dispatch({ type: 'ERROR', payload: error.data.err })
+    }
   }
 }
