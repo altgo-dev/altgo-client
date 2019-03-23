@@ -85,7 +85,7 @@ class Example extends Component {
                 onPress={this.onMapPress}
             >
                 {this.state.coordinates.map((coordinate, index) =>
-                    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'white' }}>[{index}] {coordinate.name}</Text></MapView.Marker>
+                    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index}] {coordinate.name}</Text></MapView.Marker>
                 )}
                 {(this.state.coordinates.length >= 2) && (
                     <MapViewDirections

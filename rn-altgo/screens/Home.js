@@ -4,6 +4,7 @@ import { Content, Container, Header, Text, Button } from 'native-base'
 import s from '../style'
 import SlidingUpPanel from 'rn-sliding-up-panel'
 const {height, width} = Dimensions.get('window')
+import { db } from '../api/firestore'
 
 //COMPONENTS
 import ResList from '../components/ResList'
@@ -31,7 +32,19 @@ export default class Home extends Component {
     }
 
     addMember = (input) => {
+        console.log(input)
         //logic add friend disini
+        // db.collection("chat").add({
+        //     message: {},
+        //     route: {}
+        // })
+        //     .then(doc => {
+
+        //         console.log(doc)
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     })
         this.setState({
             members: this.state.members.concat(input)
         })
@@ -75,7 +88,8 @@ export default class Home extends Component {
     toPageMap = () => {
         this.setState({
             page: 4,
-            showPanel: false
+            showPanel: false,
+            inviteFriends: false
         })
     }
 
