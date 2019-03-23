@@ -24,24 +24,10 @@ export default class ChatRoom extends Component {
                     NAMA Group
                 </Text>
             </Left>
-            <Icon onPress={this.showMenu} name="add" />
+            {/* <Icon onPress={this.showMenu} name="add" /> */}
         </Header>
-        {
-            this.state.show && <View style={{ height: 70, alignItems: 'center', justifyContent: 'center' }}>
-                <View style={{...s.collapMenu, paddingBottom: 6 }}>
-                    <TouchableHighlight underlayColor="#ffffff00" onPress={this.props.toForm} >
-                        <Text style={s.collapText}>
-                            Itinerary
-                        </Text>
-                    </TouchableHighlight>
-                </View>
-                <View style={{...s.collapMenu, borderBottomWidth: 0}}>
-                    <Text style={s.collapText}>
-                        Start Trip
-                    </Text>
-                </View>
-            </View>
-        }
+        <View style={{ height: 70, alignItems: 'center', justifyContent: 'center' }}>
+        </View>
         
       </View>
     )

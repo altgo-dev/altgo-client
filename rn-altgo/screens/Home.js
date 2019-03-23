@@ -12,14 +12,43 @@ import SearchHead from '../components/SearchHead'
 import AddMem from '../components/AddMem'
 import SingleFriend from '../components/SingleFriend'
 import Recom from '../components/Recom'
+import DetailCat from '../components/DetailCat';
+import SinglePlace from '../components/SinglePlace'
+import RouteOp from './RouteOptimizer'
+
 export default class Home extends Component {
     _draggedValue = new Animated.Value(120)
 
     state = {
         status: true,
-        page: 2,
+        page: 1,
         inviteFriends: false,
         friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+        myList: [{},1,1,1,1,1],
+        cat: 'food',
+        showPanel: true,
+        members: [{}, {},],
+    }
+
+    addMember = (input) => {
+        //logic add friend disini
+        this.setState({
+            members: this.state.members.concat(input)
+        })
+    }
+
+    removeMem = (i) => {
+        let temp = [...this.state.members]
+        temp.splice(i, 1)
+        if (i === 0 && temp.length === 0 ) {
+            this.setState({
+                members: []
+            })
+        } else {
+            this.setState({
+                members: temp
+            })
+        }
     }
 
     toPageFriends =() => {
@@ -30,14 +59,23 @@ export default class Home extends Component {
 
     toPageRecom = () => {
         this.setState({
-            page: 2
+            page: 2,
+            inviteFriends: false
         })
     }
 
     toPageDetail = (cat) => {
         //logic detail sini woy
         this.setState({
-            page: 3
+            page: 3,
+            cat
+        })
+    }
+
+    toPageMap = () => {
+        this.setState({
+            page: 4,
+            showPanel: false
         })
     }
 
@@ -48,7 +86,7 @@ export default class Home extends Component {
         extrapolate: 'clamp'
       })
     const transform = [{scale: draggedValue}]
-    let { status, page, inviteFriends, friendsList } = this.state
+    let { status, page, inviteFriends, friendsList, myList, cat, showPanel, members } = this.state
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -60,11 +98,11 @@ export default class Home extends Component {
                    
                     {
                         inviteFriends && <View> 
-                            <AddMem />
+                            <AddMem members={members} removeMem={this.removeMem} />
                             </View>
                     }
                     {
-                        (!inviteFriends && page === 1) ?   <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
+                        ((!inviteFriends && page === 1) || (members.length === 0 && page === 1)) ?   <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
                         <Button onPress={this.toPageRecom} style={{ backgroundColor: 'teal', marginRight: 20 }}>
                             <Text>
                                 Go
@@ -72,7 +110,7 @@ export default class Home extends Component {
                         </Button>
                     </View> : (inviteFriends && page ===1) ? <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                         <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                            <Button onPress={this.createTrip} style={{ backgroundColor: 'teal', marginRight: 20 }}>
+                            <Button onPress={this.toPageMap} style={{ backgroundColor: 'teal', marginRight: 20 }}>
                                 <Text>
                                     Hangout 
                                 </Text>
@@ -85,7 +123,7 @@ export default class Home extends Component {
                                 </Text>
                             </Button>
                         </View>
-                    </View> : null
+                        </View> : null
                     }
                    
 
@@ -107,20 +145,47 @@ export default class Home extends Component {
                     {
                         page === 2 && <Recom toPageDetail={this.toPageDetail }/>
                     }
-                        {/* <SlidingUpPanel
-                            showBackdrop={false}
-                            draggableRange={{top: height / 1.10, bottom: 100}}
-                            animatedValue={this._draggedValue}>
-                            <View style={s.panel}>
-                                <Animated.View style={[s.favoriteIcon, {transform}]}>
-                                   
-                                    <Text> hahaha </Text>
-                                </Animated.View>
-                                <View style={s.container}>
-                                    <ResList />
-                                </View>
+                    {
+                        page === 3 && <DetailCat toPageRecom={this.toPageRecom} cat={cat}/>
+                    }
+                    {
+                        (myList[0] && showPanel) &&  <SlidingUpPanel
+                        showBackdrop={false}
+                        draggableRange={{top: height / 1.10, bottom: 100}}
+                        animatedValue={this._draggedValue}>
+                        <View style={s.panel}>
+                            <Animated.View style={[s.favoriteIcon, {transform}]}>
+                                <Text style={{ textAlign: 'center', fontSize: 23}}> {myList.length} </Text>
+                            </Animated.View>
+                            <View>
+                                {
+                                    myList.map((el, i) => {
+                                        if (i <= 6) {
+                                            return <SinglePlace key={i} type="close"/> 
+                                        } 
+                                    })
+                                }
+
+                                <Text style={{ color: 'blue', marginLeft: 25}}>
+                                    View More
+                                </Text>
+
                             </View>
-                        </SlidingUpPanel> */}
+                            <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
+                            <Button onPress={this.toPageMap} style={{ backgroundColor: 'teal', marginRight: 20 }}>
+                                <Text>
+                                    Lets go!
+                                </Text>
+                            </Button>
+                            </View>
+                        </View>
+                        </SlidingUpPanel>
+                    }
+                   {
+                       page === 4 && <View style={{ flex: 1, height: 550}}>
+                            <RouteOp />
+                       </View> 
+                   }
                    
                 </Content>
             </Container>
