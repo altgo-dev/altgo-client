@@ -12,7 +12,7 @@ export default class Friends extends Component {
   // statusnya buat nentuin state pagenya udh ad group atau belum dll => group, chat, formPlace, ontrip (map)
   state = {
     grouped: true,
-    status: 'chat'
+    status: 'group'
   }
 
   componentDidMount () {

@@ -14,6 +14,15 @@ import RouteOptimizer from '../screens/RouteOptimizer'
 
 
 const RootNav = createBottomTabNavigator({
+    Friend: {
+        screen: RouteOptimizer,
+        navigationOptions: {
+            title: 'Social',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="people" style={{ color: tintColor }}/>
+            )
+        }
+    },
     Home: {
         screen: Home,
         navigationOptions: {
@@ -22,15 +31,6 @@ const RootNav = createBottomTabNavigator({
                 <Icon name='home' style={{ color: tintColor }}/>
             )
             
-        }
-    },
-    Friend: {
-        screen: RouteOptimizer,
-        navigationOptions: {
-            title: 'Social',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="people" style={{ color: tintColor }}/>
-            )
         }
     },
     Profile: {
@@ -46,10 +46,10 @@ const RootNav = createBottomTabNavigator({
     initialRouteName: 'Home',
     tabBarOptions: {
         showLabel: false, // hide labels
-        activeTintColor: 'white',
-        inactiveTintColor: 'grey',  // inactive icon color
+        activeTintColor: '#00656b',
+        inactiveTintColor: '#878787',  // inactive icon color
         style: {
-            backgroundColor: '#620042' // TabBar background
+            backgroundColor: '#A2CCCD' // TabBar background
         }
     }
 })

@@ -10,18 +10,18 @@ const s = StyleSheet.create({
   },
   resList: {
       flex: 1,
-      backgroundColor: '#620042',
+      backgroundColor: '#A2CCCD',
       height:  500,
       width: win.width
   },
   panel: {
     flex: 1,
-    backgroundColor: '#620042',
+    backgroundColor: '#A2CCCD',
     position: 'relative'
   },
   panelHeader: {
     height: 120,
-    backgroundColor: '#620042',
+    backgroundColor: '#A2CCCD',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -37,20 +37,24 @@ const s = StyleSheet.create({
     zIndex: 1
   },
   searchHead: {
-      backgroundColor: '#620042',
+      backgroundColor: '#A2CCCD',
+      marginTop: 50
   },
   ml5: {
       marginTop: 8,
       marginBottom: 8,
       marginLeft: 8,
-      backgroundColor: '#620042',
+      backgroundColor: '#A2CCCD',
       height: 40
   },
   textLight: {
-    color: '#cccccc',
+    color: 'white',
   },
   searhBox: {
-      width: win.width - win.width/5
+      width: win.width - win.width/3,
+      borderColor: 'white',
+      marginLeft: 40,
+      borderBottomWidth: 3
   },
   inputEmailSearch: {
     width: win.width - 60,
@@ -65,9 +69,6 @@ const s = StyleSheet.create({
   },
   collapMenu: {
     marginBottom: 5,
-    // marginTop: 5,
-    // borderBottomColor: 'lightgrey',
-    // borderBottomWidth: 1,
     width: win.width,
     flex:1, 
     justifyContent: 'center',
@@ -78,6 +79,12 @@ const s = StyleSheet.create({
     fontSize: 20,
     fontWeight: '300',
     textAlign: 'center'
+  },
+  catImg: {
+    flex: 1,
+    width: win.width / 2 -10,
+    margin: 5,
+    height: win.height / 3 -30
   }
 });
 
