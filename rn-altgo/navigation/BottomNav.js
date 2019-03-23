@@ -42,7 +42,7 @@ const RootNav = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Profile',
+    initialRouteName: 'Friend',
     tabBarOptions: {
         showLabel: false, // hide labels
         activeTintColor: 'white',

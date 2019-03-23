@@ -15,9 +15,12 @@ export default class SingleFriend extends Component {
                     smaller desck abidh jndfui
                 </Text>
             </Body>
-            <Right style={{ width: 30, flex: 0 }}>
-                <Icon style={{ fontSize: 28 }} name="close"/>
-            </Right>
+            {
+                !this.props.icon && <Right style={{ width: 30, flex: 0 }}>
+                    <Icon style={{ fontSize: 28 }} name="close"/>
+                </Right>
+            }
+         
         </CardItem>
     )
   }

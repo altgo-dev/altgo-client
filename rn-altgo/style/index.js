@@ -56,6 +56,12 @@ const s = StyleSheet.create({
     width: win.width - 60,
     marginLeft: 10,
     height: 40
+  }, 
+  inputCenter: {
+    width: win.width -80,
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 10
   }
 });
 
