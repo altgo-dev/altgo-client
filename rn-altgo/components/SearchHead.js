@@ -17,7 +17,7 @@ export default class SearchHead extends Component {
             </Item>
             <Icon style={{...s.textLight, fontSize: 37, marginHorizontal: 25, marginTop: 8}} name="search" />
         </View>
-        <TouchableHighlight onPress={this.props.toPageFriends}>
+        <TouchableHighlight underlayColor="#ffffff00" onPress={this.props.toPageFriends}>
           <Text style={{ textAlign: 'center', color: 'black', marginTop: 30 }}>
             Invite friends 
           </Text>

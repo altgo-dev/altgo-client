@@ -15,7 +15,7 @@ import RouteOptimizer from '../screens/RouteOptimizer'
 
 const RootNav = createBottomTabNavigator({
     Friend: {
-        screen: RouteOptimizer,
+        screen: Friend,
         navigationOptions: {
             title: 'Social',
             tabBarIcon: ({tintColor}) => (
