@@ -3,9 +3,10 @@ import thunk from 'redux-thunk'
 
 //reducers
 import Meetup from './reducers/Meetup'
+import Users from './reducers/Users'
 
 const store = createStore(
-   combineReducers({Meetup}),
+   combineReducers({Meetup, Users}),
    applyMiddleware((thunk))
 )
 
