@@ -1,5 +1,6 @@
 import axios from 'axios'
-import {AsyncStorage} from 'react-native'
+import {AsyncStorage} from 'react-native';
+import { db } from '../../api/firestore'
 
 const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
 
