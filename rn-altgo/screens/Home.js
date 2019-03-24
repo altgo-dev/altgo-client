@@ -6,6 +6,7 @@ import SlidingUpPanel from 'rn-sliding-up-panel'
 const {height, width} = Dimensions.get('window')
 import { db } from '../api/firestore'
 import { LinearGradient } from 'expo'
+
 //COMPONENTS
 import ResList from '../components/ResList'
 import MyMap from '../components/MyMap'
