@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { View, SafeAreaView, TouchableHighlight, Text, TextInput, Image } from 'react-native'
-import { Container, Header, Content, Form, Item, Input, Button,  } from 'native-base';
+import { View, SafeAreaView, TouchableHighlight, Text, TextInput, Image, AsyncStorage} from 'react-native'
+import { Container, Header, Content, Form, Item, Input, Button, Text, } from 'native-base';
+
 import s from '../style'
 import { connect } from 'react-redux'
 import { LinearGradient } from 'expo'
@@ -28,6 +29,17 @@ class SignIn extends Component {
         errors: this.props.errors || {}
     }
 
+    componentDidMount = async () => {
+        try {
+            const value = await AsyncStorage.getItem('token');
+            if (value) {
+                this.props.navigation.navigate('Home')
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
+    };
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.isLoggedIn !== this.props.isLoggedIn) {
             this.setState({ isLoggedIn: this.props.isLoggedIn })
@@ -37,7 +49,7 @@ class SignIn extends Component {
         }
 
         if (prevState.errors !== this.props.errors) {
-            this.setState({ errors: this.props.errors})
+            this.setState({ errors: this.props.errors })
         }
 
     }

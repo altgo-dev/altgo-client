@@ -1,6 +1,8 @@
 import axios from 'axios'
-import {AsyncStorage} from 'react-native';
-import { db } from '../../api/firestore'
+import { AsyncStorage } from 'react-native';
+
+// const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
+const baseURL = 'http://172.20.10.5:3000'
 
 const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
 
@@ -76,3 +78,6 @@ export function getAllUser(token) {
     }
   }
 }
+
+
+
