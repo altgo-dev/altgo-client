@@ -59,7 +59,6 @@ export function getUserData(token) {
         profilePicture: user.data.userFound.profilePicture,
         _id: user.data.userFound._id
       }})
-      console.log(user.data)
     } catch (error) {
       dispatch({type: 'ERROR', payload: {message: `sorry, we can't find your account`}})
 

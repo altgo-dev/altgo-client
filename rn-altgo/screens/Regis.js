@@ -22,7 +22,7 @@ class Regis extends Component {
 
     async componentDidMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        this.setState({ hasCameraPermission: status === 'granted' });
+        this.setState({ hasCameraPermission: status === 'granted' })
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -46,12 +46,6 @@ class Regis extends Component {
             password: this.state.password,
             image: this.state.image
         }
-
-        // alert(userInfo.password)
-        // let formdata = new FormData();
-        // formdata.append('image', { uri: this.state.image, name: 'image.jpg', type: 'multipart/form-data' })
-        // formdata.append('data', JSON.stringify(userInfo) )
-
         this.props.register(userInfo)
     }
 
@@ -64,20 +58,6 @@ class Regis extends Component {
             this.setState({ image: result.uri });
         }
     }
-
-
-    // uploadImage = () => {
-    //     if (!this.state.image) {
-    //         this.setState({ image: '-' })
-    //     } else {
-
-    //         let formdata = new FormData();
-    //         formdata.append('image', { uri: this.state.image, name: 'image.jpg', type: 'multipart/form-data' })
-    //         // return axios.post(`http://localhost:3000/graph`, formdata)
-    //     }
-    // }
-
-
 
     render() {
 

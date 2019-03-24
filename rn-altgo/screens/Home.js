@@ -27,10 +27,10 @@ class Home extends Component {
         status: true,
         page: 1,
         inviteFriends: false,
-        friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+        friendsList: [],
         cat: 'food',
         showPanel: false,
-        members: [{}, {},],
+        members: [],
     }
 
     componentDidMount = async () => {
@@ -38,7 +38,9 @@ class Home extends Component {
             const token = await AsyncStorage.getItem('token')
             await this.props.getUserData(token)
             await this.props.getAllUser(token)
-            // await AsyncStorage.removeItem('token')
+            this.setState({
+                friendsList: this.props.userInfo.friends
+            })
         } catch (error) {
             console.log(error)
         }
@@ -46,18 +48,6 @@ class Home extends Component {
 
     addMember = (input) => {
         console.log(input)
-        //logic add friend disini
-        // db.collection("chat").add({
-        //     message: {},
-        //     route: {}
-        // })
-        //     .then(doc => {
-
-        //         console.log(doc)
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //     })
         this.setState({
             members: this.state.members.concat(input)
         })
@@ -103,12 +93,20 @@ class Home extends Component {
         })
     }
 
-    toPageMap = () => {
-        this.setState({
-            page: 4,
-            showPanel: false,
-            inviteFriends: false
+    toPageMap = async () => {
+
+        const chat =  await db.collection('chat').add({
+            members: {},
+            messages: {},
+            route: {}
         })
+        console.log(chat.id)
+        
+        // this.setState({
+        //     page: 4,
+        //     showPanel: false,
+        //     inviteFriends: false
+        // })
     }
 
   render() {
@@ -170,12 +168,18 @@ class Home extends Component {
                                     </Text>
                                 </View>
                                 <ScrollView style={{ height: 500}}>
-                                    { friendsList[0] && this.state.friendsList.map((el, i) =>{
-                                        return <TouchableHighlight  key={i} onPress={() => this.addMember(el)}>
-                                            <SingleFriend icon={'no'}/>
+                                {
+                                    this.state.friendsList.map((el, i) => {
+                                    if(el.UserId2._id !== this.props.userInfo._id) {
+                                        return <TouchableHighlight key={i} onPress = {() => this.addMember(el.UserId2) }>
+                                        <SingleFriend icon="no"  data={el.UserId2} /> 
                                         </TouchableHighlight>
-                                    })
-                                    }
+                                    } else {
+                                        return <TouchableHighlight key={i} onPress = {() => this.addMember(el.UserId1) }>
+                                        <SingleFriend icon="no"  data={el.UserId2} /> 
+                                        </TouchableHighlight> 
+                                    } })
+                                }
                                 </ScrollView>
                         </View> 
                     }
@@ -242,6 +246,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     isLoggedIn: state.Users.isLoggedIn,
     errors: state.Users.errors,
+    userInfo: state.Users.userInfo,
     myList: state.Users.myList
 })
 
