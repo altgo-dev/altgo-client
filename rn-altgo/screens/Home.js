@@ -39,7 +39,7 @@ class Home extends Component {
             const token = await AsyncStorage.getItem('token')
             await this.props.getUserData(token)
             await this.props.getAllUser(token)
-      
+            // await AsyncStorage.removeItem('token')
         } catch (error) {
             console.log(error)
         }
@@ -125,7 +125,8 @@ class Home extends Component {
         <SafeAreaView style={{ flex: 1 }}>
 
             <Container >
-                <LinearGradient colors={['black', '#1f1135', '#391f60', '#4c2982','#603f91', '#7b57af', '#B9ABCF']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}>
+                {/* <LinearGradient colors={['black', '#1f1135', '#391f60', '#4c2982','#603f91', '#7b57af', '#B9ABCF']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}> */}
+                <LinearGradient colors={[  '#621708', '#941B0C', '#BC3908', '#FF3C38', '#F6511D', '#F95738', '#FF8C42']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}> 
                 <Content>
                     {
                         page === 1 && <SearchHead toPageFriends={this.toPageFriends}/>

@@ -24,7 +24,7 @@ export  function register(userInfo) {
           _id: register.data.user._id
         }
       })
-      alert('Welcome To Altgo')
+      // alert('Welcome To Altgo')
     } catch (error) {
       dispatch({ type: 'ERROR', payload: error.data.err })
     }
