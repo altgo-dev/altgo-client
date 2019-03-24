@@ -30,7 +30,7 @@ class Home extends Component {
         friendsList: [],
         cat: 'food',
         showPanel: true,
-        members: [{}, {},],
+        members: [],
         destinationList: []
     }
 
@@ -138,7 +138,7 @@ class Home extends Component {
         })
         const transform = [{ scale: draggedValue }]
         let { status, page, inviteFriends, friendsList, cat, showPanel, members } = this.state
-        let { destinationList } = this.props
+        let { destinationList, myList } = this.props
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
@@ -186,14 +186,21 @@ class Home extends Component {
                                     <View style={{ backgroundColor: 'rgba(245, 245, 245, 0.6)' }}>
                                         <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 5 }}>
                                             My friends
-                                    </Text>
+                                        </Text>
                                     </View>
                                     <ScrollView style={{ height: 500 }}>
-                                        {friendsList[0] && this.state.friendsList.map((el, i) => {
-                                            return <TouchableHighlight key={i} onPress={() => this.addMember(el)}>
-                                                <SingleFriend icon={'no'} />
-                                            </TouchableHighlight>
-                                        })
+                                        {
+                                            this.state.friendsList.map((el, i) => {
+                                                if (el.UserId2._id !== this.props.userInfo._id) {
+                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId2)}>
+                                                        <SingleFriend icon="no" data={el.UserId2} />
+                                                    </TouchableHighlight>
+                                                } else {
+                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId1)}>
+                                                        <SingleFriend icon="no" data={el.UserId2} />
+                                                    </TouchableHighlight>
+                                                }
+                                            })
                                         }
                                     </ScrollView>
                                 </View>
