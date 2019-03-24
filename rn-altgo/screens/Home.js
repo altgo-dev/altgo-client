@@ -38,7 +38,9 @@ class Home extends Component {
             const token = await AsyncStorage.getItem('token')
             await this.props.getUserData(token)
             await this.props.getAllUser(token)
-            // await AsyncStorage.removeItem('token')
+            this.setState({
+                friendsList: this.props.userInfo.friends
+            })
         } catch (error) {
             console.log(error)
         }
@@ -171,8 +173,9 @@ class Home extends Component {
                                 </View>
                                 <ScrollView style={{ height: 500}}>
                                     { friendsList[0] && this.state.friendsList.map((el, i) =>{
+                                        console.log(el, 'THIS FROM HOME', i)
                                         return <TouchableHighlight  key={i} onPress={() => this.addMember(el)}>
-                                            <SingleFriend icon={'no'}/>
+                                            <SingleFriend icon={'no'} data={el}/>
                                         </TouchableHighlight>
                                     })
                                     }
@@ -242,7 +245,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     isLoggedIn: state.Users.isLoggedIn,
     errors: state.Users.errors,
-    myList: state.Users.myList
+    userInfo: state.Users.userInfo
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
