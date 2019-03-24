@@ -26,10 +26,8 @@ export default function (state = defaultState, action){
     case 'ERROR':
       return {...state, errors: payload}
     case 'FETCH_DATA':
-    console.log(payload, 'FETCH DATA') 
       return { ...state, userInfo: payload, isLoggedIn: true}
     case 'FETCH_USERS':
-      console.log(payload, 'FETCH USERS') 
       return { ...state, users: payload }
     default:
       return state

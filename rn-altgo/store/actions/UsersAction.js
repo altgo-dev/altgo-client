@@ -2,9 +2,9 @@ import axios from 'axios'
 import { AsyncStorage } from 'react-native';
 
 // const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
-// const baseURL = 'http://172.20.10.5:3000'
+const baseURL = 'http://172.20.10.5:3000'
 
-const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
+// const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
 
 export  function register(userInfo) {
   return async dispatch => {
@@ -15,7 +15,6 @@ export  function register(userInfo) {
       formData.append('email', userInfo.email)
       formData.append('password', userInfo.password)
       const register = await axios.post(`${baseURL}/register`, formData)
-      console.log(JSON.stringify(register,null,2))
       await AsyncStorage.setItem('token', register.data.token)
       dispatch({
         type: 'REGISTRATION_SUCCESS', payload: {
@@ -27,8 +26,6 @@ export  function register(userInfo) {
       })
       alert('Welcome To Altgo')
     } catch (error) {
-      console.log(error)
-      // console.log(JSON.stringify(error,null,2))
       dispatch({ type: 'ERROR', payload: error.data.err })
     }
   }
