@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, Image, FlatList, TouchableHighlight } from 'react-native'
-import { Header, Left, Right, Icon } from 'native-base'
+import { Header, Left, Right, Icon, Input, Item } from 'native-base'
 import s from '../style'
 import ImageOverlay from "react-native-image-overlay";
 
@@ -29,6 +29,14 @@ export default class Recom extends Component {
             </Text>
             <Right></Right>
           </Header>
+          <View style={{ flex: 1, flexDirection: 'row'}}>
+            <Item style={{...s.ml5, ...s.searhBox}}>
+                <Input style={{...s.textLight, color: 'white'}} placeholderTextColor="#dddddd" placeholder="Destination"/>
+            </Item>
+            <TouchableHighlight>
+              <Icon style={{...s.textLight, fontSize: 37, marginHorizontal: 25, marginTop: 8}} name="search" />
+            </TouchableHighlight>
+        </View>
         <FlatList
             numColumns={2}
             keyExtractor={(item) => item.title}
