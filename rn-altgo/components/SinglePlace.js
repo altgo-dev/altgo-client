@@ -3,12 +3,12 @@ import { Text, View, TouchableHighlight } from 'react-native'
 import { Thumbnail, Left, Body, Right, CardItem, Icon } from 'native-base'
 import { connect } from 'react-redux'
 
-import { addDestination } from '../store/actions/MeetupAction'
+import { addDestination, removeDestination } from '../store/actions/MeetupAction'
 
 class SinglePlace extends Component {
     state = {
         // destinationList: this.props.destinationList || [],
-        icon: 'ios-add'
+        icon: this.props.type || 'ios-add'
     }
 
     // componentDidUpdate(prevProps, prevState) {
@@ -33,7 +33,10 @@ class SinglePlace extends Component {
             this.setState({ destinationList })
             this.props.addDestination(destinationList)
             this.setState({ icon: 'ios-checkmark' })
-        }   
+        }  else if (this.state.icon == 'close'){
+            var filtered = destinationList.filter(destination => destination!== data)
+            this.props.removeDestination(filtered)
+        }
         // alert(JSON.stringify(destinationList))
     }
 
@@ -61,7 +64,8 @@ class SinglePlace extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    addDestination: (destinationList) => (dispatch(addDestination(destinationList)))
+    addDestination: (destinationList) => (dispatch(addDestination(destinationList))),
+    removeDestination: (filtered) => (dispatch(removeDestination(filtered)))
 })
 
 const mapStateToProps = (state) => ({

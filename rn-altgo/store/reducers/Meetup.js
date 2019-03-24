@@ -14,6 +14,9 @@ export default function (state = defaultState, action){
       return {...state, originCity: payload}
     case 'ADD_DESTINATION_SUCCESS':
       return {...state, destinationList: payload}
+    case 'REMOVE_DESTINATION_SUCCESS':
+      return {...state, destinationList: payload}
+      
     default:
       return state
   }

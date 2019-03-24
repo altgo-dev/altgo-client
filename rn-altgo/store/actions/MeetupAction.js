@@ -31,3 +31,9 @@ export function addDestination(destination){
     // alert(JSON.stringify(destination))
   }
 }
+
+export function removeDestination(destination){
+  return dispatch => {
+    dispatch({type: 'REMOVE_DESTINATION_SUCCESS', payload: destination})
+  }
+}
