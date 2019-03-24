@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, SafeAreaView, TouchableHighlight, Text, TextInput, Image, AsyncStorage} from 'react-native'
-import { Container, Header, Content, Form, Item, Input, Button, Text, } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Button } from 'native-base';
 
 import s from '../style'
 import { connect } from 'react-redux'

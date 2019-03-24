@@ -3,14 +3,20 @@ import { Text, View, TouchableHighlight, SafeAreaView, ScrollView } from 'react-
 import { Header, Left, Icon, Content, Right, Item, Input  } from 'native-base'
 import SingleFriend from '../components/SingleFriend'
 import s from '../style'
+import { connect } from 'react-redux'
 
-export default class AddFriends extends Component {
+//screens
+import { searchFriend } from '../store/actions/UsersAction'
+
+class AddFriends extends Component {
     state = {
-        data: [1, 2, 3, 4, 5, 6,2,3,4,54,5,6,7,8]
+        data: [1, 2, 3, 4, 5, 6,2,3,4,54,5,6,7,8],
+        email: ''
     }
 
     search = () => {
-        alert('ini search bego')
+        let{ email } = this.state
+        this.props.searchFriend(email)
     }
 
   render() {
@@ -34,7 +40,7 @@ export default class AddFriends extends Component {
                 <View style={{ minHeight: '100%'}}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <Item style={s.inputEmailSearch}>
-                            <Input placeholder="Email" returnKeyType="search"/>
+                            <Input onChangeText={(email) => {this.setState({email})} } placeholder="Email" returnKeyType="search"/>
                         </Item>
                         <Icon name="search" onPress={this.search} style={{marginTop: 8, marginLeft: 5, color: 'grey' }}/>
                     </View>
@@ -46,7 +52,7 @@ export default class AddFriends extends Component {
 
                         <Content>
                             {
-                                this.state.data.map((el, i) => <SingleFriend key={i} />)
+                                this.props.searchFriendResult.map((el, i) => <SingleFriend key={i} data={el} />)
                             }
                         </Content>
                     </View>
@@ -56,3 +62,13 @@ export default class AddFriends extends Component {
       )
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+    searchFriend : (email) => (dispatch(searchFriend(email)))
+})
+
+const mapStateToProps = (state) => ({
+    searchFriendResult : state.Users.searchFriendResult
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddFriends)

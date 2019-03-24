@@ -3,7 +3,8 @@ const defaultState = {
   userInfo : {},
   errors : {},
   isLoggedIn: false,
-  users: []
+  users: [],
+  searchFriendResult: []
 }
 
 export default function (state = defaultState, action){
@@ -15,6 +16,12 @@ export default function (state = defaultState, action){
     
     case 'SIGNIN_SUCCESS':
       return {...state, userInfo: payload, isLoggedIn: true }
+    
+    case 'SEARCH_FRIEND_SUCCESS':
+      return {...state, searchFriendResult: payload}
+
+    case 'ADD_FRIEND_SUCCESS':
+      return {...state, searchFriendResult: []}
 
     case 'ERROR':
       return {...state, errors: payload}
