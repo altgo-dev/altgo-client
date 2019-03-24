@@ -55,14 +55,14 @@ export default class ChatRoom extends Component {
  
   render() {
     return (
-        <LinearGradient style={{ flex: 1}} colors={['rgb(241, 231, 254)', 'rgb(241, 231, 254)']} >
+        <LinearGradient style={{ flex: 1}} colors={['#1c003d', '#4B0082']} >
       <View style={{ flex: 1 }}>
 
-        <Header style={{ height: 50, backgroundColor: 'white',}}>
+        {/* <Header style={{ height: 50, backgroundColor: 'white',}}> */}
             {/* <Text style={{ fontSize: 23, fontWeight: '500', marginBottom: 6 , color: '#231942'}}>
                 Julith
             </Text> */}
-        </Header>
+        {/* </Header> */}
 
         <GiftedChat
           messages={this.state.messages}
@@ -92,7 +92,7 @@ export default class ChatRoom extends Component {
                     shadowOpacity: 1
                   },
                   right:{
-                    backgroundColor: 'purple',
+                    backgroundColor: '#af8fd6',
                     borderRadius: 0,
                     shadowColor: 'grey',
                     shadowRadius: 5,
@@ -100,17 +100,6 @@ export default class ChatRoom extends Component {
                   }
                 }}
                 renderUsernameOnMessage={true}
-              //   renderSend={(props) => {
-              //     return (
-              //         <Send
-              //             {...props}
-              //         >
-              //             <View style={{marginRight: 10, marginBottom: 5}}>
-              //             <Icon name="send" />
-              //             </View>
-              //         </Send>
-              //     );
-              // }}
               />
             );
           }}
