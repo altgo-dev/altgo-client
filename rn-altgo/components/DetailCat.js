@@ -24,7 +24,6 @@ export default class DetailCat extends Component {
       this.setState({
         recomendationsResponse: response.data
       })
-      console.log(response.data.results[0])
     } catch (err) {
       alert(JSON.stringify(err.data))
     }
