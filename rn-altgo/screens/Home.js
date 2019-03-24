@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, Animated, Dimensions, ScrollView, TouchableHighlight, Text, } from 'react-native'
+import { SafeAreaView, View, Animated, Text, Dimensions, ScrollView, TouchableHighlight, AsyncStorage } from 'react-native'
 import { Content, Container, Header, Button } from 'native-base'
 import s from '../style'
 import SlidingUpPanel from 'rn-sliding-up-panel'
+import { connect } from 'react-redux'
+import {getUserData, getAllUser } from '../store/actions/UsersAction'
 const {height, width} = Dimensions.get('window')
 import { db } from '../api/firestore'
 import { LinearGradient } from 'expo'
@@ -18,7 +20,7 @@ import DetailCat from '../components/DetailCat';
 import SinglePlace from '../components/SinglePlace'
 import RouteOp from './RouteOptimizer'
 
-export default class Home extends Component {
+class Home extends Component {
     _draggedValue = new Animated.Value(120)
 
     state = {
@@ -30,6 +32,17 @@ export default class Home extends Component {
         cat: 'food',
         showPanel: false,
         members: [{}, {},],
+    }
+
+    componentDidMount = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token')
+            await this.props.getUserData(token)
+            await this.props.getAllUser(token)
+      
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     addMember = (input) => {
@@ -217,3 +230,17 @@ export default class Home extends Component {
     )
   }
 }
+
+
+const mapDispatchToProps = (dispatch) => ({
+    getUserData: (token) => (dispatch(getUserData(token))),
+    getAllUser: (token) => (dispatch(getAllUser(token)))
+
+})
+
+const mapStateToProps = (state) => ({
+    isLoggedIn: state.Users.isLoggedIn,
+    errors: state.Users.errors,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

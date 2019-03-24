@@ -1,7 +1,10 @@
 import { 
     createAppContainer,
     createSwitchNavigator
-} from "react-navigation";
+} from "react-navigation"
+
+
+
 
 import Signin from '../screens/SignIn'
 import Regis from '../screens/Regis'
@@ -16,5 +19,6 @@ const SwitchNav = createSwitchNavigator({
 }, {
     initialRouteName: 'App'
 })
+
 
 export default createAppContainer(SwitchNav)

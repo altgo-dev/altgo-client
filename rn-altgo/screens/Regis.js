@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, SafeAreaView, TouchableHighlight, Text, } from 'react-native'
-import { Container, Header, Content, Form, Item, Input, Button,  } from 'native-base';
+import { View, SafeAreaView, TouchableHighlight, Text } from 'react-native'
+import { Container, Header, Content, Form, Item, Input, Button } from 'native-base';
 import s from '../style'
 import { connect } from 'react-redux'
 import { ImagePicker, Camera, Permissions } from 'expo'
@@ -43,7 +43,8 @@ class Regis extends Component {
         var userInfo = {
             email: this.state.email,
             name: this.state.name,
-            password: this.state.password
+            password: this.state.password,
+            image: this.state.image
         }
 
         // alert(userInfo.password)
@@ -58,11 +59,11 @@ class Regis extends Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             aspect: [4, 3],
-        });
+        })
         if (!result.cancelled) {
             this.setState({ image: result.uri });
         }
-    };
+    }
 
 
     // uploadImage = () => {
