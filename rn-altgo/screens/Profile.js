@@ -3,11 +3,20 @@ import { Text, View, SafeAreaView, TouchableHighlight } from 'react-native'
 import { Content, Thumbnail, Icon } from 'native-base'
 import SingleFriend from '../components/SingleFriend'
 import { LinearGradient,} from 'expo'
+import { connect } from 'react-redux'
 
-export default class Profile extends Component {
+//actions
+import { getUserData } from '../store/actions/UsersAction'
+
+class Profile extends Component {
   state = {
     data: [1, 2,3,4,5,6,7,8,9,10]
   }
+
+  componentDidMount = () => {
+    this.props.getUserData()
+  }
+
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -35,7 +44,7 @@ export default class Profile extends Component {
             </Text>
           </View>
             {
-              this.state.data.map((el, i) => <SingleFriend key={i} />)
+              this.props.userInfo.friends.map((el, i) => <SingleFriend key={i} data={el} />)
             }
         </View>
         </Content>
@@ -44,3 +53,14 @@ export default class Profile extends Component {
     )
   }
 }
+
+const mapDisatchToProps = (dispatch) => ({
+  getUserData: () => (dispatch(getUserData()))
+})
+
+const mapStateToProps = (state) => ({
+  userInfo: state.Users.userInfo
+})
+
+export default connect(mapStateToProps, mapDisatchToProps)(Profile)
+

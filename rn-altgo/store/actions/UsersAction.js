@@ -1,5 +1,8 @@
 import axios from 'axios'
-import {AsyncStorage} from 'react-native'
+import { AsyncStorage } from 'react-native';
+
+// const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
+// const baseURL = 'http://172.20.10.5:3000'
 
 const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
 
@@ -12,7 +15,6 @@ export  function register(userInfo) {
       formData.append('email', userInfo.email)
       formData.append('password', userInfo.password)
       const register = await axios.post(`${baseURL}/register`, formData)
-      console.log(JSON.stringify(register,null,2))
       await AsyncStorage.setItem('token', register.data.token)
       dispatch({
         type: 'REGISTRATION_SUCCESS', payload: {
@@ -24,8 +26,6 @@ export  function register(userInfo) {
       })
       alert('Welcome To Altgo')
     } catch (error) {
-      console.log(error)
-      // console.log(JSON.stringify(error,null,2))
       dispatch({ type: 'ERROR', payload: error.data.err })
     }
   }
@@ -61,6 +61,24 @@ export function getUserData(token) {
       }})
     } catch (error) {
       dispatch({type: 'ERROR', payload: {message: `sorry, we can't find your account`}})
+
+    }
+  }
+}
+
+export function searchFriend(email){
+  return async dispatch => {
+    try {
+      const token = await AsyncStorage.getItem('token')
+      const response = await axios.get(`${baseURL}/users/all?email=${email}`, {
+        headers: {token}
+      })
+      // console.log(JSON.stringify(response.data,null,2))
+      dispatch({type: 'SEARCH_FRIEND_SUCCESS', payload: response.data.users})
+    } catch(error){
+      console.log(JSON.stringify(error,null,2))
+      dispatch({type: 'ERROR', payload: {message: 'no user found'}})
+      alert('error')
     }
   }
 }
@@ -75,3 +93,23 @@ export function getAllUser(token) {
     }
   }
 }
+
+export function addFriend(friendId, friendName){
+  return async dispatch => {
+    try{
+      let token = await AsyncStorage.getItem('token')
+      let response = await axios.post(`${baseURL}/users/friend`, {friendId}, {
+        headers: {token}
+      })
+      console.log(JSON.stringify(response,null,2))
+      alert(`${friendName} has been added to your friend list`)
+      dispatch({type: 'ADD_FRIEND_SUCCESS'})
+    } catch (error){
+      console.log(JSON.stringify(error,null,2))
+      alert('error')
+    }
+  }
+}
+
+
+
