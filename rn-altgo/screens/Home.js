@@ -28,7 +28,6 @@ class Home extends Component {
         page: 1,
         inviteFriends: false,
         friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-        myList: [{},1,1,1,1,1],
         cat: 'food',
         showPanel: true,
         members: [{}, {},],
@@ -119,7 +118,8 @@ class Home extends Component {
         extrapolate: 'clamp'
       })
     const transform = [{scale: draggedValue}]
-    let { status, page, inviteFriends, friendsList, myList, cat, showPanel, members } = this.state
+    let { status, page, inviteFriends, friendsList, cat, showPanel, members } = this.state
+    let { myList } = this.props
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -209,8 +209,8 @@ class Home extends Component {
 
                             </View>
                             <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
-                            <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20 }}>
-                                <Text>
+                            <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                <Text style={{ color: 'white', fontSize: 21}}>
                                     Lets go!
                                 </Text>
                             </Button>
@@ -242,6 +242,7 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     isLoggedIn: state.Users.isLoggedIn,
     errors: state.Users.errors,
+    myList: state.Users.myList
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

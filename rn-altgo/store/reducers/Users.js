@@ -4,7 +4,8 @@ const defaultState = {
   errors : {},
   isLoggedIn: false,
   users: [],
-  searchFriendResult: []
+  searchFriendResult: [],
+  myList: [1]
 }
 
 export default function (state = defaultState, action){
@@ -29,6 +30,8 @@ export default function (state = defaultState, action){
       return { ...state, userInfo: payload, isLoggedIn: true}
     case 'FETCH_USERS':
       return { ...state, users: payload }
+    case 'ADD_MYLIST': 
+      return {...state, myList: payload}
     default:
       return state
   }
