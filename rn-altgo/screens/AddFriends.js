@@ -10,13 +10,14 @@ import { searchFriend } from '../store/actions/UsersAction'
 
 class AddFriends extends Component {
     state = {
-        data: [1, 2, 3, 4, 5, 6,2,3,4,54,5,6,7,8],
+        data: [],
         email: ''
     }
 
     search = () => {
         let{ email } = this.state
         this.props.searchFriend(email)
+        
     }
 
   render() {
@@ -45,10 +46,6 @@ class AddFriends extends Component {
                         <Icon name="search" onPress={this.search} style={{marginTop: 8, marginLeft: 5, color: 'grey' }}/>
                     </View>
                     <View style={{ flex: 12 }}>
-
-                        <View style={{ height: 30, backgroundColor: '#e8e8e8'}}>
-                            <Text style={{ textAlign: 'center', marginVertical: 5}}>People you might know</Text>
-                        </View>
 
                         <Content>
                             {

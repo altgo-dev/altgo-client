@@ -30,7 +30,7 @@ class Home extends Component {
         friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
         myList: [{},1,1,1,1,1],
         cat: 'food',
-        showPanel: false,
+        showPanel: true,
         members: [{}, {},],
     }
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 //actions
 import { addFriend } from '../store/actions/UsersAction'
+import Users from '../store/reducers/Users';
 
 class SingleFriend extends Component {
     onPress = () => {
@@ -18,16 +19,16 @@ class SingleFriend extends Component {
         return (
             <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'rgba(245, 245, 245, 0.5)' }}>
                 <Left style={{ width: 80, flex: 0 }}>
-                    <Thumbnail source={{ uri: 'https://st.depositphotos.com/2170303/2736/i/950/depositphotos_27361601-stock-photo-very-old-woman-showing-her.jpg' }} />
+                    <Thumbnail source={{ uri: data.profilePicture }} />
                 </Left>
                 <Body style={{ marginTop: 4 }}>
                     <Text style={{ fontSize: 18, fontWeight: '500' }}> {data ? data.name : null} </Text>
-                    <Text style={{ color: 'black', marginLeft: 4, fontWeight: '400' }}>
-                        {data ? JSON.stringify(data):null}
+                    <Text style={{ color: 'grey', marginLeft: 4, fontWeight: '400' }}>
+                        { data && data.friends && data.friends.length !== 0 && data.friends.length + ' friends on altgo'} 
                     </Text>
                 </Body>
                 {
-                    !this.props.icon && <Right style={{ width: 30, flex: 0 }}>
+                    !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) === -1 && <Right style={{ width: 30, flex: 0 }}>
                         <Icon onPress={this.onPress} style={{ fontSize: 28, color: 'black' }} name="add" />
                     </Right>
                 }
@@ -36,9 +37,11 @@ class SingleFriend extends Component {
         )
     }
 }
-
+const mapStatetoProps = (state) => ({
+    userid: state.Users.userInfo._id
+})
 const mapDispatchToProps = (dispatch) => ({
     addFriend: (friendId, friendName) => (dispatch(addFriend(friendId, friendName)))
 })
 
-export default connect(null, mapDispatchToProps)(SingleFriend)
+export default connect(mapStatetoProps, mapDispatchToProps)(SingleFriend)
