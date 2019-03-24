@@ -27,10 +27,10 @@ class Home extends Component {
         status: true,
         page: 1,
         inviteFriends: false,
-        friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+        friendsList: [],
         cat: 'food',
         showPanel: false,
-        members: [{}, {},],
+        members: [],
     }
 
     componentDidMount = async () => {
@@ -93,12 +93,20 @@ class Home extends Component {
         })
     }
 
-    toPageMap = () => {
-        this.setState({
-            page: 4,
-            showPanel: false,
-            inviteFriends: false
+    toPageMap = async () => {
+
+        const chat =  await db.collection('chat').add({
+            members: {},
+            messages: {},
+            route: {}
         })
+        console.log(chat.id)
+        
+        // this.setState({
+        //     page: 4,
+        //     showPanel: false,
+        //     inviteFriends: false
+        // })
     }
 
   render() {
@@ -238,7 +246,8 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
     isLoggedIn: state.Users.isLoggedIn,
     errors: state.Users.errors,
-    userInfo: state.Users.userInfo
+    userInfo: state.Users.userInfo,
+    myList: state.Users.myList
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
