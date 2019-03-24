@@ -17,3 +17,23 @@ export function getCoordinate(input) {
       })
   }
 }
+
+export function setOriginCity(destination){
+  return dispatch => {
+    dispatch({type: 'SET_ORIGIN_CITY_SUCCESS', payload: destination})
+    // alert(destination)
+  }
+}
+
+export function addDestination(destination){
+  return dispatch => {
+    dispatch({type: 'ADD_DESTINATION_SUCCESS', payload: destination})
+    // alert(JSON.stringify(destination))
+  }
+}
+
+export function removeDestination(destination){
+  return dispatch => {
+    dispatch({type: 'REMOVE_DESTINATION_SUCCESS', payload: destination})
+  }
+}

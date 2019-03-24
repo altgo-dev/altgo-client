@@ -19,7 +19,7 @@ class SingleFriend extends Component {
         return (
             <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'rgba(245, 245, 245, 0.5)' }}>
                 <Left style={{ width: 80, flex: 0 }}>
-                    <Thumbnail source={{ uri: data.profilePicture }} />
+                    { data && <Thumbnail source={{ uri: data.profilePicture }} />}
                 </Left>
                 <Body style={{ marginTop: 4 }}>
                     <Text style={{ fontSize: 18, fontWeight: '500' }}> {data ? data.name : null} </Text>

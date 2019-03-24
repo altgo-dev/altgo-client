@@ -130,4 +130,3 @@ const mapStatetoProps = (state) => ({
 })
 
 export default connect(mapStatetoProps)(Friend)
-

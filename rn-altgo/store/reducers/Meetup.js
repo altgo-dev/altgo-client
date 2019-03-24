@@ -1,5 +1,7 @@
 const defaultState = {
-  coordinate : {}
+  coordinate : {},
+  originCity: '',
+  destinationList: []
 }
 
 export default function (state = defaultState, action){
@@ -8,6 +10,13 @@ export default function (state = defaultState, action){
   switch (type) {
     case 'GET_COORDINATE_SUCCESS':
       return {...state, coordinate: payload}  
+    case 'SET_ORIGIN_CITY_SUCCESS':
+      return {...state, originCity: payload}
+    case 'ADD_DESTINATION_SUCCESS':
+      return {...state, destinationList: payload}
+    case 'REMOVE_DESTINATION_SUCCESS':
+      return {...state, destinationList: payload}
+      
     default:
       return state
   }
