@@ -6,13 +6,12 @@ import SingleFriend from './SingleFriend'
 
 export default class AddMem extends Component {
     state = {
-        friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+        friendsList: [],
     }
 
 
 
     createTrip = () => {
-        //logic create trip disini 
         this.props.toChat()
     }
 
