@@ -8,6 +8,19 @@ import { LinearGradient } from 'expo'
 import { login } from '../store/actions/UsersAction'
 import logo from '../assets/algo.png'
 class SignIn extends Component {
+
+    componentDidMount = async () => {
+        try {
+            const value = await AsyncStorage.getItem('token')
+            if (value) {
+                this.props.navigation.navigate('Home')
+            }
+        } catch (error) {
+            // Error retrieving data
+            await AsyncStorage.removeItem('token')
+        }
+    }
+
     state = {
         password: '',
         email: '',
@@ -79,11 +92,12 @@ class SignIn extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
     login: (userInfo) => (dispatch(login(userInfo)))
+
 })
 
 const mapStateToProps = (state) => ({
     isLoggedIn: state.Users.isLoggedIn,
-    errors: state.Users.errors
+    errors: state.Users.errors,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
