@@ -7,11 +7,11 @@ import ImageOverlay from "react-native-image-overlay";
 export default class Recom extends Component {
     state = {
         category: [
-          { title: 'restaurant', img: 'https://media.istockphoto.com/photos/caffee-on-table-and-blured-cafe-picture-id652628318?k=6&m=652628318&s=612x612&w=0&h=6K5ioW-NNIFD0WP9gwzPdJFc3bc178twHqzoOjV2k1w=', color: 'black'},
-          { title: 'museum', img: 'https://www.motionplaces.com/wp-content/uploads/2017/08/paris-night-timelapse-free-stock-1280x720.jpg', color: '#22467f'}, 
-          { title: 'c', img: 'https://www.merakiva.com/wp-content/uploads/2016/09/Beautiful-sunset-view-from-pexels.jpg', color: '#78217c'}, 
-          { title: 'd', img: 'https://i.pinimg.com/originals/a0/3d/4b/a03d4bf4d825267d6a20a28a5ed15469.jpg', color: '#217c57'}, 
-          { title: 'e', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU9jrcsgN6IYyOyovQ-WKXFIF7Jhk6taP8FzNiGgG9v-Zz5QF8', color: '#7c5921'}, 
+          { title: 'Restaurant', img: 'https://media.istockphoto.com/photos/caffee-on-table-and-blured-cafe-picture-id652628318?k=6&m=652628318&s=612x612&w=0&h=6K5ioW-NNIFD0WP9gwzPdJFc3bc178twHqzoOjV2k1w=', color: 'black'},
+          { title: 'Museum', img: 'https://www.motionplaces.com/wp-content/uploads/2017/08/paris-night-timelapse-free-stock-1280x720.jpg', color: '#22467f'}, 
+          { title: 'Hotel', img: 'https://www.merakiva.com/wp-content/uploads/2016/09/Beautiful-sunset-view-from-pexels.jpg', color: '#78217c'}, 
+          { title: 'Attraction', img: 'https://i.pinimg.com/originals/a0/3d/4b/a03d4bf4d825267d6a20a28a5ed15469.jpg', color: '#217c57'}, 
+          { title: 'LifeStyle', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU9jrcsgN6IYyOyovQ-WKXFIF7Jhk6taP8FzNiGgG9v-Zz5QF8', color: '#7c5921'}, 
           { title: 'others', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeg39e3IEuTQzt8QYTx56NhGMLju1WquZG-6-_5Pp-2PeKJB4n', color: '#822323'}]
     }
 

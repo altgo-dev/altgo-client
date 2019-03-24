@@ -29,7 +29,7 @@ class Home extends Component {
         inviteFriends: false,
         friendsList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
         cat: 'food',
-        showPanel: true,
+        showPanel: false,
         members: [{}, {},],
     }
 
@@ -196,9 +196,9 @@ class Home extends Component {
                             </Animated.View>
                             <View>
                                 {
-                                    myList.map((el, i) => {
+                                    myList[0] && myList.map((el, i) => {
                                         if (i <= 6) {
-                                            return <SinglePlace key={i} type="close"/> 
+                                            return <SinglePlace key={i} data={el} type="close"/> 
                                         } 
                                     })
                                 }
