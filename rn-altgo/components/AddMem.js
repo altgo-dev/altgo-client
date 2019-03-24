@@ -12,6 +12,7 @@ export default class AddMem extends Component {
 
 
     createTrip = () => {
+        //logic create trip disini 
         this.props.toChat()
     }
 
@@ -21,10 +22,10 @@ export default class AddMem extends Component {
         <ScrollView>
             {
                 this.props.members[0] && this.props.members.map((el, i) => {
-                    return  <CardItem key={i} style={{ margin: 5, borderRadius: 20, backgroundColor: 'rgba(245, 245, 245, 0.8)'}}>
+                    return  <CardItem key={i} style={{ margin: 5, borderRadius: 10, backgroundColor: 'rgba(245, 245, 245, 0.8)'}}>
                     <Left>
                         <Thumbnail source={{ uri: 'https://www.conversational.com/wp-content/uploads/2016/03/badstock4.jpg' }}/>
-                        <Text style={{ fontWeight: '500', fontSize: 20, }}> {el.name} </Text>
+                        <Text style={{ fontWeight: '500', fontSize: 20, }}> {el.name}</Text>
                     </Left>
                     <Icon onPress={() => this.props.removeMem(i)} name='close' />
                 </CardItem>

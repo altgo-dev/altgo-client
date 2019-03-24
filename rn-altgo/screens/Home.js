@@ -96,17 +96,33 @@ class Home extends Component {
     toPageMap = async () => {
 
         const chat =  await db.collection('chat').add({
-            members: {},
-            messages: {},
-            route: {}
+            createdAt: new Date(),
+            messages: [],
+            route: {},
+            status: true
         })
-        console.log(chat.id)
-        
-        // this.setState({
-        //     page: 4,
-        //     showPanel: false,
-        //     inviteFriends: false
-        // })
+        const createGroup = this.state.members.map( member => {
+             db.collection('users').add({
+                chatid: chat.id,
+                id: member._id,
+                status: true,
+                createdAt: new Date()
+            })
+        })
+        createGroup.push(
+            db.collection('users').add({
+                chatid: chat.id,
+                id: this.props.userInfo._id,
+                status: true,
+                createdAt: new Date()
+            })
+        )
+        await Promise.all(createGroup)
+        this.setState({
+            page: 4,
+            showPanel: false,
+            inviteFriends: false
+        })
     }
 
   render() {

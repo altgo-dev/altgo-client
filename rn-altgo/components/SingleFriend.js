@@ -32,7 +32,6 @@ class SingleFriend extends Component {
                         <Icon onPress={this.onPress} style={{ fontSize: 28, color: 'black' }} name="add" />
                     </Right>
                 }
-
             </CardItem>
         )
     }
