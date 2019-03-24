@@ -14,7 +14,7 @@ const SwitchNav = createSwitchNavigator({
     Regis: Regis,
     AddFriend
 }, {
-    initialRouteName: 'Auth'
+    initialRouteName: 'App'
 })
 
 export default createAppContainer(SwitchNav)
