@@ -7,15 +7,16 @@ export default class SinglePlace extends Component {
         alert('masuk')
     }
   render() {
+      const{data}=this.props
     return (
         <CardItem style={{ margin: 0, padding: 0, backgroundColor: '#231942'}}>
             <Left style={{ width: 80, flex: 0 }}>
                 <Thumbnail source={{uri: 'https://st.depositphotos.com/2170303/2736/i/950/depositphotos_27361601-stock-photo-very-old-woman-showing-her.jpg'}}/>
             </Left>
             <Body style={{ marginTop: 4}}>
-                <Text style={{ fontSize: 18, fontWeight: '400', color: 'white'}}> NAme </Text>
+                <Text style={{ fontSize: 18, fontWeight: '400', color: 'white'}}> {data.name} </Text>
                 <Text style={{ color: 'lightgrey', marginLeft: 4}}>
-                    smaller desck abidh jndfui
+                    {data.vicinity}
                 </Text>
             </Body>
             <Right style={{ width: 30, flex: 0 }}>
