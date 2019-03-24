@@ -24,8 +24,8 @@ class Profile extends Component {
 
         <Content>
         <View style={{ flex: 3, height: 250, justifyContent: 'center', alignItems: 'center' }}>
-          <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={{uri: 'https://st.depositphotos.com/2170303/2736/i/950/depositphotos_27361601-stock-photo-very-old-woman-showing-her.jpg'}}/>
-          <Text style={{ fontWeight: '500', fontSize: 25, color: 'white' }}> Grandma </Text>
+          <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={{uri: this.props.userInfo.profilePicture}}/>
+          <Text style={{ fontWeight: '500', fontSize: 25, color: 'white' }}> {this.props.userInfo.name } </Text>
         </View>
 
         <View style={{ flex: 2,  height: 100, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
@@ -43,8 +43,16 @@ class Profile extends Component {
               My Friends
             </Text>
           </View>
+            {/* <Text style={{ color: 'white'}}>
+              { JSON.stringify(this.props.userInfo.friends)}
+            </Text> */}
             {
-              this.props.userInfo.friends.map((el, i) => <SingleFriend key={i} data={el} />)
+              this.props.userInfo && this.props.userInfo.friends.map((el, i) => {
+              if(el.UserId2._id !== this.props.userInfo._id) {
+                return <SingleFriend icon="no" key={i} data={el.UserId2} /> 
+              } else {
+                return <SingleFriend icon="no" key={i} data={el.UserId1} />  
+              } })
             }
         </View>
         </Content>

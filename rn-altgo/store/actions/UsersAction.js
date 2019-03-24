@@ -24,7 +24,7 @@ export  function register(userInfo) {
           _id: register.data.user._id
         }
       })
-      alert('Welcome To Altgo')
+      // alert('Welcome To Altgo')
     } catch (error) {
       dispatch({ type: 'ERROR', payload: error.data.err })
     }
@@ -59,6 +59,7 @@ export function getUserData(token) {
         profilePicture: user.data.userFound.profilePicture,
         _id: user.data.userFound._id
       }})
+      console.log(user.data)
     } catch (error) {
       dispatch({type: 'ERROR', payload: {message: `sorry, we can't find your account`}})
 
@@ -105,8 +106,9 @@ export function addFriend(friendId, friendName){
       alert(`${friendName} has been added to your friend list`)
       dispatch({type: 'ADD_FRIEND_SUCCESS'})
     } catch (error){
-      console.log(JSON.stringify(error,null,2))
-      alert('error')
+      console.log(JSON.stringify(error.response,null,2))
+
+      alert(error.response.data.error)
     }
   }
 }
