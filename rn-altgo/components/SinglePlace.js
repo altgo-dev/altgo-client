@@ -11,19 +11,6 @@ class SinglePlace extends Component {
         icon: this.props.type || 'ios-add'
     }
 
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (prevState.destinationList !== this.props.destinationList) {
-    //         this.setState({ destinationList: this.props.destinationList })
-    //         if (this.props.destinationList.includes(this.props.data)) {
-    //             this.setState({icon: 'ios-checkmark'})
-    //             alert('true')
-    //         }
-    //         alert('true')
-    //     }
-
-
-    // }
-
     addToMyList = () => {
         // alert('masuk')
         var { destinationList, data } = this.props

@@ -11,6 +11,9 @@ import { db } from '../api/firestore'
 import { getUserData } from '../store/actions/UsersAction'
 
 
+//ASSETS
+import noUser from '../assets/nouser.png'
+
 class Profile extends Component {
   state = {
     data: [],
@@ -46,7 +49,9 @@ class Profile extends Component {
               Logout
             </Text>
           </Button>
-          <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={{uri: this.props.userInfo.profilePicture}}/>
+          {
+            this.props.userInfo.profilePicture ? <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={{uri: this.props.userInfo.profilePicture}}/> : <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={ noUser }/>
+          }
           <Text style={{ fontWeight: '500', fontSize: 25, color: 'white' }}> {this.props.userInfo.name } </Text>
         </View>
 
