@@ -42,7 +42,6 @@ class Example extends Component {
         let addresses = []
         addresses.push(await this._getLocationAsync())
         addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
-        console.log(addresses)
         let response = await axios({
             url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
             method: 'POST',
@@ -67,67 +66,34 @@ class Example extends Component {
     displayTransitRoute = () => {
         return (
             <>
-                {this.state.coordinates.map((e, i) => {
+                {this.state.coordinates.map((e, i) => (
                     (i < this.state.coordinates.length - 1) && (
                         <MapViewDirections
+                            key={i}
                             origin={this.state.coordinates[i]}
                             destination={this.state.coordinates[i + 1]}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
                             mode="transit"
-                            strokeColor="red"
+                            strokeColor="black"
                             optimizeWaypoints={false}
                             onStart={(params) => {
-                                console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                                console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                             }}
                             onReady={result => {
                                 this.setState({
-                                    transitDistance: transitDistance + result.distance,
-                                    transitDuration: transitDuration + result.duration,
+                                    transitDistance: this.state.transitDistance + result.distance,
+                                    transitDuration: this.state.transitDuration + result.duration,
                                 })
                             }}
                             onError={(errorMessage) => {
-                                console.log('GOT AN ERROR');
+                                console.log('GOT AN ERROR while drawing the transit route');
                             }}
                         />
                     )
-                })}
+                ))}
                 {console.log("transit distance : " + this.state.transitDistance)}
                 {console.log("transit duration : " + this.state.transitDuration)}
-            </>
-        )
-    }
-
-    displayWalkingRoute = () => {
-        return (
-            <>
-                {this.state.coordinates.map((e, i) => {
-                    (i < this.state.coordinates.length - 1) && (
-                        <MapViewDirections
-                            origin={this.state.coordinates[i]}
-                            destination={this.state.coordinates[i + 1]}
-                            apikey={GOOGLE_MAPS_APIKEY}
-                            strokeWidth={3}
-                            mode="walking"
-                            strokeColor="blue"
-                            optimizeWaypoints={false}
-                            onStart={(params) => {
-                                console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-                            }}
-                            onReady={result => {
-                                this.setState({
-                                    walkingDistance: walkingDistance + result.distance,
-                                    walkingDuration: walkingDuration + result.duration,
-                                })
-                            }}
-                            onError={(errorMessage) => {
-                                console.log('GOT AN ERROR');
-                            }}
-                        />
-                    )
-                })}
-                {/* {console.log("walking distance : " + this.state.walkingDistance)}
-                {console.log("walking duration : " + this.state.walkingDuration)} */}
             </>
         )
     }
@@ -249,11 +215,10 @@ class Example extends Component {
                                             });
                                         }}
                                         onError={(errorMessage) => {
-                                            // console.log('GOT AN ERROR');
+                                            console.log('GOT AN ERROR while drawing the main route');
                                         }}
                                     />
                                     {this.displayTransitRoute()}
-                                    {this.displayWalkingRoute()}
                                 </>
                             )}
                         </MapView>
