@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { View, SafeAreaView, TouchableHighlight, Text, TextInput, Image, AsyncStorage} from 'react-native'
-import { Container, Header, Content, Form, Item, Input, Button } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Button, Toast, Root } from 'native-base';
 
-import s from '../style'
 import { connect } from 'react-redux'
 import { LinearGradient } from 'expo'
+
 //actions
-import { login } from '../store/actions/UsersAction'
+import { login, setError } from '../store/actions/UsersAction'
 import logo from '../assets/algo.png'
 
 class SignIn extends Component {
@@ -25,11 +25,21 @@ class SignIn extends Component {
         password: '',
         email: '',
         isLoggedIn: this.props.isLoggedIn || false,
-        errors: this.props.errors || {}
+        errors: this.props.errors || {},
+        showToast: false
+
     }
 
-
     componentDidUpdate(prevProps, prevState) {
+        if (this.props.errors.message) {
+            Toast.show({
+                text: this.props.errors.message,
+                duration: 3500,
+                textStyle: { textAlign: 'center' }
+              })
+
+        }
+
         if (prevState.isLoggedIn !== this.props.isLoggedIn) {
             this.setState({ isLoggedIn: this.props.isLoggedIn })
             if (this.props.isLoggedIn) {
@@ -42,11 +52,16 @@ class SignIn extends Component {
     }
 
     login = () => {
-        var userInfo = {
-            email: this.state.email,
-            password: this.state.password
+        if( !this.state.email || !this.state.password) {
+            this.props.setError({ message: 'All fields must be filled!' })
+        } else {
+            var userInfo = {
+                email: this.state.email,
+                password: this.state.password
+            }
+            this.props.login(userInfo)
+
         }
-        this.props.login(userInfo)
     }
 
     register = () => {
@@ -55,49 +70,46 @@ class SignIn extends Component {
 
     render() {
         return (
-            <SafeAreaView style={{ flex: 1 , justifyContent: 'center', }}>
-                <LinearGradient colors={['orange', '#ff0a6c', 'red']} style={{ flex: 1}}>
+            <Root>
+            <SafeAreaView style={{ flex: 1 , justifyContent: 'center',backgroundColor: 'rgb(255, 190, 30)' }}>
+                <View style={{ backgroundColor: 'white', height: 370, marginHorizontal: 10, padding: 10, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7,}}>
+                    <View style={{ height: 200, justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginHorizontal: 15, }}>
+                        <Image style={{ height: 78, width: 350}} source={logo} />
+                        <Item style={{borderBottomWidth: 0, backgroundColor: 'rgba(246, 247, 249, 1)', borderRadius: 5 }} >
+                            <Input style={{ color: 'black' }} onChangeText={(email) => this.setState({ email })} placeholderTextColor="rgba(0,0,0, 0.7)" placeholder="Email"  />
+                        </Item>
+                        <Item last style={{ marginTop: 10, borderBottomWidth: 0, backgroundColor: 'rgba(246, 247, 249, 1)', borderRadius: 5 }} >
+                            <Input style={{ color: 'black' }} onChangeText={(password) => this.setState({ password })} placeholderTextColor="rgba(0,0,0, 0.7)" placeholder="Password" secureTextEntry />
+                        </Item>
+                    </View>
 
-                <View style={{ backgroundColor: 'rgba(96, 37, 18, 0.6)', height: 370, marginHorizontal: 10, borderRadius: 20, padding: 10, marginTop: 180}}>
-
-                <View style={{ height: 200, justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginHorizontal: 15, marginVertical: 20 }}>
-                    <Image style={{ height: 78, width: 350}} source={logo} />
-                    {/* ERROR MESSAGE */}
-                    <Text style={{ fontSize: 15, textAlign: 'center', color: 'red' }}>{this.props.errors ? this.props.errors.message : null}</Text>
-                    <Item style={{borderBottomWidth: 0, backgroundColor: 'rgba(245, 245, 245, 0.4)', borderRadius: 10 }} >
-                        <Input style={{ color: 'white' }} onChangeText={(email) => this.setState({ email })} placeholderTextColor="white" placeholder="Email"  />
-                    </Item>
-                    <Item last style={{ marginTop: 10, borderBottomWidth: 0, backgroundColor: 'rgba(245, 245, 245, 0.4)', borderRadius: 10}} >
-                        <Input style={{ color: 'white' }} onChangeText={(password) => this.setState({ password })} placeholderTextColor="white" placeholder="Password" secureTextEntry />
-                    </Item>
-                </View>
-
-                <View style={{ height: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                    <Text style={{ textAlign: 'center', fontSize: 14, color: 'lightgrey' }}>
-                        Don't have an account yet?
-                </Text>
-                    <TouchableHighlight onPress={() => this.register()}>
-                        <Text style={{ textAlign: 'center', fontSize: 14, color: 'blue', fontWeight: '400' }}>
-                            Register Here
+                    <View style={{ height: 30, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                        <Text style={{ textAlign: 'center', fontSize: 14, color: 'grey' }}>
+                            Don't have an account yet?
                     </Text>
-                    </TouchableHighlight>
-                </View>
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', flexDirection: 'row' }}>
-                    <Button onPress={this.login} style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginHorizontal: 15, backgroundColor: 'rgb(255, 190, 10)', borderRadius: 30 }}>
-                        <Text style={{ color: 'white', fontSize: 24, fontWeight: '500'}}>Login</Text>
-                    </Button>
-                </View>
+                        <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.register()}>
+                            <Text style={{ textAlign: 'center', fontSize: 14, color: 'midnightblue', fontWeight: '400' }}>
+                                Register Here
+                        </Text>
+                        </TouchableHighlight>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', flexDirection: 'row' }}>
+                        <Button onPress={this.login} style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginHorizontal: 15, backgroundColor: 'black', borderRadius: 1 }}>
+                            <Text style={{ color: 'white', fontSize: 24, fontWeight: '500'}}>Login</Text>
+                        </Button>
+                    </View>
 
                 </View>
-                </LinearGradient>
-
             </SafeAreaView>
+            </Root>
+
         )
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    login: (userInfo) => (dispatch(login(userInfo)))
+    login: (userInfo) => (dispatch(login(userInfo))),
+    setError: (err) => (dispatch(setError(err)))
 })
 
 const mapStateToProps = (state) => ({

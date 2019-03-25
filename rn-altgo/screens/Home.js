@@ -28,7 +28,7 @@ class Home extends Component {
     state = {
         status: true,
         page: 1,
-        inviteFriends: false,
+        inviteFriends: true,
         friendsList: [],
         cat: 'food',
         showPanel: true,
@@ -52,22 +52,29 @@ class Home extends Component {
         }
     }
 
-    addMember = (input) => {
+    addMember = (input, i) => {
+        let temp = [...this.state.friendsList]
+        temp.splice(i, 1)
         this.setState({
-            members: this.state.members.concat(input)
+            members: this.state.members.concat(input),
+            friendsList: temp
         })
     }
 
-    removeMem = (i) => {
+    removeMem = (el, i) => {
         let temp = [...this.state.members]
         temp.splice(i, 1)
+        // alert('amfamom')
         if (i === 0 && temp.length === 0) {
             this.setState({
                 members: []
             })
         } else {
+            let heh = [...this.state.friendsList]
+            alert(JSON.stringify(el))
             this.setState({
-                members: temp
+                members: temp,
+                friendsList: this.state.friendsList.concat(el)
             })
         }
     }
@@ -77,6 +84,7 @@ class Home extends Component {
             page: 1
         })
     }
+
     toPageFriends = () => {
         this.setState({
             inviteFriends: !this.state.inviteFriends
@@ -169,12 +177,12 @@ class Home extends Component {
         let { destinationList, myList } = this.props
 
         return (
-            <SafeAreaView style={{ flex: 1 }}>
-                {/* <LinearGradient colors={['black', '#1f1135', '#391f60', '#4c2982','#603f91', '#7b57af', '#B9ABCF']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}> */}
-                <LinearGradient colors={['#621708', '#941B0C', '#BC3908', '#FF3C38', '#F6511D', '#F95738', '#FF8C42']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(255, 190, 30)' }}>
                     <Content>
                         {
-                            page === 1 && <SearchHead toPageFriends={this.toPageFriends} />
+                            page === 1 && 
+                                !inviteFriends ? <View style={{ flex: 1, marginTop: 200, backgroundColor: 'white', marginHorizontal: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}><SearchHead inviteFriends={true} toPageFriends={this.toPageFriends} /></View> : <View style={{ flex: 1, marginHorizontal: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}><SearchHead toPageFriends={this.toPageFriends} /></View> 
+                            
                         }
 
                         {
@@ -184,21 +192,21 @@ class Home extends Component {
                         }
                         {
                             ((!inviteFriends && page === 1) || (members.length === 0 && page === 1)) ? <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 60, justifyContent: 'center', alignSelf: 'center' }}>
+                                <Button onPress={this.toPageRecom} style={{ backgroundColor: 'black', marginRight: 20, width: 60, justifyContent: 'center', alignSelf: 'center' }}>
                                     <Text style={{ color: 'white', fontSize: 22 }}>
                                         Go
                         </Text>
                                 </Button>
                             </View> : (inviteFriends && page === 1) ? <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                                 <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                    <Button onPress={this.createGroup} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                    <Button onPress={this.createGroup} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22, textAlign: 'center' }}>
                                             Hangout
                             </Text>
                                     </Button>
                                 </View>
                                 <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                    <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 70, justifyContent: 'center' }}>
+                                    <Button onPress={this.toPageRecom} style={{ backgroundColor: 'black', marginRight: 20, width: 70, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22 }}>
                                             Travel
                             </Text>
@@ -208,21 +216,21 @@ class Home extends Component {
                         }
 
                         {
-                            inviteFriends && <View>
-                                <View style={{ backgroundColor: 'rgba(245, 245, 245, 0.6)' }}>
-                                    <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 5 }}>
+                            inviteFriends && <View style={{ backgroundColor: 'rgb(250, 250, 250)', shadowColor: 'grey', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 10, marginHorizontal: 5 }}>
+                                <View style={{ borderBottomColor: 'rgb(242, 180, 30)', borderBottomWidth: 4}}>
+                                    <Text style={{ textAlign: 'center', fontSize: 22, fontWeight: '500', marginBottom: 5, color: 'black' }}>
                                         My friends
                                     </Text>
                                 </View>
-                                <ScrollView style={{ height: 500 }}>
+                                <ScrollView style={{ minHeight: 300 }}>
                                     {
                                         this.state.friendsList.map((el, i) => {
                                             if (el.UserId2._id === this.props.userInfo._id) {
-                                                return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId1)}>
+                                                return <TouchableHighlight underlayColor="#ffffff00" key={i} onPress={() => this.addMember(el.UserId1, i)}>
                                                     <SingleFriend icon="no" data={el.UserId1} />
                                                 </TouchableHighlight>
                                             } else {
-                                                return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId2)}>
+                                                return <TouchableHighlight underlayColor="#ffffff00" key={i} onPress={() => this.addMember(el.UserId2, i)}>
                                                     <SingleFriend icon="no" data={el.UserId2} />
                                                 </TouchableHighlight>
                                             }
@@ -282,7 +290,6 @@ class Home extends Component {
                         }
 
                     </Content>
-                </LinearGradient>
             </SafeAreaView>
         )
     }

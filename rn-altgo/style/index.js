@@ -10,7 +10,6 @@ const s = StyleSheet.create({
   },
   resList: {
       flex: 1,
-      // backgroundColor: '#CDC1FF',
       height:  500,
       width: win.width
   },
@@ -37,14 +36,12 @@ const s = StyleSheet.create({
     zIndex: 1
   },
   searchHead: {
-      // backgroundColor: '#CDC1FF',
-      marginTop: 50
+      marginTop: 20
   },
   ml5: {
       marginTop: 8,
       marginBottom: 8,
       marginLeft: 8,
-      // backgroundColor: '#CDC1FF',
       height: 40
   },
   textLight: {
@@ -52,9 +49,7 @@ const s = StyleSheet.create({
   },
   searhBox: {
       width: win.width - win.width/3,
-      borderColor: 'white',
       marginLeft: 40,
-      borderBottomWidth: 3
   },
   inputEmailSearch: {
     width: win.width - 60,

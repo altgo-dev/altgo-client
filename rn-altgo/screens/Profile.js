@@ -80,6 +80,7 @@ class Profile extends Component {
               My Friends
             </Text>
           </View>
+
             {
               this.props.userInfo && this.props.userInfo.friends.map((el, i) => {
               if(el.UserId2._id === this.props.userInfo._id) {

@@ -20,7 +20,7 @@ class SingleFriend extends Component {
     render() {
         const { data } = this.props
         return (
-            <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'rgba(245, 245, 245, 0.5)' }}>
+            <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'rgba(245, 245, 245, 0)', borderBottomColor: 'rgb(242, 180, 30)', borderBottomWidth: 2 }}>
                 <Left style={{ width: 80, flex: 0 }}>
                 {
                     data && data.profilePicture ? <Thumbnail source={{ uri: data.profilePicture }} /> : <Thumbnail source={ noUser } />

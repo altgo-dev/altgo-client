@@ -54,6 +54,13 @@ export function logout() {
   }
 }
 
+export function setError (error) {
+  return {
+    type: 'ERROR',
+    payload: error
+  }
+}
+
 export function getUserData(token) {
   return async dispatch  => {
     try {
