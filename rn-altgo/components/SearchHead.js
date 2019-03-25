@@ -5,17 +5,28 @@ import s from '../style'
 import { connect } from 'react-redux'
 
 //actions
-import { setOriginCity } from '../store/actions/MeetupAction'
+import { setOriginCity, autoComplete } from '../store/actions/MeetupAction'
 
 class SearchHead extends Component {
   state = {
     field: 1,
-    destination: ''
+    destination: '',
+    autocompleteResult: []
   }
 
-  onSearch = (destination) => {
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.autocompleteResult !== this.props.autocompleteResult){
+      this.setState({autocompleteResult: this.props.autocompleteResult})
+    }
+  }
+
+  onSearch = async (destination) => {
     // var { destination } = this.state
     this.props.setOriginCity(destination)
+    // var input = destination
+    // await this.props.autoComplete(input)
+    // this.setState({autocompleteResult:this.props.autocompleteResult})
+    // alert(destination)
   }
 
   render() {
@@ -34,13 +45,20 @@ class SearchHead extends Component {
             Invite friends
           </Text>
         </TouchableHighlight>
+        {this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) =><Text key={index} style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>{each.description}</Text>)}
+        
       </View>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  setOriginCity: (destination) => (dispatch(setOriginCity(destination)))
+  setOriginCity: (destination) => (dispatch(setOriginCity(destination))),
+  autoComplete: (input) => (dispatch(autoComplete(input)))
 })
 
-export default connect(null, mapDispatchToProps)(SearchHead)
+const mapStateToProps = (state) => ({
+  autocompleteResult: state.Meetup.autocompleteResult
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchHead)

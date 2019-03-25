@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
 const GmapKey = 'key=AIzaSyBN6anoHdSlaMME70z1wRzRTntP9CiKRYw'
 const GmapGeocodeAPI = 'https://maps.googleapis.com/maps/api/geocode/json'
 
@@ -35,5 +36,20 @@ export function addDestination(destination){
 export function removeDestination(destination){
   return dispatch => {
     dispatch({type: 'REMOVE_DESTINATION_SUCCESS', payload: destination})
+  }
+}
+
+export function autoComplete(input){
+  return async dispatch => {
+    try{
+      let results = await axios.post(`${baseURL}/autocomplete`, {input})
+      var payload= input ? results.data.predictions : []
+      payload.slice(0,5)
+      dispatch({type: 'AUTOCOMPLETE_SUCCESS', payload })
+    } catch(error) {
+      // alert('error')
+      dispatch({type: 'ERROR', payload: {}})
+    }
+    
   }
 }
