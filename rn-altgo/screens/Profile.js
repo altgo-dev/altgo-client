@@ -84,9 +84,9 @@ class Profile extends Component {
             {
               this.props.userInfo && this.props.userInfo.friends.map((el, i) => {
               if(el.UserId2._id === this.props.userInfo._id) {
-                return   <SingleFriend icon="no" data={el.UserId1} key={el.UserId1._id} />
+                return   <SingleFriend icon="no" data={el.UserId1} key={i} />
               } else {
-                return  <SingleFriend icon="no" data={el.UserId2} key={el.UserId2._id} />
+                return  <SingleFriend icon="no" data={el.UserId2} key={i} />
               } })
             }
         </View>
