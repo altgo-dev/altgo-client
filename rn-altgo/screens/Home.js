@@ -28,14 +28,15 @@ class Home extends Component {
     state = {
         status: true,
         page: 1,
-        inviteFriends: true,
+        inviteFriends: false,
         friendsList: [],
         cat: 'food',
         showPanel: true,
         members: [],
         destinationList: [],
         permission: '',
-        chatid: ''
+        chatid: '',
+        friendsListDef: []
     }
 
     componentDidMount = async () => {
@@ -45,7 +46,8 @@ class Home extends Component {
             await this.props.getAllUser(token)
             // await AsyncStorage.removeItem('token')
             this.setState({
-                friendsList: this.props.userInfo.friends
+                friendsList: this.props.userInfo.friends,
+                // friendsListDef: this.props.userInfo.friends
             })
         } catch (error) {
             console.log(error)
@@ -64,16 +66,20 @@ class Home extends Component {
     removeMem = (el, i) => {
         let temp = [...this.state.members]
         temp.splice(i, 1)
-        // alert('amfamom')
+        // alert(JSON.stringify(a))
         if (i === 0 && temp.length === 0) {
             this.setState({
                 members: []
             })
         } else {
             let heh = [...this.state.friendsList]
+<<<<<<< HEAD
+=======
+            // alert(JSON.stringify(el))
+>>>>>>> tidur dlu
             this.setState({
                 members: temp,
-                friendsList: this.state.friendsList.concat(el)
+                // friendsList: this.state.friendsList.concat(a[0])
             })
         }
     }
@@ -183,12 +189,14 @@ class Home extends Component {
         let { destinationList, myList } = this.props
 
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(255, 190, 30)' }}>
-                    <Content>
+            <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+                    <Content style={{ backgroundColor: 'rgb(255, 190, 30)'}}>
                         {
-                            page === 1 && 
-                                !inviteFriends ? <View style={{ flex: 1, marginTop: 200, backgroundColor: 'white', marginHorizontal: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}><SearchHead inviteFriends={true} toPageFriends={this.toPageFriends} /></View> : <View style={{ flex: 1, marginHorizontal: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}><SearchHead toPageFriends={this.toPageFriends} /></View> 
+                            page === 1 && !inviteFriends && <View style={{ flex: 1, marginTop: 200, backgroundColor: 'white', marginHorizontal: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}><SearchHead inviteFriends={true} toPageFriends={this.toPageFriends} /></View> 
                             
+                        }
+                        {
+                            page === 1 && inviteFriends &&  <View style={{ flex: 1, marginHorizontal: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}><SearchHead toPageFriends={this.toPageFriends} /></View> 
                         }
 
                         {
@@ -228,7 +236,7 @@ class Home extends Component {
                                         My friends
                                     </Text>
                                 </View>
-                                <ScrollView style={{ minHeight: 300 }}>
+                                <ScrollView style={{ minHeight: 50 }}>
                                     {
                                         this.state.friendsList.map((el, i) => {
                                             if (el.UserId2._id === this.props.userInfo._id) {
@@ -249,7 +257,7 @@ class Home extends Component {
                             page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} />
                         }
                         {
-                            page === 3 && <DetailCat toPageRecom={this.toPageRecom} cat={cat} />
+                            page === 3 && <View style={{ backgroundColor: 'white'}}><DetailCat toPageRecom={this.toPageRecom} cat={cat} /></View>
                         }
                         {
                             (destinationList[0] && showPanel) && <SlidingUpPanel
@@ -268,17 +276,12 @@ class Home extends Component {
                                                 }
                                             })
                                         }
-
-                                        <Text style={{ color: 'blue', marginLeft: 25 }}>
-                                            View More
-                            </Text>
-
                                     </View>
                                     <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
-                                        <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                        <Button onPress={this.toPageMap} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
                                             <Text style={{ color: 'white', fontSize: 21 }}>
                                                 Lets go!
-                            </Text>
+                                            </Text>
                                         </Button>
                                     </View>
                                 </View>

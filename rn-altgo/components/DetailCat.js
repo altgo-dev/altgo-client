@@ -7,12 +7,10 @@ import { connect } from 'react-redux'
 
 class DetailCat extends Component {
   state = {
-    list: [1, 1, 1, 1, 1, 1, 1],
     recomendationsResponse: { results: [] }
   }
 
   getList = async () => {
-    // alert(this.props.cat)
     try {
       let result = {}
       let arrResult = []
@@ -113,16 +111,16 @@ class DetailCat extends Component {
   }
 
   render() {
-    let { list, recomendationsResponse } = this.state
+    let { recomendationsResponse } = this.state
     return (
-      <View>
-        <Header style={{ height: 60 }}>
+      <>
+        <Header style={{ height: 30, paddingTop: 0 }}>
           <Left>
             <TouchableHighlight onPress={this.props.toPageRecom}>
               <Icon name="arrow-back" />
             </TouchableHighlight>
           </Left>
-          <Text style={{ fontSize: 24, fontWeight: '500' }}>
+          <Text style={{ fontSize: 24, fontWeight: '500', marginTop: 9 }}>
             {this.props.cat}
           </Text>
           <Right></Right>
@@ -130,7 +128,7 @@ class DetailCat extends Component {
         {
           recomendationsResponse.results.map((el, i) => <SinglePlace type="ios-add" key={i} data={el} />)
         }
-      </View>
+      </>
     )
   }
 }

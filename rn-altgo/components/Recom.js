@@ -37,7 +37,7 @@ class Recom extends Component {
   render() {
     return (
       <>
-        <Header style={{ height: 30, paddingTop: 0 }}>
+        <Header style={{ height: 30, paddingTop: 0, backgroundColor: 'white' }}>
           <Left>
             <TouchableHighlight onPress={this.props.toPage1}>
               <Icon name="arrow-back" />
@@ -48,22 +48,24 @@ class Recom extends Component {
           </Text>
           <Right></Right>
         </Header>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Item style={{ ...s.ml5, ...s.searhBox }}>
-            <Input style={{ ...s.textLight, color: 'white' }} onChangeText={(destination) => { this.onSearch(destination) }} placeholderTextColor="#dddddd" placeholder="Destination" />
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+          <Item style={{ width: 250, justifyContent: 'center', marginLeft: 20 }}>
+            <Input style={{ color: 'black', borderBottomColor: 'black', borderBottomWidth: 2, height: 35 }} onChangeText={(destination) => { this.onSearch(destination) }} placeholderTextColor="rgb(30, 30, 30)" placeholder="Destination" />
           </Item>
           <TouchableHighlight>
-            <Icon style={{ ...s.textLight, fontSize: 37, marginHorizontal: 25, marginTop: 8 }} name="search" />
+            <Icon style={{ fontSize: 37, marginHorizontal: 25, marginTop: 8, color: 'black' }} name="search" />
           </TouchableHighlight>
         </View>
-        {this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => (<View key={index}>
-          <TouchableHighlight onPress={() => this.onClickSearch(each)}>
-            <Text style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>
-              {each.description}
-            </Text>
-          </TouchableHighlight>
-        </View>
-        ))}
+        {
+          this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => (<View key={index}>
+            <TouchableHighlight onPress={(each) => this.onClickSearch(each)}>
+              <Text style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>
+                {each.description}
+              </Text>
+            </TouchableHighlight>
+          </View>
+          ))
+        }
         <FlatList
           numColumns={2}
           keyExtractor={(item) => item.title}

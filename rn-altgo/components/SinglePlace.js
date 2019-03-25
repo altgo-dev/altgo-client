@@ -24,25 +24,28 @@ class SinglePlace extends Component {
             var filtered = destinationList.filter(destination => destination!== data)
             this.props.removeDestination(filtered)
         }
-        // alert(JSON.stringify(destinationList))
+        // alert(JSON.stringify(destinationList[0]))
+    }
+    componentDidMount () {
+        // console.log(this.props.data.photos[0].html_attributions[0])
     }
 
     render() {
         const { data } = this.props
         return (
-            <CardItem style={{ margin: 0, padding: 0, backgroundColor: '#231942' }}>
-                <Left style={{ width: 80, flex: 0 }}>
-                    <Thumbnail source={{ uri: 'https://st.depositphotos.com/2170303/2736/i/950/depositphotos_27361601-stock-photo-very-old-woman-showing-her.jpg' }} />
-                </Left>
+            <CardItem style={{ marginTop: 5, marginHorizontal: 5, padding: 0, backgroundColor: 'rgba(255, 190, 30, 1)' }}>
+                {/* <Left style={{ width: 80, flex: 0 }}>
+                    <Thumbnail source={{ uri: data.icon }} />
+                </Left> */}
                 <Body style={{ marginTop: 4 }}>
-                    <Text style={{ fontSize: 18, fontWeight: '400', color: 'white' }}> {data.name} </Text>
-                    <Text style={{ color: 'lightgrey', marginLeft: 4 }}>
+                    <Text style={{ fontSize: 18, fontWeight: '400', color: 'black' }}> {data.name} </Text>
+                    <Text style={{ color: 'rgb(50, 50, 50)', marginLeft: 4 }}>
                         {data.vicinity}
                     </Text>
                 </Body>
                 <Right style={{ width: 30, flex: 0 }}>
                     <TouchableHighlight onPress={() => this.addToMyList()}>
-                        <Icon style={{ fontSize: 28 }} name={this.state.icon} />
+                        <Icon style={{ fontSize: 28, color: 'black' }} name={this.state.icon} />
                     </TouchableHighlight>
                 </Right>
             </CardItem>
