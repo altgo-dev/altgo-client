@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, Animated, StyleSheet, View, ScrollView, Text } from 'react-native';
 // import MapView from 'react-native-maps';
 import s from '../style'
+import { Spinner } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -128,91 +129,97 @@ class Example extends Component {
             location: location,
         })
         return currentLatLng
-        //    this.setState({
-        //        coordinates: this.state.coordinates.unshift({
-        //             latitude: location.coords.latitude,
-        //             longitude: location.coords.longitude,
-        //        })
-        //    })
-        //    this.setState({ locationResult: JSON.stringify(location), location, });
-
     };
 
     render() {
         return (
-            <View>
-                <ScrollView>
-                    <View style={{ height: 500 }}>
-                        <MapView
-                            initialRegion={{
-                                latitude: this.state.mapRegion.latitude,
-                                longitude: this.state.mapRegion.longitude,
-                                latitudeDelta: LATITUDE_DELTA,
-                                longitudeDelta: LONGITUDE_DELTA,
-                            }}
-                            style={StyleSheet.absoluteFill}
-                            ref={c => this.mapView = c}
-                            onPress={this.onMapPress}
-                        >
-                            {this.state.coordinates.map((coordinate, index) =>
-                                <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text></MapView.Marker>
-                            )}
-                            <MapView.Marker
-                                coordinate={this.state.location.coords}
-                                title="My Marker"
-                                description="Some description"
+            <ScrollView >
+               <View style={{ height: 500 }}>
+                    <MapView
+                        initialRegion={{
+                            latitude: this.state.mapRegion.latitude,
+                            longitude: this.state.mapRegion.longitude,
+                            latitudeDelta: LATITUDE_DELTA,
+                            longitudeDelta: LONGITUDE_DELTA,
+                        }}
+                        style={StyleSheet.absoluteFill}
+                        ref={c => this.mapView = c}
+                        onPress={this.onMapPress}
+                    >
+                        {this.state.coordinates.map((coordinate, index) =>
+                            <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text></MapView.Marker>
+                        )}
+                        <MapView.Marker
+                            coordinate={this.state.location.coords}
+                            title="My Marker"
+                            description="Some description"
+                        />
+                        {(this.state.coordinates.length >= 2) && (
+                            <MapViewDirections
+                                origin={this.state.coordinates[0]}
+                                waypoints={(this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null}
+                                destination={this.state.coordinates[this.state.coordinates.length - 1]}
+                                apikey={GOOGLE_MAPS_APIKEY}
+                                strokeWidth={3}
+                                strokeColor="deepskyblue"
+                                optimizeWaypoints={false}
+                                onStart={(params) => {
+                                    console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                                }}
+                                onReady={result => {
+                                    console.log(`Distance: ${result.distance} km`)
+                                    console.log(`Duration: ${result.duration} min.`)
+
+                                    this.setState({
+                                        distance: result.distance,
+                                        duration: result.duration
+                                    })
+
+                                    this.fuelCostPrivateVehicle('car', result.distance,)
+                                    this.mapView.fitToCoordinates(result.coordinates, {
+                                        edgePadding: {
+                                            right: (width / 20),
+                                            bottom: (height / 20),
+                                            left: (width / 20),
+                                            top: (height / 20),
+                                        }
+                                    });
+                                }}
+                                onError={(errorMessage) => {
+                                    // console.log('GOT AN ERROR');
+                                }}
                             />
-                            {(this.state.coordinates.length >= 2) && (
-                                <MapViewDirections
-                                    origin={this.state.coordinates[0]}
-                                    waypoints={(this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null}
-                                    destination={this.state.coordinates[this.state.coordinates.length - 1]}
-                                    apikey={GOOGLE_MAPS_APIKEY}
-                                    strokeWidth={3}
-                                    strokeColor="deepskyblue"
-                                    optimizeWaypoints={false}
-                                    onStart={(params) => {
-                                        console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-                                    }}
-                                    onReady={result => {
-                                        console.log(`Distance: ${result.distance} km`)
-                                        console.log(`Duration: ${result.duration} min.`)
+                        )}
+                    </MapView>
+                </View>
+                {
+                    this.state.distance === '' && <View style={soverlay} />
+                }
+                {
+                    this.state.distance !== '' ?  <View>
+                    <Text>Best Routes based on roadtime</Text>
+                    <Text>Total road distance: {this.state.distance}km</Text>
+                    <Text>Total roadtime: {this.state.duration}min</Text>
+                    <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
 
-                                        this.setState({
-                                            distance: result.distance,
-                                            duration: result.duration
-                                        })
+                    {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.formatted_address}</Text>)}
+                </View> : <Spinner />
+                }
+               
+            </ScrollView>
 
-                                        this.fuelCostPrivateVehicle('car', result.distance,)
-                                        this.mapView.fitToCoordinates(result.coordinates, {
-                                            edgePadding: {
-                                                right: (width / 20),
-                                                bottom: (height / 20),
-                                                left: (width / 20),
-                                                top: (height / 20),
-                                            }
-                                        });
-                                    }}
-                                    onError={(errorMessage) => {
-                                        // console.log('GOT AN ERROR');
-                                    }}
-                                />
-                            )}
-                        </MapView>
-                    </View>
-                    <View style={{ height: 500 }}>
-                        <Text>Best Routes based on roadtime</Text>
-                        <Text>Total road distance: {this.state.distance}km</Text>
-                        <Text>Total roadtime: {this.state.duration}min</Text>
-                        <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
-
-                        {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.formatted_address}</Text>)}
-                    </View>
-                </ScrollView>
-
-            </View>
         );
     }
+}
+const soverlay = {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    width: 500,
+    height: 1000
 }
 const mapState = (state) => ({
     destList: state.Meetup.destinationList
