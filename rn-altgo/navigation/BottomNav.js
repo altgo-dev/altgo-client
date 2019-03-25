@@ -46,8 +46,8 @@ const RootNav = createBottomTabNavigator({
     initialRouteName: 'Home',
     tabBarOptions: {
         showLabel: false, // hide labels
-        activeTintColor: '#5E548E',
-        inactiveTintColor: 'rgba(173,167,201, 1)',  // inactive icon color
+        activeTintColor: 'black',
+        inactiveTintColor: 'lightgrey',  // inactive icon color
         style: {
             // backgroundColor: '#A2CCCD' // TabBar background
             backgroundColor: 'white'

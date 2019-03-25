@@ -32,19 +32,25 @@ class SearchHead extends Component {
   render() {
     return (
       <View style={s.searchHead}>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
-          <Item style={{ ...s.ml5, ...s.searhBox }}>
-            <Input onChangeText={(destination) => { this.onSearch( destination ) }} style={{ ...s.textLight, color: 'white' }} placeholderTextColor="#dddddd" placeholder="City" />
+        <Text style={{ fontWeight: '700', textAlign: 'center', fontSize: 16, marginBottom: 10 }}>
+          Where do you want to go?
+        </Text>
+        <View style={{ flex: 1, flexDirection: 'row', marginLeft: 20 }}>
+          <Item style={{ width: 250, marginTop: 8, marginBottom: 8}}>
+            <Input onChangeText={(destination) => { this.onSearch( destination ) }} style={{ ...s.textLight, color: 'black', borderBottomColor: 'black', borderBottomWidth: 2, }} placeholderTextColor="rgb(50, 50, 50)" placeholder="City" />
           </Item>
           <TouchableHighlight>
-            <Icon style={{ ...s.textLight, fontSize: 37, marginHorizontal: 25, marginTop: 8 }} name="search" />
+            <Icon style={{ color: 'black', fontSize: 37, marginHorizontal: 25, marginTop: 20 }} name="search" />
           </TouchableHighlight>
         </View>
-        <TouchableHighlight underlayColor="#ffffff00" onPress={this.props.toPageFriends}>
-          <Text style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>
-            Invite friends
+           <TouchableHighlight underlayColor="#ffffff00" onPress={this.props.toPageFriends} style={{ marginBottom: 20, justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{ textAlign: 'center', color: 'grey', marginTop: 30, fontWeight: '500', backgroundColor: 'white', width: 100, margin: 5, padding: 5 }}>
+            {
+              this.props.inviteFriends ? 'Invite friends' : 'Go Alone'
+            }
           </Text>
         </TouchableHighlight>
+       
         {this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) =><Text key={index} style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>{each.description}</Text>)}
         
       </View>
