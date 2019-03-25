@@ -39,6 +39,7 @@ class Home extends Component {
             const token = await AsyncStorage.getItem('token')
             await this.props.getUserData(token)
             await this.props.getAllUser(token)
+            // await AsyncStorage.removeItem('token')
             this.setState({
                 friendsList: this.props.userInfo.friends
             })
@@ -191,12 +192,12 @@ class Home extends Component {
                                     <ScrollView style={{ height: 500 }}>
                                         {
                                             this.state.friendsList.map((el, i) => {
-                                                if (el.UserId2._id !== this.props.userInfo._id) {
-                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId2)}>
-                                                        <SingleFriend icon="no" data={el.UserId2} />
+                                                if (el.UserId2._id === this.props.userInfo._id) {
+                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId1)}>
+                                                        <SingleFriend icon="no" data={el.UserId1} />
                                                     </TouchableHighlight>
                                                 } else {
-                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId1)}>
+                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId2)}>
                                                         <SingleFriend icon="no" data={el.UserId2} />
                                                     </TouchableHighlight>
                                                 }
