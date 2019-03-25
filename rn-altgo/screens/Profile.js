@@ -22,7 +22,8 @@ class Profile extends Component {
 
   componentDidMount = async () => {
     try {
-      await this.props.getUserData()
+      var token = await AsyncStorage.getItem('token')
+      await this.props.getUserData(token)
       this.setState({loading:  false})
     } catch (error) {
       console.log(error)
@@ -30,6 +31,14 @@ class Profile extends Component {
   
 
   }
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.userInfo !== this.props.userInfo){
+      this.props.getUserData()
+    }
+  }
+
+
 
   logout = async () => {
     this.props.logout()
@@ -90,7 +99,7 @@ class Profile extends Component {
 }
 
 const mapDisatchToProps = (dispatch) => ({
-  getUserData: () => (dispatch(getUserData())),
+  getUserData: (token) => (dispatch(getUserData(token))),
   logout: () => dispatch(logout())
 })
 

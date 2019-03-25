@@ -110,6 +110,7 @@ export function addFriend(friendId, friendName){
       console.log(JSON.stringify(response,null,2))
       alert(`${friendName} has been added to your friend list`)
       dispatch({type: 'ADD_FRIEND_SUCCESS'})
+      getUserData(await AsyncStorage.getItem('token'))
     } catch (error){
       console.log(JSON.stringify(error.response,null,2))
 
