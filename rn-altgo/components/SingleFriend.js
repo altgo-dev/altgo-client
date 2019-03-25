@@ -7,6 +7,9 @@ import { connect } from 'react-redux'
 import { addFriend } from '../store/actions/UsersAction'
 import Users from '../store/reducers/Users';
 
+//ASSETS
+import noUser from '../assets/nouser.png'
+
 class SingleFriend extends Component {
     onPress = () => {
         var friendId= this.props.data._id
@@ -20,7 +23,7 @@ class SingleFriend extends Component {
             <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'rgba(245, 245, 245, 0.5)' }}>
                 <Left style={{ width: 80, flex: 0 }}>
                 {
-                    data && <Thumbnail source={{ uri: data.profilePicture }} />
+                    data && data.profilePicture ? <Thumbnail source={{ uri: data.profilePicture }} /> : <Thumbnail source={ noUser } />
                 }
                     
                 </Left>
