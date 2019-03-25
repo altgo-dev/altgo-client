@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableHighlight } from 'react-native'
-import { Content, Thumbnail, Icon } from 'native-base'
+import { Content, Thumbnail, Icon, Button } from 'native-base'
 import SingleFriend from '../components/SingleFriend'
 import { LinearGradient,} from 'expo'
 import { connect } from 'react-redux'
@@ -21,7 +21,11 @@ class Profile extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient style={{ flex: 1}} colors={['black', '#1f1135', 'black']} >
-
+        <Button style={{ width: 60}}> 
+          <Text>
+            Logout
+          </Text>
+        </Button>
         <Content>
         <View style={{ flex: 3, height: 250, justifyContent: 'center', alignItems: 'center' }}>
           <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={{uri: this.props.userInfo.profilePicture}}/>
