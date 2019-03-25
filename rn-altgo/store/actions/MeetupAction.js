@@ -37,6 +37,7 @@ export function addDestination(destination){
         }
       }).then(()=>{}).catch(()=>{})
     
+    console.log(destination)
     dispatch({type: 'ADD_DESTINATION_SUCCESS', payload: destination})
     // alert(JSON.stringify(destination))
   }
