@@ -18,18 +18,8 @@ class Example extends Component {
     constructor(props) {
         super(props);
 
-        // AirBnB's Office, and Apple Park
         this.state = {
-            coordinates: [
-                // {
-                //     latitude: 37.3317876,
-                //     longitude: -122.0054812,
-                // },
-                // {
-                //     latitude: 37.771707,
-                //     longitude: -122.4053769,
-                // },
-            ],
+            coordinates: [],
             addresses: [],
             routeOptimizerResponse: {},
             mapRegion: { latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
@@ -39,6 +29,8 @@ class Example extends Component {
             duration: '',
             transitDistance: 0,
             transitDuration: 0,
+            walkingDistance: 0,
+            walkingDuration: 0,
             cost: 0
         };
 
@@ -82,7 +74,7 @@ class Example extends Component {
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
                             mode="TRANSIT"
-                            strokeColor="hotpink"
+                            strokeColor="red"
                             optimizeWaypoints={false}
                             onStart={(params) => {
                                 console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
@@ -101,6 +93,40 @@ class Example extends Component {
                 })}
                 {console.log("transit distance : " + this.transitDistance)}
                 {console.log("transit duration : " + this.transitDuration)}
+            </>
+        )
+    }
+
+    displayWalkingRoute = () => {
+        return (
+            <>
+                {this.state.addresses.map((e, i) => {
+                    (i < this.state.addresses.length - 1) && (
+                        <MapViewDirections
+                            origin={this.state.coordinates[i]}
+                            destination={this.state.coordinates[i + 1]}
+                            apikey={GOOGLE_MAPS_APIKEY}
+                            strokeWidth={3}
+                            mode="WALKING"
+                            strokeColor="blue"
+                            optimizeWaypoints={false}
+                            onStart={(params) => {
+                                console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                            }}
+                            onReady={result => {
+                                this.setState({
+                                    walkingDistance: walkingDistance + result.distance,
+                                    walkingDuration: walkingDuration + result.duration,
+                                })
+                            }}
+                            onError={(errorMessage) => {
+                                // console.log('GOT AN ERROR');
+                            }}
+                        />
+                    )
+                })}
+                {console.log("walking distance : " + this.walkingDistance)}
+                {console.log("walking duration : " + this.walkingDuration)}
             </>
         )
     }
@@ -132,9 +158,6 @@ class Example extends Component {
 
     async componentDidMount() {
         this.findRoute()
-        // this.setState({
-        //     addresses: []
-        // })
 
     }
 
@@ -164,13 +187,6 @@ class Example extends Component {
             location: location,
         })
         return currentLatLng
-        //    this.setState({
-        //        coordinates: this.state.coordinates.unshift({
-        //             latitude: location.coords.latitude,
-        //             longitude: location.coords.longitude,
-        //        })
-        //    })
-        //    this.setState({ locationResult: JSON.stringify(location), location, });
 
     };
 
@@ -237,6 +253,7 @@ class Example extends Component {
                                         }}
                                     />
                                     {this.displayTransitRoute()}
+                                    {this.displayWalkingRoute()}
                                 </>
                             )}
                         </MapView>
