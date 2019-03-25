@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, Animated, StyleSheet, View, ScrollView, Text } from 'react-native';
 // import MapView from 'react-native-maps';
 import s from '../style'
+import { Spinner } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -66,14 +67,14 @@ class Example extends Component {
     displayTransitRoute = () => {
         return (
             <>
-                {this.state.addresses.map((e, i) => {
-                    (i < this.state.addresses.length - 1) && (
+                {this.state.coordinates.map((e, i) => {
+                    (i < this.state.coordinates.length - 1) && (
                         <MapViewDirections
                             origin={this.state.coordinates[i]}
                             destination={this.state.coordinates[i + 1]}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
-                            mode="TRANSIT"
+                            mode="transit"
                             strokeColor="red"
                             optimizeWaypoints={false}
                             onStart={(params) => {
@@ -86,13 +87,13 @@ class Example extends Component {
                                 })
                             }}
                             onError={(errorMessage) => {
-                                // console.log('GOT AN ERROR');
+                                console.log('GOT AN ERROR');
                             }}
                         />
                     )
                 })}
-                {console.log("transit distance : " + this.transitDistance)}
-                {console.log("transit duration : " + this.transitDuration)}
+                {console.log("transit distance : " + this.state.transitDistance)}
+                {console.log("transit duration : " + this.state.transitDuration)}
             </>
         )
     }
@@ -100,14 +101,14 @@ class Example extends Component {
     displayWalkingRoute = () => {
         return (
             <>
-                {this.state.addresses.map((e, i) => {
-                    (i < this.state.addresses.length - 1) && (
+                {this.state.coordinates.map((e, i) => {
+                    (i < this.state.coordinates.length - 1) && (
                         <MapViewDirections
                             origin={this.state.coordinates[i]}
                             destination={this.state.coordinates[i + 1]}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
-                            mode="WALKING"
+                            mode="walking"
                             strokeColor="blue"
                             optimizeWaypoints={false}
                             onStart={(params) => {
@@ -120,13 +121,13 @@ class Example extends Component {
                                 })
                             }}
                             onError={(errorMessage) => {
-                                // console.log('GOT AN ERROR');
+                                console.log('GOT AN ERROR');
                             }}
                         />
                     )
                 })}
-                {console.log("walking distance : " + this.walkingDistance)}
-                {console.log("walking duration : " + this.walkingDuration)}
+                {/* {console.log("walking distance : " + this.state.walkingDistance)}
+                {console.log("walking duration : " + this.state.walkingDuration)} */}
             </>
         )
     }
@@ -187,7 +188,6 @@ class Example extends Component {
             location: location,
         })
         return currentLatLng
-
     };
 
     render() {
@@ -272,6 +272,17 @@ class Example extends Component {
         );
     }
 }
+const soverlay = {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    width: 500,
+    height: 1000
+}
+
 const mapState = (state) => ({
     destList: state.Meetup.destinationList
 })
