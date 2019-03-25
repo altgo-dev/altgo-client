@@ -114,17 +114,35 @@ export function addFriend(friendId, friendName){
       let response = await axios.post(`${baseURL}/users/friend`, {friendId}, {
         headers: {token}
       })
-      console.log(JSON.stringify(response,null,2))
       alert(`${friendName} has been added to your friend list`)
       dispatch({type: 'ADD_FRIEND_SUCCESS'})
-      getUserData(await AsyncStorage.getItem('token'))
+      getUserData(token)
     } catch (error){
       console.log(JSON.stringify(error.response,null,2))
-
       alert(error.response.data.error)
     }
   }
 }
 
+export function removeFriend(friendId, friendName){
+  return async dispatch => {
+    try{
+      let token = await AsyncStorage.getItem('token')
+      await axios({
+        baseURL,
+        url:'/users/friend',
+        method:'DELETE',
+        headers:{token},
+        data:{friendId},
+      })
+      alert(`${friendName} has been removed from your friend list`)
+      dispatch({type: 'REMOVE_FRIEND_SUCCESS'})
+      getUserData(token)
+    } catch (error){
+      console.log(JSON.stringify(error.response.data,null,2))
+      alert(error.response.data.message)
+    }
+  }
+}
 
 
