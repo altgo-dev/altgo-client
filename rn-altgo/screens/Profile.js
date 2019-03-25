@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableHighlight, AsyncStorage } from 'react-native'
 import { Content, Thumbnail, Icon, Button } from 'native-base'
@@ -64,9 +65,21 @@ class Profile extends Component {
               My Friends
             </Text>
           </View>
-          </View>
+            {/* <Text style={{ color: 'white'}}>
+              { JSON.stringify(this.props.userInfo.friends)}
+            </Text> */}
+            {
+              this.props.userInfo && this.props.userInfo.friends.map((el, i) => {
+              if(el.UserId2._id !== this.props.userInfo._id) {
+                return <SingleFriend icon="no" key={i} data={el.UserId2} /> 
+              } else {
+                return <SingleFriend icon="no" key={i} data={el.UserId1} />  
+              } })
+            }
+        </View>
           </Content>
        )}
+      
       </LinearGradient>
       </SafeAreaView>
     )
