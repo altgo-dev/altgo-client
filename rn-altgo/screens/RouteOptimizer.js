@@ -67,14 +67,14 @@ class Example extends Component {
     displayTransitRoute = () => {
         return (
             <>
-                {this.state.addresses.map((e, i) => {
-                    (i < this.state.addresses.length - 1) && (
+                {this.state.coordinates.map((e, i) => {
+                    (i < this.state.coordinates.length - 1) && (
                         <MapViewDirections
                             origin={this.state.coordinates[i]}
                             destination={this.state.coordinates[i + 1]}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
-                            mode="TRANSIT"
+                            mode="transit"
                             strokeColor="red"
                             optimizeWaypoints={false}
                             onStart={(params) => {
@@ -87,13 +87,13 @@ class Example extends Component {
                                 })
                             }}
                             onError={(errorMessage) => {
-                                // console.log('GOT AN ERROR');
+                                console.log('GOT AN ERROR');
                             }}
                         />
                     )
                 })}
-                {console.log("transit distance : " + this.transitDistance)}
-                {console.log("transit duration : " + this.transitDuration)}
+                {console.log("transit distance : " + this.state.transitDistance)}
+                {console.log("transit duration : " + this.state.transitDuration)}
             </>
         )
     }
@@ -101,14 +101,14 @@ class Example extends Component {
     displayWalkingRoute = () => {
         return (
             <>
-                {this.state.addresses.map((e, i) => {
-                    (i < this.state.addresses.length - 1) && (
+                {this.state.coordinates.map((e, i) => {
+                    (i < this.state.coordinates.length - 1) && (
                         <MapViewDirections
                             origin={this.state.coordinates[i]}
                             destination={this.state.coordinates[i + 1]}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
-                            mode="WALKING"
+                            mode="walking"
                             strokeColor="blue"
                             optimizeWaypoints={false}
                             onStart={(params) => {
@@ -121,13 +121,13 @@ class Example extends Component {
                                 })
                             }}
                             onError={(errorMessage) => {
-                                // console.log('GOT AN ERROR');
+                                console.log('GOT AN ERROR');
                             }}
                         />
                     )
                 })}
-                {console.log("walking distance : " + this.walkingDistance)}
-                {console.log("walking duration : " + this.walkingDuration)}
+                {/* {console.log("walking distance : " + this.state.walkingDistance)}
+                {console.log("walking duration : " + this.state.walkingDuration)} */}
             </>
         )
     }
@@ -282,6 +282,7 @@ const soverlay = {
     width: 500,
     height: 1000
 }
+
 const mapState = (state) => ({
     destList: state.Meetup.destinationList
 })
