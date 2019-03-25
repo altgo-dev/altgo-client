@@ -12,31 +12,12 @@ class Friend extends Component {
     messages: [],
     chatId : ''
   }
- 
-  // async componentDidMount () {
-  //   const user = await db.collection('users').where('id', '==', `${this.props.userid}`).get()
-  //   let temp = []
-  //   await db.collection('chat').doc(user.docs[0].data().chatid).onSnapshot(function(querySnapshot) {
-  //     temp = querySnapshot.data().messages
-  //     console.log(querySnapshot.data())
-  //   });
-  //   this.setState({
-  //     messages: temp
-  //   })
-  
-  // }
 
   async componentWillMount() {
     const user = await db.collection('users').where('id', '==', `${this.props.userid}`).orderBy('createdAt', 'desc').get()
-    // console.log(user.docs[0].data(), '====')
-    // let sorted = user.docs.sort((a, b) => {
-    //   return (b.data().createdAt) - (a.data().createdAt);
-    // })
-    // console.log(sorted)
     this.setState({
       chatId: user.docs[0].data().chatid
     })
-    let temp = []
     
     db.collection('chat').doc(user.docs[0].data().chatid).onSnapshot((querySnapshot) => {
      
@@ -69,11 +50,11 @@ class Friend extends Component {
         <LinearGradient style={{ flex: 1}} colors={['#1c003d', '#4B0082']} >
       <View style={{ flex: 1 }}>
 
-        {/* <Header style={{ height: 50, backgroundColor: 'white',}}> */}
-            {/* <Text style={{ fontSize: 23, fontWeight: '500', marginBottom: 6 , color: '#231942'}}>
+        <Header style={{ height: 50, backgroundColor: 'white',}}>
+            <Text style={{ fontSize: 23, fontWeight: '500', marginBottom: 6 , color: '#231942'}}>
                 Julith
-            </Text> */}
-        {/* </Header> */}
+            </Text>
+        </Header>
 
         <GiftedChat
           messages={this.state.messages}
