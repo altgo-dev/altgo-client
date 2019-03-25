@@ -48,6 +48,12 @@ export function login(userInfo) {
   }
 }
 
+export function logout() {
+  return {
+    type: 'SIGN_OUT'
+  }
+}
+
 export function getUserData(token) {
   return async dispatch  => {
     try {

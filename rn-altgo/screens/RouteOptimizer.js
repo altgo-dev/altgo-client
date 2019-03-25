@@ -224,7 +224,7 @@ class Example extends Component {
                         </MapView>
                     </View>
                     {
-                        this.state.distance === '' && <View style={soverlay.overlay}><Spinner color="black" /><Text style={{ color: 'white', fontSize: 19, fontWeight: '500', zIndex: 6}}>Please wait</Text></View> 
+                        this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, margin: 50, }}>Please wait</Text></View> 
                     }
                     {
                         this.state.distance !== '' &&  <>
@@ -237,8 +237,6 @@ class Example extends Component {
                     </>
                     }
                    
-                    
-                  
                 </ScrollView>
 
             </View>
@@ -248,11 +246,10 @@ class Example extends Component {
 const soverlay = StyleSheet.create({
     overlay: {
         flex: 1,
-        height: 1000, 
-        width: 500,
+        height: height + 200, 
+        width: width,
         position: 'absolute',
-        opacity: 0.7,
-        backgroundColor: 'black',
+        backgroundColor: 'rgba(15, 15, 15, 0.8)',
         justifyContent: 'center',
         alignItems: 'center'
     }

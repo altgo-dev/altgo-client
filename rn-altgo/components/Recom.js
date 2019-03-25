@@ -24,7 +24,6 @@ class Recom extends Component {
   }
 
   onClickSearch = async (place) => {
-    // console.log(JSON.stringify(place,null,2))
     var objInput = {
       name: place.structured_formatting.main_text,
       vicinity: place.structured_formatting.secondary_text
@@ -37,8 +36,8 @@ class Recom extends Component {
 
   render() {
     return (
-      <View>
-        <Header style={{ height: 60 }}>
+      <>
+        <Header style={{ height: 30, paddingTop: 0 }}>
           <Left>
             <TouchableHighlight onPress={this.props.toPage1}>
               <Icon name="arrow-back" />
@@ -73,7 +72,7 @@ class Recom extends Component {
             <ImageOverlay title={item.title} titleStyle={{ fontSize: 25, fontWeight: '500' }} overlayColor={item.color} overlayAlpha={0.6} containerStyle={{ ...s.catImg, borderRadius: 10 }} source={{ uri: item.img }} />
           </TouchableHighlight>}
         />
-      </View>
+      </>
     )
   }
 }
