@@ -59,7 +59,7 @@ class PendingHangout extends Component {
     ]
   }
 
-  acceptInvitation = (id, input) => {
+  acceptInvitation = async (id, input) => {
     const permisstionStatus = await Location.hasServicesEnabledAsync()
     if(permisstionStatus) {
       let location = await Location.getCurrentPositionAsync({})
