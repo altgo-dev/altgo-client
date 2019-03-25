@@ -51,7 +51,10 @@ class Example extends Component {
             }
         })
         this.setState({
-            coordinates: response.data.route.map(e => {
+            coordinates: response.data.route.map((e, i) => {
+                if(i === 0){
+                    e.addressSearchQuery = "Your location"
+                }
                 return {
                     latitude: e.lat,
                     longitude: e.lng,
@@ -158,8 +161,8 @@ class Example extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1}}>
-                <ScrollView style={{ flex: 1}}>
+            <View style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }}>
                     <View style={{ height: 500 }}>
                         <MapView
                             initialRegion={{
@@ -224,19 +227,19 @@ class Example extends Component {
                         </MapView>
                     </View>
                     {
-                        this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, margin: 50, }}>Please wait</Text></View> 
+                        this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, margin: 50, }}>Calculating route...</Text></View>
                     }
                     {
-                        this.state.distance !== '' &&  <>
-                        <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center'}}>Best Routes based on roadtime</Text>
-                        <Text>Total road distance: {this.state.distance}km</Text>
-                        <Text>Total roadtime: {this.state.duration}min</Text>
-                        <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
-    
-                        {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.formatted_address}</Text>)}
-                    </>
+                        this.state.distance !== '' && <>
+                            <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>Best Routes based on roadtime</Text>
+                            <Text>Total road distance: {this.state.distance}km</Text>
+                            <Text>Total roadtime: {this.state.duration}min</Text>
+                            <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
+
+                            {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.addressSearchQuery}</Text>)}
+                        </>
                     }
-                   
+
                 </ScrollView>
 
             </View>
@@ -246,7 +249,7 @@ class Example extends Component {
 const soverlay = StyleSheet.create({
     overlay: {
         flex: 1,
-        height: height + 200, 
+        height: height + 200,
         width: width,
         position: 'absolute',
         backgroundColor: 'rgba(15, 15, 15, 0.8)',

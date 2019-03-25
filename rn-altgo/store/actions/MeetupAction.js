@@ -28,6 +28,15 @@ export function setOriginCity(destination){
 
 export function addDestination(destination){
   return dispatch => {
+      axios({
+        baseURL,
+        url:'/route/getCoordinates',
+        method:'POST',
+        data:{
+          addresses:destination.map(e=>`${e.name}, ${e.vicinity}`)
+        }
+      }).then(()=>{}).catch(()=>{})
+    
     dispatch({type: 'ADD_DESTINATION_SUCCESS', payload: destination})
     // alert(JSON.stringify(destination))
   }
