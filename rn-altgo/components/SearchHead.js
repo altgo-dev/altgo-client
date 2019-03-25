@@ -23,7 +23,7 @@ class SearchHead extends Component {
       <View style={s.searchHead}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <Item style={{ ...s.ml5, ...s.searhBox }}>
-            <Input onChangeText={(destination) => { this.onSearch( destination ) }} style={{ ...s.textLight, color: 'white' }} placeholderTextColor="#dddddd" placeholder="Destination" />
+            <Input onChangeText={(destination) => { this.onSearch( destination ) }} style={{ ...s.textLight, color: 'white' }} placeholderTextColor="#dddddd" placeholder="City" />
           </Item>
           <TouchableHighlight>
             <Icon style={{ ...s.textLight, fontSize: 37, marginHorizontal: 25, marginTop: 8 }} name="search" />
