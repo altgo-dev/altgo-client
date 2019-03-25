@@ -4,16 +4,27 @@ import { Content, Thumbnail, Icon, Button } from 'native-base'
 import SingleFriend from '../components/SingleFriend'
 import { LinearGradient,} from 'expo'
 import { connect } from 'react-redux'
+import { db } from '../api/firestore'
 
 //actions
 import { getUserData } from '../store/actions/UsersAction'
 
+
 class Profile extends Component {
   state = {
+    data: [],
+    loading: true
   }
 
-  componentDidMount = () => {
-    this.props.getUserData()
+  componentDidMount = async () => {
+    try {
+      await this.props.getUserData()
+      this.setState({loading:  false})
+    } catch (error) {
+      console.log(error)
+    }
+  
+
   }
 
   logout = async () => {
@@ -26,7 +37,7 @@ class Profile extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
       <LinearGradient style={{ flex: 1}} colors={['black', '#1f1135', 'black']} >
-       
+       {!this.state.loading && (
         <Content>
         <View style={{ flex: 2, height: 250, justifyContent: 'center', alignItems: 'center' }}>
           <Button onPress={this.logout} style={{ width: 60, justifyContent: 'center', marginLeft: 300, height: 35 }}> 
@@ -53,19 +64,9 @@ class Profile extends Component {
               My Friends
             </Text>
           </View>
-            {/* <Text style={{ color: 'white'}}>
-              { JSON.stringify(this.props.userInfo.friends)}
-            </Text> */}
-            {
-              this.props.userInfo && this.props.userInfo.friends.map((el, i) => {
-              if(el.UserId2._id !== this.props.userInfo._id) {
-                return <SingleFriend icon="no" key={i} data={el.UserId2} /> 
-              } else {
-                return <SingleFriend icon="no" key={i} data={el.UserId1} />  
-              } })
-            }
-        </View>
-        </Content>
+          </View>
+          </Content>
+       )}
       </LinearGradient>
       </SafeAreaView>
     )

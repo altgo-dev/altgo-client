@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableHighlight, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { Header, Icon, Content, Container, DeckSwiper, Card, CardItem, Thumbnail, Left, Body, Button } from 'native-base'
+import { db } from '../api/firestore'
 
 class PendingHangout extends Component {
   state = {
+    invitations: [],
     cards: [
       {
         member: [
@@ -56,8 +58,33 @@ class PendingHangout extends Component {
       },
     ]
   }
-  componentDidMount = () => {
-    console.log(this.props.chatId)
+
+  acceptInvitation = (id, input) => {
+    const permisstionStatus = await Location.hasServicesEnabledAsync()
+    if(permisstionStatus) {
+      let location = await Location.getCurrentPositionAsync({})
+      input.status = true
+      input.lat = location.coords.latitude,
+      input.long = location.coords.longitude
+      db.collection('users').where('chatid', '==', 'id').update(
+        input
+      )
+    }
+  }
+
+  componentDidMount = async () => {
+    await db.collection('users').where('id', '==', this.props.userInfo._id).where('status', '==', false).onSnapshot(querSnapshot => {
+      let result = []
+      querSnapshot.docs.forEach(doc => {
+        let obj = {id: doc.id, ...doc.data() }
+        result.push(obj)
+      })
+      this.setState({
+        invitations: result
+      }, () => {
+        console.log(this.state.invitations)
+      })
+    })
   }
   render() {
     let { cards } = this.state

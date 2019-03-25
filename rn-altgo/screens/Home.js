@@ -103,22 +103,32 @@ class Home extends Component {
     }
 
     toPageMap = async () => {
+        this.setState({
+            page: 4,
+            showPanel: false,
+            inviteFriends: false
+        })
+       
+    }
+
+    createGroup = async () => {
         const permisstionStatus = await Location.hasServicesEnabledAsync()
         if(permisstionStatus) {
-            console.log(permisstionStatus, '++++')
             const chat = await db.collection('chat').add({
                 createdAt: new Date(),
                 messages: [],
                 route: {},
-                status: true
+                status: false
             })
             this.setState({chatid: chat.id})
             const createGroup = this.state.members.map(member => {
                 db.collection('users').add({
                     chatid: chat.id,
                     id: member._id,
+                    user: member,
                     status: true,
                     createdAt: new Date(),
+                    updatedAt: new Date(),
                     lat:null,
                     long: null,
                     status: false
@@ -129,23 +139,23 @@ class Home extends Component {
                 db.collection('users').add({
                     chatid: chat.id,
                     id: this.props.userInfo._id,
+                    user: this.props.userInfo,
                     status: true,
                     createdAt: new Date(),
+                    updatedAt: new Date(),
                     lat: location.coords.latitude,
                     long: location.coords.longitude
                 })
             )
             await Promise.all(createGroup)
-            console.log(createGroup)
             this.setState({
-                page: 4,
+                page: 5,
                 showPanel: false,
                 inviteFriends: false
             })
         } else {
 
         }
-       
     }
 
     render() {
@@ -183,7 +193,7 @@ class Home extends Component {
                                     </Button>
                                 </View> : (inviteFriends && page === 1) ? <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                                     <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                        <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                        <Button onPress={this.createGroup} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
                                             <Text style={{ color: 'white', fontSize: 22, textAlign: 'center' }}>
                                                 Hangout
                                 </Text>
@@ -264,8 +274,12 @@ class Home extends Component {
                             }
                             {
                                 page === 4 && <View style={{ flex: 1, height: 550 }}>
+                                    <RouteOp />
+                                </View>
+                            }
+                            {
+                                page === 5 && <View style={{ flex: 1, height: 550 }}>
                                     <PendingRequest chatid={this.state.chatid}/>
-                                    {/* <RouteOp /> */}
                                 </View>
                             }
 
