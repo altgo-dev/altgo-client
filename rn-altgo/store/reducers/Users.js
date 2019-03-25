@@ -16,6 +16,8 @@ export default function (state = defaultState, action){
       return {...state, userInfo: payload, isLoggedIn: true}  
     case 'SIGNIN_SUCCESS':
       return {...state, userInfo: payload, isLoggedIn: true }
+    case 'SIGN_OUT':
+      return{...state, isLoggedIn: false, errors: {}}
     case 'SEARCH_FRIEND_SUCCESS':
       return {...state, searchFriendResult: payload}
     case 'ADD_FRIEND_SUCCESS':

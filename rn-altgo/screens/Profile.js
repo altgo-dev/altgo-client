@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { db } from '../api/firestore'
 
 //actions
-import { getUserData } from '../store/actions/UsersAction'
+import { getUserData, logout } from '../store/actions/UsersAction'
 
 
 //ASSETS
@@ -32,9 +32,10 @@ class Profile extends Component {
   }
 
   logout = async () => {
-    // alert('masuk')
+    this.props.logout()
     await AsyncStorage.removeItem('token')
     this.props.navigation.navigate('Auth')
+
   }
 
   render() {
@@ -89,7 +90,8 @@ class Profile extends Component {
 }
 
 const mapDisatchToProps = (dispatch) => ({
-  getUserData: () => (dispatch(getUserData()))
+  getUserData: () => (dispatch(getUserData())),
+  logout: () => dispatch(logout())
 })
 
 const mapStateToProps = (state) => ({
