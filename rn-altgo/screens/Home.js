@@ -118,6 +118,8 @@ class Home extends Component {
                 createdAt: new Date(),
                 messages: [],
                 route: {},
+                pending: this.state.members,
+                accept: [this.props.userInfo],
                 status: false
             })
             this.setState({chatid: chat.id})
@@ -125,7 +127,6 @@ class Home extends Component {
                 db.collection('users').add({
                     chatid: chat.id,
                     id: member._id,
-                    user: member,
                     status: true,
                     createdAt: new Date(),
                     updatedAt: new Date(),
@@ -139,7 +140,6 @@ class Home extends Component {
                 db.collection('users').add({
                     chatid: chat.id,
                     id: this.props.userInfo._id,
-                    user: this.props.userInfo,
                     status: true,
                     createdAt: new Date(),
                     updatedAt: new Date(),
