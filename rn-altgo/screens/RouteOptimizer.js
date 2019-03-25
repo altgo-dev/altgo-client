@@ -117,7 +117,6 @@ class Example extends Component {
     }
 
     onMapPress = (e) => {
-        console.log(e.nativeEvent.coordinate)
         this.setState({
             addresses: [
                 ...this.state.addresses,
@@ -173,7 +172,7 @@ class Example extends Component {
                             }}
                             style={StyleSheet.absoluteFill}
                             ref={c => this.mapView = c}
-                            onPress={this.onMapPress}
+                            onPress={()=>{}}
                         >
                             {this.state.coordinates.map((coordinate, index) =>
                                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
