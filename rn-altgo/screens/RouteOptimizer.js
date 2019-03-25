@@ -158,8 +158,8 @@ class Example extends Component {
 
     render() {
         return (
-            <View>
-                <ScrollView>
+            <View style={{ flex: 1}}>
+                <ScrollView style={{ flex: 1}}>
                     <View style={{ height: 500 }}>
                         <MapView
                             initialRegion={{
@@ -223,30 +223,40 @@ class Example extends Component {
                             )}
                         </MapView>
                     </View>
-                    <View style={{ height: 500 }}>
-                        <Text>Best Routes based on roadtime</Text>
+                    {
+                        this.state.distance === '' && <View style={soverlay.overlay}><Spinner color="black" /><Text style={{ color: 'white', fontSize: 19, fontWeight: '500', zIndex: 6}}>Please wait</Text></View> 
+                    }
+                    {
+                        this.state.distance !== '' &&  <>
+                        <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center'}}>Best Routes based on roadtime</Text>
                         <Text>Total road distance: {this.state.distance}km</Text>
                         <Text>Total roadtime: {this.state.duration}min</Text>
                         <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
-
+    
                         {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.formatted_address}</Text>)}
-                    </View>
+                    </>
+                    }
+                   
+                    
+                  
                 </ScrollView>
 
             </View>
         );
     }
 }
-const soverlay = {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    opacity: 0.5,
-    backgroundColor: 'black',
-    width: 500,
-    height: 1000
-}
+const soverlay = StyleSheet.create({
+    overlay: {
+        flex: 1,
+        height: 1000, 
+        width: 500,
+        position: 'absolute',
+        opacity: 0.7,
+        backgroundColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
 
 const mapState = (state) => ({
     destList: state.Meetup.destinationList
