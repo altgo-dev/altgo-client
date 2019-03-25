@@ -65,9 +65,6 @@ class Profile extends Component {
               My Friends
             </Text>
           </View>
-            {/* <Text style={{ color: 'white'}}>
-              { JSON.stringify(this.props.userInfo.friends)}
-            </Text> */}
             {
               this.props.userInfo && this.props.userInfo.friends.map((el, i) => {
               if(el.UserId2._id !== this.props.userInfo._id) {
