@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Dimensions, StyleSheet, View, Text } from 'react-native';
-import MapView from 'react-native-maps';
+// import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
+import { connect } from 'react-redux'
+import { Constants, MapView, Location, Permissions } from 'expo';
+
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.771707;
-const LONGITUDE = -122.4053769;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -30,8 +31,11 @@ class Example extends Component {
                 //     longitude: -122.4053769,
                 // },
             ],
-            addresses: ["hacktiv8", "monumen nasional"],
-            routeOptimizerResponse: {}
+            addresses: ['monumen nasional', 'hacktiv8'],
+            routeOptimizerResponse: {},
+            mapRegion: { latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
+            locationResult: null,
+            location: { coords: { latitude: 37.78825, longitude: -122.4324 } },
         };
 
         this.mapView = null;
@@ -42,7 +46,8 @@ class Example extends Component {
             url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
             method: 'POST',
             data: {
-                addresses: this.state.addresses
+                addresses: this.state.addresses,
+                routingType: 'AtoZ'
             }
         })
         this.setState({
@@ -67,16 +72,56 @@ class Example extends Component {
         }, () => { this.findRoute() });
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        await this._getLocationAsync();
         this.findRoute()
+        // this.setState({
+        //     addresses: []
+        // })
+
     }
+
+
+    _handleMapRegionChange = mapRegion => {
+        this.setState({ mapRegion });
+    };
+
+    _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            this.setState({
+                locationResult: 'Permission to access location was denied',
+                location,
+            });
+        }
+        //coords.longitude, latitude
+        let location = await Location.getCurrentPositionAsync({});
+        alert(JSON.stringify(location))
+        this.setState({
+            mapRegion: {
+                ...this.state.mapRegion,
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+            },
+            location: location,
+            //addresses: this.state.addresses.unshift(`${location.coords.latitude},${location.coords.longitude}`)
+        })
+        //    this.setState({
+        //        coordinates: this.state.coordinates.unshift({
+        //             latitude: location.coords.latitude,
+        //             longitude: location.coords.longitude,
+        //        })
+        //    })
+        //    this.setState({ locationResult: JSON.stringify(location), location, });
+
+    };
 
     render() {
         return (
             <MapView
                 initialRegion={{
-                    latitude: LATITUDE,
-                    longitude: LONGITUDE,
+                    latitude: this.state.mapRegion.latitude,
+                    longitude: this.state.mapRegion.longitude,
                     latitudeDelta: LATITUDE_DELTA,
                     longitudeDelta: LONGITUDE_DELTA,
                 }}
@@ -87,6 +132,11 @@ class Example extends Component {
                 {this.state.coordinates.map((coordinate, index) =>
                     <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index}] {coordinate.name}</Text></MapView.Marker>
                 )}
+                <MapView.Marker
+                    coordinate={this.state.location.coords}
+                    title="My Marker"
+                    description="Some description"
+                />
                 {(this.state.coordinates.length >= 2) && (
                     <MapViewDirections
                         origin={this.state.coordinates[0]}
@@ -121,5 +171,7 @@ class Example extends Component {
         );
     }
 }
-
-export default Example;
+const mapState = (state) => ({
+    destList: state.Meetup.destinationList
+})
+export default connect(mapState)(Example);
