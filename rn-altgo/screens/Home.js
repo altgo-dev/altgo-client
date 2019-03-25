@@ -8,6 +8,7 @@ import { getUserData, getAllUser } from '../store/actions/UsersAction'
 const { height, width } = Dimensions.get('window')
 import { db } from '../api/firestore'
 import { LinearGradient } from 'expo'
+import { Location } from 'expo'
 
 //COMPONENTS
 import ResList from '../components/ResList'
@@ -19,6 +20,7 @@ import Recom from '../components/Recom'
 import DetailCat from '../components/DetailCat';
 import SinglePlace from '../components/SinglePlace'
 import RouteOp from './RouteOptimizer'
+import PendingRequest from '../screens/PendingHangout'
 
 class Home extends Component {
     _draggedValue = new Animated.Value(120)
@@ -31,7 +33,9 @@ class Home extends Component {
         cat: 'food',
         showPanel: true,
         members: [],
-        destinationList: []
+        destinationList: [],
+        permission: '',
+        chatid: ''
     }
 
     componentDidMount = async () => {
@@ -49,7 +53,6 @@ class Home extends Component {
     }
 
     addMember = (input) => {
-        console.log(input)
         this.setState({
             members: this.state.members.concat(input)
         })
@@ -100,35 +103,49 @@ class Home extends Component {
     }
 
     toPageMap = async () => {
+        const permisstionStatus = await Location.hasServicesEnabledAsync()
+        if(permisstionStatus) {
+            console.log(permisstionStatus, '++++')
+            const chat = await db.collection('chat').add({
+                createdAt: new Date(),
+                messages: [],
+                route: {},
+                status: true
+            })
+            this.setState({chatid: chat.id})
+            const createGroup = this.state.members.map(member => {
+                db.collection('users').add({
+                    chatid: chat.id,
+                    id: member._id,
+                    status: true,
+                    createdAt: new Date(),
+                    lat:null,
+                    long: null,
+                    status: false
+                })
+            })
+            let location = await Location.getCurrentPositionAsync({})
+            createGroup.push(
+                db.collection('users').add({
+                    chatid: chat.id,
+                    id: this.props.userInfo._id,
+                    status: true,
+                    createdAt: new Date(),
+                    lat: location.coords.latitude,
+                    long: location.coords.longitude
+                })
+            )
+            await Promise.all(createGroup)
+            console.log(createGroup)
+            this.setState({
+                page: 4,
+                showPanel: false,
+                inviteFriends: false
+            })
+        } else {
 
-        const chat = await db.collection('chat').add({
-            createdAt: new Date(),
-            messages: [],
-            route: {},
-            status: true
-        })
-        const createGroup = this.state.members.map(member => {
-            db.collection('users').add({
-                chatid: chat.id,
-                id: member._id,
-                status: true,
-                createdAt: new Date()
-            })
-        })
-        createGroup.push(
-            db.collection('users').add({
-                chatid: chat.id,
-                id: this.props.userInfo._id,
-                status: true,
-                createdAt: new Date()
-            })
-        )
-        await Promise.all(createGroup)
-        this.setState({
-            page: 4,
-            showPanel: false,
-            inviteFriends: false
-        })
+        }
+       
     }
 
     render() {
@@ -247,7 +264,8 @@ class Home extends Component {
                             }
                             {
                                 page === 4 && <View style={{ flex: 1, height: 550 }}>
-                                    <RouteOp />
+                                    <PendingRequest chatid={this.state.chatid}/>
+                                    {/* <RouteOp /> */}
                                 </View>
                             }
 
