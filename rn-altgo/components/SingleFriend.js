@@ -48,7 +48,7 @@ class SingleFriend extends Component {
                 {
                     !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) !== -1 && 
                 <Right style={{ width: 100, flex: 0 }}>
-                    <TouchableOpacity onPress={this.removeFriend}><Text>remove friend</Text></TouchableOpacity>
+                    <Icon onPress={this.removeFriend} style={{ fontSize: 28, color: 'black' }} name="close" />
                 </Right>
                 }
                 
