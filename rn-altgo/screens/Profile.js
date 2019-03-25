@@ -32,9 +32,10 @@ class Profile extends Component {
 
   }
 
-  componentDidUpdate(prevProps, prevState){
+  async componentDidUpdate(prevProps, prevState){
+    var token = await AsyncStorage.getItem('token')
     if(prevProps.userInfo !== this.props.userInfo){
-      this.props.getUserData()
+      this.props.getUserData(token)
     }
   }
 
