@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { db } from '../api/firestore'
 
 //actions
-import { getUserData, logout } from '../store/actions/UsersAction'
+import { getUserData } from '../store/actions/UsersAction'
 
 
 //ASSETS
@@ -42,10 +42,9 @@ class Profile extends Component {
 
 
   logout = async () => {
-    this.props.logout()
+    // alert('masuk')
     await AsyncStorage.removeItem('token')
     this.props.navigation.navigate('Auth')
-
   }
 
   render() {
