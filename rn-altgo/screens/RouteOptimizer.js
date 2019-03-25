@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Dimensions, Animated, StyleSheet, View, ScrollView, Text } from 'react-native';
 // import MapView from 'react-native-maps';
 import s from '../style'
+import { Spinner } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -187,7 +188,6 @@ class Example extends Component {
             location: location,
         })
         return currentLatLng
-
     };
 
     render() {
@@ -271,6 +271,16 @@ class Example extends Component {
             </View>
         );
     }
+}
+const soverlay = {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    width: 500,
+    height: 1000
 }
 const mapState = (state) => ({
     destList: state.Meetup.destinationList

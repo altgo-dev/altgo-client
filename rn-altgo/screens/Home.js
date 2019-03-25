@@ -170,122 +170,119 @@ class Home extends Component {
 
         return (
             <SafeAreaView style={{ flex: 1 }}>
+                {/* <LinearGradient colors={['black', '#1f1135', '#391f60', '#4c2982','#603f91', '#7b57af', '#B9ABCF']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}> */}
+                <LinearGradient colors={['#621708', '#941B0C', '#BC3908', '#FF3C38', '#F6511D', '#F95738', '#FF8C42']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}>
+                    <Content>
+                        {
+                            page === 1 && <SearchHead toPageFriends={this.toPageFriends} />
+                        }
 
-                <Container >
-                    {/* <LinearGradient colors={['black', '#1f1135', '#391f60', '#4c2982','#603f91', '#7b57af', '#B9ABCF']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}> */}
-                    <LinearGradient colors={['#621708', '#941B0C', '#BC3908', '#FF3C38', '#F6511D', '#F95738', '#FF8C42']} style={{ flex: 1, flexDirection: 'column', backgroundColor: '#5E548E' }}>
-                        <Content>
-                            {
-                                page === 1 && <SearchHead toPageFriends={this.toPageFriends} />
-                            }
-
-                            {
-                                inviteFriends && <View>
-                                    <AddMem members={members} removeMem={this.removeMem} />
-                                </View>
-                            }
-                            {
-                                ((!inviteFriends && page === 1) || (members.length === 0 && page === 1)) ? <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                    <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 60, justifyContent: 'center', alignSelf: 'center' }}>
-                                        <Text style={{ color: 'white', fontSize: 22 }}>
-                                            Go
+                        {
+                            inviteFriends && <View>
+                                <AddMem members={members} removeMem={this.removeMem} />
+                            </View>
+                        }
+                        {
+                            ((!inviteFriends && page === 1) || (members.length === 0 && page === 1)) ? <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
+                                <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 60, justifyContent: 'center', alignSelf: 'center' }}>
+                                    <Text style={{ color: 'white', fontSize: 22 }}>
+                                        Go
+                        </Text>
+                                </Button>
+                            </View> : (inviteFriends && page === 1) ? <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
+                                    <Button onPress={this.createGroup} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                        <Text style={{ color: 'white', fontSize: 22, textAlign: 'center' }}>
+                                            Hangout
                             </Text>
                                     </Button>
-                                </View> : (inviteFriends && page === 1) ? <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                    <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                        <Button onPress={this.createGroup} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
-                                            <Text style={{ color: 'white', fontSize: 22, textAlign: 'center' }}>
-                                                Hangout
-                                </Text>
-                                        </Button>
-                                    </View>
-                                    <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                        <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 70, justifyContent: 'center' }}>
-                                            <Text style={{ color: 'white', fontSize: 22 }}>
-                                                Travel
-                                </Text>
-                                        </Button>
-                                    </View>
-                                </View> : null
-                            }
+                                </View>
+                                <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
+                                    <Button onPress={this.toPageRecom} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 70, justifyContent: 'center' }}>
+                                        <Text style={{ color: 'white', fontSize: 22 }}>
+                                            Travel
+                            </Text>
+                                    </Button>
+                                </View>
+                            </View> : null
+                        }
 
-                            {
-                                inviteFriends && <View>
-                                    <View style={{ backgroundColor: 'rgba(245, 245, 245, 0.6)' }}>
-                                        <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 5 }}>
-                                            My friends
-                                        </Text>
-                                    </View>
-                                    <ScrollView style={{ height: 500 }}>
+                        {
+                            inviteFriends && <View>
+                                <View style={{ backgroundColor: 'rgba(245, 245, 245, 0.6)' }}>
+                                    <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: '500', marginBottom: 5 }}>
+                                        My friends
+                                    </Text>
+                                </View>
+                                <ScrollView style={{ height: 500 }}>
+                                    {
+                                        this.state.friendsList.map((el, i) => {
+                                            if (el.UserId2._id === this.props.userInfo._id) {
+                                                return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId1)}>
+                                                    <SingleFriend icon="no" data={el.UserId1} />
+                                                </TouchableHighlight>
+                                            } else {
+                                                return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId2)}>
+                                                    <SingleFriend icon="no" data={el.UserId2} />
+                                                </TouchableHighlight>
+                                            }
+                                        })
+                                    }
+                                </ScrollView>
+                            </View>
+                        }
+                        {
+                            page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} />
+                        }
+                        {
+                            page === 3 && <DetailCat toPageRecom={this.toPageRecom} cat={cat} />
+                        }
+                        {
+                            (destinationList[0] && showPanel) && <SlidingUpPanel
+                                showBackdrop={false}
+                                draggableRange={{ top: height / 1.10, bottom: 100 }}
+                                animatedValue={this._draggedValue}>
+                                <View style={s.panel}>
+                                    <Animated.View style={[s.favoriteIcon, { transform }]}>
+                                        <Text style={{ textAlign: 'center', fontSize: 23 }}> {destinationList.length} </Text>
+                                    </Animated.View>
+                                    <View>
                                         {
-                                            this.state.friendsList.map((el, i) => {
-                                                if (el.UserId2._id === this.props.userInfo._id) {
-                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId1)}>
-                                                        <SingleFriend icon="no" data={el.UserId1} />
-                                                    </TouchableHighlight>
-                                                } else {
-                                                    return <TouchableHighlight key={i} onPress={() => this.addMember(el.UserId2)}>
-                                                        <SingleFriend icon="no" data={el.UserId2} />
-                                                    </TouchableHighlight>
+                                            destinationList[0] && destinationList.map((el, i) => {
+                                                if (i <= 6) {
+                                                    return <SinglePlace key={i} data={el} type="close" />
                                                 }
                                             })
                                         }
-                                    </ScrollView>
-                                </View>
-                            }
-                            {
-                                page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} />
-                            }
-                            {
-                                page === 3 && <DetailCat toPageRecom={this.toPageRecom} cat={cat} />
-                            }
-                            {
-                                (destinationList[0] && showPanel) && <SlidingUpPanel
-                                    showBackdrop={false}
-                                    draggableRange={{ top: height / 1.10, bottom: 100 }}
-                                    animatedValue={this._draggedValue}>
-                                    <View style={s.panel}>
-                                        <Animated.View style={[s.favoriteIcon, { transform }]}>
-                                            <Text style={{ textAlign: 'center', fontSize: 23 }}> {destinationList.length} </Text>
-                                        </Animated.View>
-                                        <View>
-                                            {
-                                                destinationList[0] && destinationList.map((el, i) => {
-                                                    if (i <= 6) {
-                                                        return <SinglePlace key={i} data={el} type="close" />
-                                                    }
-                                                })
-                                            }
 
-                                            <Text style={{ color: 'blue', marginLeft: 25 }}>
-                                                View More
-                                </Text>
+                                        <Text style={{ color: 'blue', marginLeft: 25 }}>
+                                            View More
+                            </Text>
 
-                                        </View>
-                                        <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
-                                            <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
-                                                <Text style={{ color: 'white', fontSize: 21 }}>
-                                                    Lets go!
-                                </Text>
-                                            </Button>
-                                        </View>
                                     </View>
-                                </SlidingUpPanel>
-                            }
-                            {
-                                page === 4 && <View style={{ flex: 1, height: 550 }}>
-                                    <RouteOp />
+                                    <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
+                                        <Button onPress={this.toPageMap} style={{ backgroundColor: '#ebb903', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                            <Text style={{ color: 'white', fontSize: 21 }}>
+                                                Lets go!
+                            </Text>
+                                        </Button>
+                                    </View>
                                 </View>
-                            }
-                            {
-                                page === 5 && <View style={{ flex: 1, height: 550 }}>
-                                    <PendingRequest chatid={this.state.chatid}/>
-                                </View>
-                            }
+                            </SlidingUpPanel>
+                        }
+                        {
+                            page === 4 && <View style={{ flex: 1, height: 800 }}>
+                                <RouteOp />
+                            </View>
+                        }
+                        {
+                            page === 5 && <View style={{ flex: 1 }}>
+                                <PendingRequest chatid={this.state.chatid}/>
+                            </View>
+                        }
 
-                        </Content>
-                    </LinearGradient>
-                </Container>
+                    </Content>
+                </LinearGradient>
             </SafeAreaView>
         )
     }
