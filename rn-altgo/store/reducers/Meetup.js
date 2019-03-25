@@ -1,7 +1,8 @@
 const defaultState = {
   coordinate : {},
   originCity: '',
-  destinationList: []
+  destinationList: [],
+  autocompleteResult: []
 }
 
 export default function (state = defaultState, action){
@@ -14,6 +15,9 @@ export default function (state = defaultState, action){
       return {...state, originCity: payload}
     case 'ADD_DESTINATION_SUCCESS':
       return {...state, destinationList: payload}
+    case 'AUTOCOMPLETE_SUCCESS':
+      return {...state, autocompleteResult: payload}
+    
     case 'REMOVE_DESTINATION_SUCCESS':
       return {...state, destinationList: payload}
       
