@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, View, Text } from 'react-native';
+import { Dimensions, Animated, StyleSheet, View, ScrollView, Text } from 'react-native';
 // import MapView from 'react-native-maps';
+import s from '../style'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { Constants, MapView, Location, Permissions } from 'expo';
-
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -15,7 +15,6 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyBN6anoHdSlaMME70z1wRzRTntP9CiKRYw';
 
 class Example extends Component {
-
     constructor(props) {
         super(props);
 
@@ -31,22 +30,29 @@ class Example extends Component {
                 //     longitude: -122.4053769,
                 // },
             ],
-            addresses: ['monumen nasional', 'hacktiv8'],
+            addresses: [],
             routeOptimizerResponse: {},
             mapRegion: { latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
             locationResult: null,
             location: { coords: { latitude: 37.78825, longitude: -122.4324 } },
+            distance: '',
+            duration: '',
+            cost: 0
         };
 
         this.mapView = null;
     }
 
     findRoute = async () => {
+        let addresses = []
+        addresses.push(await this._getLocationAsync())
+        addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
+        console.log(addresses)
         let response = await axios({
             url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
             method: 'POST',
             data: {
-                addresses: this.state.addresses,
+                addresses,
                 routingType: 'AtoZ'
             }
         })
@@ -55,11 +61,27 @@ class Example extends Component {
                 return {
                     latitude: e.lat,
                     longitude: e.lng,
-                    name: e.geocodingData.formatted_address,
+                    addressSearchQuery: e.addressSearchQuery,
+                    formatted_address: e.geocodingData.formatted_address
                 }
             }),
             routeOptimizerResponse: response.data
         })
+    }
+
+    fuelCostPrivateVehicle = (type, distance) => {
+        let fuelPrice
+        let fuelConsumption
+        let cost
+        if (type === 'car') {
+            fuelPrice = 7650
+            fuelConsumption = 10
+        } else if (type === 'motorcycle') {
+            fuelPrice = 7650
+            fuelConsumption = 5.6
+        }
+        cost = distance /100 * fuelConsumption * fuelPrice
+        this.setState({cost})
     }
 
     onMapPress = (e) => {
@@ -73,7 +95,6 @@ class Example extends Component {
     }
 
     async componentDidMount() {
-        await this._getLocationAsync();
         this.findRoute()
         // this.setState({
         //     addresses: []
@@ -96,7 +117,8 @@ class Example extends Component {
         }
         //coords.longitude, latitude
         let location = await Location.getCurrentPositionAsync({});
-        alert(JSON.stringify(location))
+        var currentLatLng = `${location.coords.latitude},${location.coords.longitude}`
+
         this.setState({
             mapRegion: {
                 ...this.state.mapRegion,
@@ -104,8 +126,8 @@ class Example extends Component {
                 longitude: location.coords.longitude,
             },
             location: location,
-            //addresses: this.state.addresses.unshift(`${location.coords.latitude},${location.coords.longitude}`)
         })
+        return currentLatLng
         //    this.setState({
         //        coordinates: this.state.coordinates.unshift({
         //             latitude: location.coords.latitude,
@@ -118,56 +140,77 @@ class Example extends Component {
 
     render() {
         return (
-            <MapView
-                initialRegion={{
-                    latitude: this.state.mapRegion.latitude,
-                    longitude: this.state.mapRegion.longitude,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA,
-                }}
-                style={StyleSheet.absoluteFill}
-                ref={c => this.mapView = c}
-                onPress={this.onMapPress}
-            >
-                {this.state.coordinates.map((coordinate, index) =>
-                    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index}] {coordinate.name}</Text></MapView.Marker>
-                )}
-                <MapView.Marker
-                    coordinate={this.state.location.coords}
-                    title="My Marker"
-                    description="Some description"
-                />
-                {(this.state.coordinates.length >= 2) && (
-                    <MapViewDirections
-                        origin={this.state.coordinates[0]}
-                        waypoints={(this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null}
-                        destination={this.state.coordinates[this.state.coordinates.length - 1]}
-                        apikey={GOOGLE_MAPS_APIKEY}
-                        strokeWidth={3}
-                        strokeColor="hotpink"
-                        optimizeWaypoints={false}
-                        onStart={(params) => {
-                            console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-                        }}
-                        onReady={result => {
-                            console.log(`Distance: ${result.distance} km`)
-                            console.log(`Duration: ${result.duration} min.`)
+            <View>
+                <ScrollView>
+                    <View style={{ height: 500 }}>
+                        <MapView
+                            initialRegion={{
+                                latitude: this.state.mapRegion.latitude,
+                                longitude: this.state.mapRegion.longitude,
+                                latitudeDelta: LATITUDE_DELTA,
+                                longitudeDelta: LONGITUDE_DELTA,
+                            }}
+                            style={StyleSheet.absoluteFill}
+                            ref={c => this.mapView = c}
+                            onPress={this.onMapPress}
+                        >
+                            {this.state.coordinates.map((coordinate, index) =>
+                                <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} ><Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text></MapView.Marker>
+                            )}
+                            <MapView.Marker
+                                coordinate={this.state.location.coords}
+                                title="My Marker"
+                                description="Some description"
+                            />
+                            {(this.state.coordinates.length >= 2) && (
+                                <MapViewDirections
+                                    origin={this.state.coordinates[0]}
+                                    waypoints={(this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null}
+                                    destination={this.state.coordinates[this.state.coordinates.length - 1]}
+                                    apikey={GOOGLE_MAPS_APIKEY}
+                                    strokeWidth={3}
+                                    strokeColor="deepskyblue"
+                                    optimizeWaypoints={false}
+                                    onStart={(params) => {
+                                        console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                                    }}
+                                    onReady={result => {
+                                        console.log(`Distance: ${result.distance} km`)
+                                        console.log(`Duration: ${result.duration} min.`)
 
-                            this.mapView.fitToCoordinates(result.coordinates, {
-                                edgePadding: {
-                                    right: (width / 20),
-                                    bottom: (height / 20),
-                                    left: (width / 20),
-                                    top: (height / 20),
-                                }
-                            });
-                        }}
-                        onError={(errorMessage) => {
-                            // console.log('GOT AN ERROR');
-                        }}
-                    />
-                )}
-            </MapView>
+                                        this.setState({
+                                            distance: result.distance,
+                                            duration: result.duration
+                                        })
+
+                                        this.fuelCostPrivateVehicle('car', result.distance,)
+                                        this.mapView.fitToCoordinates(result.coordinates, {
+                                            edgePadding: {
+                                                right: (width / 20),
+                                                bottom: (height / 20),
+                                                left: (width / 20),
+                                                top: (height / 20),
+                                            }
+                                        });
+                                    }}
+                                    onError={(errorMessage) => {
+                                        // console.log('GOT AN ERROR');
+                                    }}
+                                />
+                            )}
+                        </MapView>
+                    </View>
+                    <View style={{ height: 500 }}>
+                        <Text>Best Routes based on roadtime</Text>
+                        <Text>Total road distance: {this.state.distance}km</Text>
+                        <Text>Total roadtime: {this.state.duration}min</Text>
+                        <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
+
+                        {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.formatted_address}</Text>)}
+                    </View>
+                </ScrollView>
+
+            </View>
         );
     }
 }
