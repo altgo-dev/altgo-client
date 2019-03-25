@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableHighlight } from 'react-native'
+import { Text, View, TouchableHighlight, FlatList } from 'react-native'
 import { Header, Thumbnail, Item, Content, Input, Accordion, Icon, Left } from 'native-base'
 import s from '../style'
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat'
+import SingleGroup from '../components/SingleGroup'
+import Room from './Room'
 import { LinearGradient } from 'expo'
 import { connect } from 'react-redux'
 import { db } from '../api/firestore'
@@ -10,94 +12,105 @@ import { db } from '../api/firestore'
 class Friend extends Component {
   state = {
     messages: [],
-    chatId : ''
+    chatId : '',
+    page: 1,
+    chats: [],
+    ready: false
   }
 
-  async componentWillMount() {
-    const user = await db.collection('users').where('id', '==', `${this.props.userid}`).orderBy('createdAt', 'desc').get()
-    this.setState({
-      chatId: user.docs[0].data().chatid
-    })
-    
-    db.collection('chat').doc(user.docs[0].data().chatid).onSnapshot((querySnapshot) => {
-     
-        let haha = []
-        querySnapshot.data().messages.forEach(l => {
-         let lol= (l.createdAt.seconds * 1000)
-         l.createdAt = lol
-         haha.push(l)
-        })
-        this.setState({
-          messages: haha
-        })
-    })
-  }
- 
-  onSend(messages = []) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }), () => {
-      db.collection('chat').doc(this.state.chatId).update({
-        messages: this.state.messages
+  componentDidMount = async () => {
+    try {
+      console.log(this.props.userid)
+      const chats = await db.collection('users').where('id', '==', this.props.userid).get()
+      let allChats = []
+      chats.docs.forEach(doc => {
+        let obj = {id: doc.id, ...doc.data()}
+        allChats.push(obj)
       })
+      this.setState({
+        chats: allChats
+      })
+    } catch (error) {
+      
+    }
+  }
 
+
+  clickedGroup = (chatid) => {
+    this.setState({
+      chatId: chatid
+    }, () => {
+      this.setState({
+        page: 2
+      })
     })
 
+    
   }
+
+  backPage = () => {
+    this.setState({
+      page: 1
+    })
+  }
+
+  setReady = () => {
+    this.setState({
+      ready: true
+    })
+  }
+  // async componentWillMount() {
+  //   const user = await db.collection('users').where('id', '==', `${this.props.userid}`).orderBy('createdAt', 'desc').get()
+  //   this.setState({
+  //     chatId: user.docs[0].data().chatid
+  //   })
+    
+  //   db.collection('chat').doc(user.docs[0].data().chatid).onSnapshot((querySnapshot) => {
+     
+  //       let haha = []
+  //       querySnapshot.data().messages.forEach(l => {
+  //        let lol= (l.createdAt.seconds * 1000)
+  //        l.createdAt = lol
+  //        haha.push(l)
+  //       })
+  //       this.setState({
+  //         messages: haha
+  //       })
+  //   })
+  // }
+ 
+  // onSend(messages = []) {
+  //   this.setState(previousState => ({
+  //     messages: GiftedChat.append(previousState.messages, messages),
+  //   }), () => {
+  //     db.collection('chat').doc(this.state.chatId).update({
+  //       messages: this.state.messages
+  //     })
+  //   })
+
+  // }
  
   render() {
     return (
         <LinearGradient style={{ flex: 1}} colors={['#1c003d', '#4B0082']} >
       <View style={{ flex: 1 }}>
-
-        <Header style={{ height: 50, backgroundColor: 'white',}}>
+        {this.state.page === 1 && (
+          <>
+          <Header style={{ height: 50, backgroundColor: 'white',}}>
             <Text style={{ fontSize: 23, fontWeight: '500', marginBottom: 6 , color: '#231942'}}>
-                Julith
+                My Groups
             </Text>
-        </Header>
-
-        <GiftedChat
-          messages={this.state.messages}
-          isAnimated={true}
-          onSend={messages => this.onSend(messages)}
-          user={{
-            _id: 1,
-            avatar: this.props.userInfo.profilePicture,
-            name: this.props.userInfo.name
-          }}
-          renderBubble={props => {
-            return (
-              <Bubble
-                {...props}
-                textStyle={{
-                  right: {
-                    color: 'white',
-                  },
-                  left: {
-                    color: 'black'
-                  }
-                }}
-                wrapperStyle={{
-                  left: {
-                    backgroundColor: 'white',
-                    borderRadius: 0,
-                    shadowColor: 'lightgrey',
-                    shadowRadius: 5,
-                    shadowOpacity: 1
-                  },
-                  right:{
-                    backgroundColor: '#af8fd6',
-                    borderRadius: 0,
-                    shadowColor: 'grey',
-                    shadowRadius: 5,
-                    shadowOpacity: 1
-                  }
-                }}
-                renderUsernameOnMessage={true}
-              />
-            );
-          }}
+          </Header>
+          <FlatList
+          keyExtractor={(item, index) => 'key'+index}
+          data={this.state.chats}
+          renderItem={({ item }) => <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.clickedGroup(item.chatid)}>
+           <SingleGroup data={item}/>
+          </TouchableHighlight>}
         />
+        </>
+        )}
+       {this.state.page === 2 && <Room chatid={this.state.chatId} setReady={this.setReady} backPage={this.backPage} />}
       </View>
         </LinearGradient>
     
