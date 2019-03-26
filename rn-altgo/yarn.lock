@@ -5207,7 +5207,7 @@ qs@^6.5.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.6.0.tgz#a99c0f69a8d26bf7ef012f871cdabb0aee4424c2"
   integrity sha512-KIJqT9jQJDQx5h5uAVPimw6yVg2SekOKu959OCtktD3FjzbpvaPr8i4zzg07DOMz+igA4W/aNM7OV8H37pFYfA==
 
-query-string@^6.2.0:
+query-string@^6.1.0, query-string@^6.2.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-6.4.0.tgz#1566c0cec3a2da2d82c222ed3f9e2a921dba5e6a"
   integrity sha512-Werid2I41/tJTqOGPJ3cC3vwrIh/8ZupBQbp7BSsqXzr+pTin3aMJ/EZb8UEuk7ZO3VqQFvq2qck/ihc6wqIdw==
@@ -5380,6 +5380,13 @@ react-native-maps-directions@^1.6.0:
 react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
+
+react-native-open-maps@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-open-maps/-/react-native-open-maps-0.3.3.tgz#5120a740dcbcf84d7205ede6ec308139a499c96f"
+  integrity sha512-Lr2eaGBq4U1Dbp6OjviJJjI4g0oB8/KIR0dkdi3jbA+9hiTMjpwaHUWojdOhXl4QFMvCohttFySXU9ZTtwDfGw==
+  dependencies:
+    query-string "^6.1.0"
 
 react-native-parsed-text@^0.0.20:
   version "0.0.20"

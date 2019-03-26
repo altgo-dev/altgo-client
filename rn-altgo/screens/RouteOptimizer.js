@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHighlight, Button } from 'react-native';
+import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHighlight } from 'react-native';
 // import MapView from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import s from '../style'
-import { Spinner, Header, Left, Icon } from 'native-base'
+import { Spinner, Header, Left, Icon, Fab, Right, Button  } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -32,7 +32,9 @@ class Example extends Component {
             transitDistance: 0,
             transitDuration: 0,
             cost: 0,
-            typeTrip: 'AtoZ'
+            typeTrip: 'AtoZ',
+            active: 'true',
+            showDetails: false
         };
 
         this.mapView = null;
@@ -132,9 +134,9 @@ class Example extends Component {
         let addresses = []
         addresses.push(await this._getLocationAsync())
         addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
+        // let addresses=['hacktiv8','gandaria city','monumen nasional',]
         this.setState({addresses, typeTrip: this.props.typeTrip},()=>{this.findRoute()})
     }
-
 
     _handleMapRegionChange = mapRegion => {
         this.setState({ mapRegion })
@@ -163,18 +165,80 @@ class Example extends Component {
         return currentLatLng
     };
 
+    showDetailnya = () => {
+      if ( this.state.showDetails) {
+        return (
+          <View style={{ position: 'absolute', bottom: 0, backgroundColor: 'white', width, borderRadius: 2, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}>
+          <ScrollView style={{ flex: 1 }}>
+
+            <View style={{ flex:1 , flexDirection: 'row',  }}>
+              <View style={{ width: 50, position: 'absolute', marginLeft: 73, backgroundColor: 'white', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
+                <Icon style={{ fontSize: 35 }} name="car" />
+              </View>
+
+              <View style={{ minHeight: 150, alignItems: 'center', flex: 1, padding: 5, backgroundColor: 'rgba(180, 180, 180, 0.2)', marginRight: 3, marginTop: 39, marginLeft: 3, paddingTop: 30, borderRadius: 25, }}>
+                <Text style={{ fontSize: 19, marginTop: 5, }}> {Math.floor(this.state.distance * 100) / 100} km</Text>
+                <Text style={{ fontSize: 19, marginTop: 5 }}>{this.state.duration} min</Text>
+                <Text style={{ fontSize: 19, marginTop: 5 }}>Rp {Math.floor(this.state.cost).toLocaleString()}</Text>
+              </View>
+
+              <View style={{ width: 50, position: 'absolute', right: 73, backgroundColor: 'white', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
+                <Icon style={{ fontSize: 35 }} name="bus" />
+              </View>
+
+              <View style={{ flex: 1, alignItems: 'center', padding: 5, backgroundColor: 'rgba(180, 180, 180, 0.2)', marginRight: 3, marginTop: 39, marginLeft: 3, paddingTop: 30, borderRadius: 25, }}>
+                <Text style={{ fontSize: 19, marginTop: 5 }}> {Math.floor(this.state.transitDistance * 100) / 100} km</Text>
+                <Text style={{ fontSize: 19, marginTop: 5 }}>{Math.floor(this.state.transitDuration * 100) / 100} min</Text>
+              </View>
+
+            </View>
+            {this.state.coordinates.map((coordinate, index) => (
+                <View key={index} style={{marginTop: 10, margin: 5, padding: 5, backgroundColor: 'white', flex: 1, flexDirection: 'row', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.5, shadowRadius: 3}}>
+                  <Left>
+                    <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+                        <Text style={{fontSize:24, textAlign: 'center'}}>{index + 1}</Text>
+                    </View>
+
+                  </Left>
+                    <View style={{flex:5, justifyContent: 'center'}}>
+                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '500'}}>{coordinate.addressSearchQuery} </Text>
+                    </View>
+                  <Right>
+                    <View style={{flex:1}}>
+                        <Icon name="car" onPress={()=>{this.launchMapApp(coordinate,'drive')}} />
+                        <Icon name="bus" onPress={()=>{this.launchMapApp(coordinate,'public_transport')}} />
+                    </View>
+                  </Right>
+                </View>
+            ))}
+          </ScrollView>
+
+            </View>
+        )
+      }
+    }
+
+    showButtonBack = () => {
+      // if (this.state.showDetails) {
+        return (
+          <Header style={{ position: 'absolute', }}>
+          <TouchableHighlight onPress={this.props.toPageRecom} style={{ top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, justifyContent: 'center', margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+            <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey' }} />
+          </TouchableHighlight>
+          </Header>
+        )
+      // }
+    }
+
     render() {
         return (
-            <View style={{ flex: 1 }}>
-                <Header style={{ height: 40, paddingTop: 0}}>
-                    <Left>
-                        <TouchableHighlight onPress={this.props.toPageRecom}>
-                            <Icon name="ios-arrow-back" style={{ margin: 5}} />
-                        </TouchableHighlight>
-                    </Left>
-                </Header>
-                <ScrollView style={{ flex: 1 }}>
-                    <View style={{ height: 500 }}>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
+             {
+               this.showButtonBack()
+             }
+                {/* <ScrollView style={{ flex: 1 }}> */}
+                  <TouchableHighlight style={{ zIndex: -1}} underlayColor="#ffffff00" onLongPress={ () => this.setState({ showDetails: !this.state.showDetails })}>
+                    <View style={{ height }}>
                         <MapView
                             initialRegion={{
                                 latitude: this.state.mapRegion.latitude,
@@ -182,7 +246,7 @@ class Example extends Component {
                                 latitudeDelta: LATITUDE_DELTA,
                                 longitudeDelta: LONGITUDE_DELTA,
                             }}
-                            style={StyleSheet.absoluteFill}
+                            style={{ zIndex: -1, height , width}}
                             ref={c => this.mapView = c}
                             onPress={()=>{}}
                             customMapStyle={ myMapStyle }
@@ -236,38 +300,16 @@ class Example extends Component {
                             )}
                         </MapView>
                     </View>
+                  </TouchableHighlight>
+
                     {
-                        this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, margin: 50, }}>Please wait</Text></View>
+                        this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, marginBottom: 50 }}>Please wait...</Text></View>
                     }
                     {
-                        this.state.distance !== '' && <>
-                            <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>Best Routes based on roadtime</Text>
-                            <View style={{margin:5,padding:5,backgroundColor:'lightgray'}}>
-                                <Text>Total driving distance: {this.state.distance}km</Text>
-                                <Text>Total driving duration: {this.state.duration}min</Text>
-                                <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
-                                <Text>Total public transport distance: {this.state.transitDistance}km</Text>
-                                <Text>Total public transport duration: {this.state.transitDuration}min</Text>
-                            </View>
-
-                            {this.state.coordinates.map((coordinate, index) => (
-                                <View key={index} style={{margin:5,padding:5,backgroundColor:'white',flex:1,flexDirection:'row'}}>
-                                    <View style={{flex:10,justifyContent:"center",alignItems:"center"}}>
-                                        <Text style={{fontSize:24}}>{index + 1}</Text>
-                                    </View>
-                                    <View style={{flex:80}}>
-                                        <Text>{coordinate.addressSearchQuery}</Text>
-                                    </View>
-                                    <View style={{flex:10}}>
-                                        <Icon name="car" onPress={()=>{this.launchMapApp(coordinate,'drive')}} />
-                                        <Icon name="bus" onPress={()=>{this.launchMapApp(coordinate,'public_transport')}} />
-                                    </View>
-                                </View>
-                            ))}
-                        </>
+                      this.showDetailnya()
                     }
 
-                </ScrollView>
+                {/* </ScrollView> */}
 
             </View>
         );
@@ -276,7 +318,7 @@ class Example extends Component {
 const soverlay = StyleSheet.create({
     overlay: {
         flex: 1,
-        height: height + 200,
+        height: height ,
         width: width,
         position: 'absolute',
         backgroundColor: 'rgba(15, 15, 15, 0.8)',
