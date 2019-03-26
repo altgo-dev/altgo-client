@@ -31,11 +31,24 @@ class SinglePlace extends Component {
     }
 
     render() {
-        const { data } = this.props
+        const { data } = this.props 
+        let apasih = () => {
+            if(data.photos) {
+                return (
+                    <Thumbnail  source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${data.photos[0].photo_reference}&maxheight=400&maxwidth=400&key=AIzaSyAbyE8RCeWnwkMeZ5aXdNlRAs7e-r5TKzc`}} />
+                )
+            } else {
+                return null
+            }
+        }
+
         return (
             <CardItem style={{ marginTop: 5, marginHorizontal: 5, padding: 0, backgroundColor: 'rgba(255, 190, 30, 1)' }}>
+                {/* {
+                   data && data.photos && data.photos[0] && <Thumbnail  source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${data.photos[0].photo_reference}&maxheight=400&maxwidth=400&key=AIzaSyAbyE8RCeWnwkMeZ5aXdNlRAs7e-r5TKzc`}} />
+                } */}
                 {
-                    data.photos[0] && <Thumbnail  source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${data.photos[0].photo_reference}&maxheight=400&maxwidth=400&key=AIzaSyAbyE8RCeWnwkMeZ5aXdNlRAs7e-r5TKzc`}} />
+                    apasih()
                 }
                 <Body style={{ marginTop: 4, marginLeft: 8 }}>
                     <Text style={{ fontSize: 18, fontWeight: '400', color: 'black' }}> {data.name} </Text>

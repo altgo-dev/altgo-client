@@ -39,8 +39,10 @@ class Room extends Component {
       }
       let haha = []
       querSnapshot.data().messages.forEach(l => {
-        let lol= (l.createdAt.seconds * 1000)
-        l.createdAt = lol
+        if (l.createdAt.seconds) {
+          let lol= (l.createdAt.seconds * 1000)
+          l.createdAt = lol
+        }
         haha.push(l)
       })
       this.setState({
@@ -77,7 +79,6 @@ class Room extends Component {
         <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
         <GiftedChat
           messages={this.state.messages}
-          // isAnimated={true}
           onSend={messages => this.onSend(messages)}
           user={{
             _id: this.props.userid,
@@ -103,7 +104,7 @@ class Room extends Component {
                     backgroundColor: 'white',
                     borderRadius: 0,
                     shadowColor: 'lightgrey',
-                    shadowRadius: 5,
+                    shadowRadius: 2,
                     shadowOpacity: 1
                   },
                   right:{
@@ -115,9 +116,9 @@ class Room extends Component {
                   }
                 }}
                 renderUsernameOnMessage={true}
-                // renderDay={ props => {
-                //   <Day {...props} textStyle={{ color: 'black'}}/>
-                // }}
+                renderDay={ props => {
+                  <Day {...props} textStyle={{ color: 'black'}}/>
+                }}
               />
               );
             }}
