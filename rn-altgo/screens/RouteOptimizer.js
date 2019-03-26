@@ -172,18 +172,18 @@ class Example extends Component {
           <ScrollView style={{ flex: 1 }}>
 
             <View style={{ flex:1 , flexDirection: 'row',  }}>
-              <View style={{ width: 50, position: 'absolute', marginLeft: 73, backgroundColor: 'white', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
+              <View style={{ width: 50, position: 'absolute', marginLeft: 73, backgroundColor: 'rgb(239, 171, 2)', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
                 <Icon style={{ fontSize: 35 }} name="car" />
               </View>
 
               <View style={{ minHeight: 150, alignItems: 'center', flex: 1, padding: 5, backgroundColor: 'rgba(180, 180, 180, 0.2)', marginRight: 3, marginTop: 39, marginLeft: 3, paddingTop: 30, borderRadius: 25, }}>
                 <Text style={{ fontSize: 19, marginTop: 5, }}> {Math.floor(this.state.distance * 100) / 100} km</Text>
-                <Text style={{ fontSize: 19, marginTop: 5 }}>{this.state.duration} min</Text>
+                <Text style={{ fontSize: 19, marginTop: 5 }}>{ Math.floor(this.state.duration * 100 )/100} min</Text>
                 <Text style={{ fontSize: 19, marginTop: 5 }}>Rp {Math.floor(this.state.cost).toLocaleString()}</Text>
               </View>
 
-              <View style={{ width: 50, position: 'absolute', right: 73, backgroundColor: 'white', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
-                <Icon style={{ fontSize: 35 }} name="bus" />
+              <View style={{ width: 50, position: 'absolute', right: 73, backgroundColor: 'black', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
+                <Icon style={{ fontSize: 35, color: 'white' }} name="bus" />
               </View>
 
               <View style={{ flex: 1, alignItems: 'center', padding: 5, backgroundColor: 'rgba(180, 180, 180, 0.2)', marginRight: 3, marginTop: 39, marginLeft: 3, paddingTop: 30, borderRadius: 25, }}>
@@ -201,7 +201,7 @@ class Example extends Component {
 
                   </Left>
                     <View style={{flex:5, justifyContent: 'center'}}>
-                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '500'}}>{coordinate.addressSearchQuery} </Text>
+                        <Text style={{ textAlign: 'left', fontSize: 19, fontWeight: '500'}}>{coordinate.addressSearchQuery} </Text>
                     </View>
                   <Right>
                     <View style={{flex:1}}>
@@ -221,11 +221,11 @@ class Example extends Component {
     showButtonBack = () => {
       // if (this.state.showDetails) {
         return (
-          <Header style={{ position: 'absolute', }}>
-          <TouchableHighlight onPress={this.props.toPageRecom} style={{ top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, justifyContent: 'center', margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
-            <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey' }} />
+          // <Header style={{ position: 'absolute', }}>
+          <TouchableHighlight onPress={this.props.toPageRecom} style={{ justifyContent: 'center', marginRight: 50, top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+            <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
           </TouchableHighlight>
-          </Header>
+          // </Header>
         )
       // }
     }
@@ -254,7 +254,7 @@ class Example extends Component {
                         >
                             {this.state.coordinates.map((coordinate, index) =>
                                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
-                                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.75)', margin: 5, padding: 5 }}>{index + 1}</Text>
+                                    <Text style={{ backgroundColor: 'rgba(239, 171, 2, 0.7)', margin: 5, padding: 5, borderRadius: 50 }}>{index + 1}</Text>
                                 </MapView.Marker>
                             )}
                             <MapView.Marker
@@ -270,7 +270,7 @@ class Example extends Component {
                                         destination={this.state.coordinates[this.state.coordinates.length - 1]}
                                         apikey={GOOGLE_MAPS_APIKEY}
                                         strokeWidth={3}
-                                        strokeColor="deepskyblue"
+                                        strokeColor="rgb(239, 171, 2)"
                                         optimizeWaypoints={false}
                                         onStart={(params) => {
                                             console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
