@@ -15,6 +15,19 @@ export function getCoordinate(input) {
   }
 }
 
+export function getCenterPlaces(origins){
+  return async dispatch => {
+    try{
+      var response = await axios.post(`${baseURL}/meetups`, {origins})
+      var payload = response.data.data.reccommendations
+      // console.log(payload)
+      dispatch({type: 'SET_CENTER_PLACES', payload})
+    } catch (error){
+      console.log('ERROR')
+    }
+  }
+}
+
 export function setOriginCity(destination){
   return dispatch => {
     dispatch({type: 'SET_ORIGIN_CITY_SUCCESS', payload: destination})
@@ -55,5 +68,12 @@ export function autoComplete(input){
       // alert('error')
       dispatch({type: 'ERROR', payload: {}})
     }  
+  }
+}
+
+export function setGroupCoordinate(input){
+  return dispatch => {
+    // console.log(input, '-----------')
+    dispatch({type: 'SET_GROUP_COORD', payload: input })
   }
 }

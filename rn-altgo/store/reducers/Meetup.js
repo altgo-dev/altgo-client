@@ -2,7 +2,9 @@ const defaultState = {
   coordinate : {},
   originCity: '',
   destinationList: [],
-  autocompleteResult: []
+  autocompleteResult: [],
+  groupCoordinate: [],
+  centerPlaces: []
 }
 
 export default function (state = defaultState, action){
@@ -17,6 +19,10 @@ export default function (state = defaultState, action){
       return {...state, destinationList: payload}
     case 'AUTOCOMPLETE_SUCCESS':
       return {...state, autocompleteResult: payload}
+    case 'SET_GROUP_COORD':
+      return {...state, groupCoordinate: payload}
+    case 'SET_CENTER_PLACES':
+      return {...state, centerPlaces: payload}
     
     case 'REMOVE_DESTINATION_SUCCESS':
       return {...state, destinationList: payload}
