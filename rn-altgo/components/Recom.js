@@ -58,7 +58,7 @@ class Recom extends Component {
         </View>
         {
           this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => (<View key={index}>
-            <TouchableHighlight onPress={(each) => this.onClickSearch(each)}>
+            <TouchableHighlight onPress={() => this.onClickSearch(each)}>
               <Text style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>
                 {each.description}
               </Text>
