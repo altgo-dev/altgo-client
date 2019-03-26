@@ -7,16 +7,22 @@ import { connect } from 'react-redux'
 
 //actions
 import { autoComplete, addDestination } from '../store/actions/MeetupAction'
+import rest from '../assets/restaurant.jpg'
+import muse from '../assets/museum.jpeg'
+import hotel from '../assets/hotel.jpg'
+import attr from '../assets/attr.jpeg'
+import lfsty from '../assets/lifestyle.jpeg'
+import oth from '../assets/hospit.jpeg'
 
 class Recom extends Component {
   state = {
     category: [
-      { title: 'Restaurant', cat: 'restaurant', img: 'https://media.istockphoto.com/photos/caffee-on-table-and-blured-cafe-picture-id652628318?k=6&m=652628318&s=612x612&w=0&h=6K5ioW-NNIFD0WP9gwzPdJFc3bc178twHqzoOjV2k1w=', color: 'black' },
-      { title: 'Museum', cat: 'museum', img: 'https://www.motionplaces.com/wp-content/uploads/2017/08/paris-night-timelapse-free-stock-1280x720.jpg', color: '#22467f' },
-      { title: 'Hotel', cat: 'hotel', img: 'https://www.merakiva.com/wp-content/uploads/2016/09/Beautiful-sunset-view-from-pexels.jpg', color: '#78217c' },
-      { title: 'Attraction', cat: 'attraction', img: 'https://i.pinimg.com/originals/a0/3d/4b/a03d4bf4d825267d6a20a28a5ed15469.jpg', color: '#217c57' },
-      { title: 'LifeStyle', cat: 'lifestyle', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU9jrcsgN6IYyOyovQ-WKXFIF7Jhk6taP8FzNiGgG9v-Zz5QF8', color: '#7c5921' },
-      { title: 'others', cat: 'others', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeg39e3IEuTQzt8QYTx56NhGMLju1WquZG-6-_5Pp-2PeKJB4n', color: '#822323' }]
+      { title: 'Restaurant', cat: 'restaurant', img: rest, color: 'black' },
+      { title: 'Museum', cat: 'museum', img: muse, color: '#22467f' },
+      { title: 'Hotel', cat: 'hotel', img: hotel, color: '#78217c' },
+      { title: 'Attraction', cat: 'attraction', img: attr, color: '#217c57' },
+      { title: 'LifeStyle', cat: 'lifestyle', img: lfsty, color: '#7c5921' },
+      { title: 'others', cat: 'others', img: oth, color: '#822323' }]
   }
 
   onSearch = async (input) => {
@@ -72,7 +78,7 @@ class Recom extends Component {
           keyExtractor={(item) => item.title}
           data={this.state.category}
           renderItem={({ item }) => <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.props.toPageDetail(item.cat)}>
-            <ImageOverlay title={item.title} titleStyle={{ fontSize: 25, fontWeight: '500' }} overlayColor={item.color} overlayAlpha={0.6} containerStyle={{ ...s.catImg, borderRadius: 10 }} source={{ uri: item.img }} />
+            <ImageOverlay title={item.title} titleStyle={{ fontSize: 25, fontWeight: '500' }} overlayColor={item.color} overlayAlpha={0.6} containerStyle={{ ...s.catImg, borderRadius: 10 }} source={item.img} />
           </TouchableHighlight>}
         />
       </>
