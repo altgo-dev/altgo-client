@@ -126,6 +126,7 @@ class Example extends Component {
     }
 
     async componentDidMount() {
+        console.log(this.props.typeTrip, '=====')
         this.findRoute()
 
     }

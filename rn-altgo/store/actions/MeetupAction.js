@@ -35,7 +35,7 @@ export function addDestination(destination){
         data:{
           addresses:destination.map(e=>`${e.name}, ${e.vicinity}`)
         }
-      }).then(()=>{}).catch(()=>{})
+      }).then(()=> {}).catch(()=> {})
     
     console.log(destination)
     dispatch({type: 'ADD_DESTINATION_SUCCESS', payload: destination})
@@ -59,7 +59,6 @@ export function autoComplete(input){
     } catch(error) {
       // alert('error')
       dispatch({type: 'ERROR', payload: {}})
-    }
-    
+    }  
   }
 }

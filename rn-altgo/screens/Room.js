@@ -12,11 +12,15 @@ class Room extends Component {
     messages: [],
     chatId : '',
     ready: false,
-    coord: []
+    coord: [],
+    members: []
   }
 
   componentDidMount = () => {
     db.collection('chat').doc(this.props.chatid).onSnapshot(querSnapshot => {
+      this.setState({
+        members: querSnapshot.data().accept
+      })
       if(!querSnapshot.data().pending.length) {
         db.collection('users').where('chatid', '==', this.props.chatid).get()
         .then(docs => {
