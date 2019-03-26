@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import { Text, View, SafeAreaView, TouchableHighlight, AsyncStorage } from 'react-native'
 import { Content, Thumbnail, Icon, Button } from 'native-base'
@@ -28,8 +27,6 @@ class Profile extends Component {
     } catch (error) {
       console.log(error)
     }
-  
-
   }
 
   async componentDidUpdate(prevProps, prevState){
@@ -39,8 +36,6 @@ class Profile extends Component {
     }
   }
 
-
-
   logout = async () => {
     // alert('masuk')
     await AsyncStorage.removeItem('token')
@@ -49,12 +44,12 @@ class Profile extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-      <LinearGradient style={{ flex: 1}} colors={['black', '#1f1135', 'black']} >
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
+      {/* <LinearGradient style={{ flex: 1}} colors={['black', '#1f1135', 'black']} > */}
        {!this.state.loading && (
         <Content>
         <View style={{ flex: 2, height: 250, justifyContent: 'center', alignItems: 'center' }}>
-          <Button onPress={this.logout} style={{ width: 60, justifyContent: 'center', marginLeft: 300, height: 35 }}> 
+          <Button onPress={this.logout} style={{ width: 60, justifyContent: 'center', marginLeft: 300, height: 35, backgroundColor: 'black' }}> 
             <Text style={{ color: 'white', fontSize: 17 }}>
               Logout
             </Text>
@@ -66,7 +61,7 @@ class Profile extends Component {
         </View>
 
         <View style={{ flex: 2,  height: 100, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
-          <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
+          <TouchableHighlight style={{ borderRadius: 50, backgroundColor: 'black', width: 100 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
             <Icon name="person-add" style={{ fontSize: 80, color: 'grey' }}/>
           </TouchableHighlight>
           <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('PendingHangout')}>
@@ -74,8 +69,8 @@ class Profile extends Component {
           </TouchableHighlight>
         </View>
 
-        <View style={{ flex: 5 }}>
-          <View style={{ backgroundColor: 'lightgrey'}}>
+        <View style={{ flex: 5, backgroundColor: 'rgb(255, 190, 30)', marginHorizontal: 5 }}>
+          <View style={{ borderBottomColor: 'white', borderBottomWidth: 4}}>
             <Text style={{ textAlign: 'center', fontSize: 18 }}>
               My Friends
             </Text>
@@ -90,10 +85,10 @@ class Profile extends Component {
               } })
             }
         </View>
-          </Content>
+        </Content>
        )}
       
-      </LinearGradient>
+      {/* </LinearGradient> */}
       </SafeAreaView>
     )
   }

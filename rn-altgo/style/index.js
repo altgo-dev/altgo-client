@@ -15,12 +15,12 @@ const s = StyleSheet.create({
   },
   panel: {
     flex: 1,
-    backgroundColor: '#CDC1FF',
+    backgroundColor: 'rgba(219, 219, 219, 0.8)',
     position: 'relative'
   },
   panelHeader: {
     height: 120,
-    backgroundColor: '#CDC1FF',
+    backgroundColor: 'rgba(219, 219, 219, 0.8)',
     alignItems: 'center',
     justifyContent: 'center'
   },
