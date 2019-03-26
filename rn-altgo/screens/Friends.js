@@ -36,6 +36,8 @@ class Friend extends Component {
       this.setState({
         chats: allChats
       }, () => {
+        // console.log('=================')
+        // console.log(this.state.chats)
       })
     } catch (error) {
       

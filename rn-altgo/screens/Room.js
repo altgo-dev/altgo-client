@@ -7,6 +7,9 @@ import { LinearGradient } from 'expo'
 import { connect } from 'react-redux'
 import { db } from '../api/firestore'
 
+//actions
+import { setGroupCoordinate, getCenterPlaces } from '../store/actions/MeetupAction'
+
 class Room extends Component {
   state = {
     messages: [],
@@ -33,8 +36,11 @@ class Room extends Component {
               ready: true,
               coord: meetUp
             }, () => {
-              console.log(this.state.coord, '====')
-              console.log(this.props.userid)
+              var input = this.state.coord
+              this.props.setGroupCoordinate(this.state.coord)
+              this.props.getCenterPlaces(input)
+              // console.log(input, '====')
+              // console.log(this.props.userid)
             })
           })
       }
@@ -74,7 +80,7 @@ class Room extends Component {
           </TouchableHighlight>
 
         </Left>
-          {this.state.ready && <TouchableHighlight><Icon name="pin" /></TouchableHighlight>
+          {this.state.ready && <TouchableHighlight onPress={() => (this.props.navigation.navigate('GroupRoute'))}><Icon name="pin" /></TouchableHighlight>
           }
         </Header>
         <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
@@ -135,4 +141,9 @@ const mapStatetoProps = (state) => ({
   userInfo: state.Users.userInfo
 })
 
-export default connect(mapStatetoProps)(Room)
+const mapDispatchToProps = (dispatch) => ({
+  setGroupCoordinate: (input) => (dispatch(setGroupCoordinate(input))),
+  getCenterPlaces: (origins) => (dispatch(getCenterPlaces(origins)))
+})
+
+export default connect(mapStatetoProps, mapDispatchToProps)(Room)

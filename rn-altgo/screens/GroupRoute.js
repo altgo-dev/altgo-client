@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, SafeAreaView } from 'react-native';
+import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, SafeAreaView, TouchableHighlight } from 'react-native';
 // import MapView from 'react-native-maps';
 import s from '../style'
 import { Spinner, Content } from 'native-base'
@@ -32,7 +32,9 @@ class Example extends Component {
       transitDuration: 0,
       walkingDistance: 0,
       walkingDuration: 0,
-      cost: 0
+      cost: 0,
+      groupLocation: [],
+      chosenPlace: {}
     };
 
     this.mapView = null;
@@ -126,8 +128,8 @@ class Example extends Component {
   }
 
   async componentDidMount() {
-    this.findRoute()
-
+    await this.findRoute()
+    console.log('======', this.props.centerPlaces)
   }
 
 
@@ -176,16 +178,30 @@ class Example extends Component {
                   ref={c => this.mapView = c}
                   onPress={() => { }}
                 >
-                  {this.state.coordinates.map((coordinate, index) =>
-                    <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
+                  {this.props.groupCoordinate.map((each, index) =>
+                    <MapView.Marker key={index} coordinate={{ latitude: each.lat, longitude: each.long }}>
                       <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
                     </MapView.Marker>
                   )}
-                  <MapView.Marker
-                    coordinate={this.state.location.coords}
+                  {this.props.groupCoordinate && this.props.groupCoordinate.map((each, index) => <MapView.Marker
+                    key={index}
+                    // coordinate={this.state.location.coords}
+                    coordinate={{ latitude: each.lat, longitude: each.long }}
                     title="My Marker"
                     description="Some description"
-                  />
+                  />)}
+
+                  {this.state.chosenPlace && <MapView.Marker coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}>
+                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[meeting point]</Text>
+                  </MapView.Marker>}
+
+                  {this.state.chosenPlace && <MapView.Marker
+                    // coordinate={this.state.location.coords}
+                    coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}
+                    title="My Marker"
+                    description="Some description"
+                  />}
+
                   {(this.state.coordinates.length >= 1) && (
                     <>
                       <MapViewDirections
@@ -230,7 +246,7 @@ class Example extends Component {
               {
                 this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, margin: 50, }}>Please wait</Text></View>
               }
-              {
+              {/* {
                 this.state.distance !== '' && <>
                   <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>Best Routes based on roadtime</Text>
                   <Text>Total road distance: {this.state.distance}km</Text>
@@ -239,6 +255,16 @@ class Example extends Component {
 
                   {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.addressSearchQuery}</Text>)}
                 </>
+              } */}
+              <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>
+              {
+                this.props.centerPlaces && this.props.centerPlaces.map((each, index) => <View style={{ textAlign: 'center' }} key={index}>
+                  {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
+                  <TouchableHighlight onPress={() => this.setState({chosenPlace:each.coordinate})}>
+                    <Text>{index + 1}.{each.name} </Text>
+                  </TouchableHighlight>
+                </View>)
+
               }
 
             </ScrollView>
@@ -262,6 +288,10 @@ const soverlay = StyleSheet.create({
 })
 
 const mapState = (state) => ({
-  destList: state.Meetup.destinationList
+  destList: state.Meetup.destinationList,
+  groupCoordinate: state.Meetup.groupCoordinate,
+  centerPlaces: state.Meetup.centerPlaces
 })
+
+
 export default connect(mapState)(Example);
