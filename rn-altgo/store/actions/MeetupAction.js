@@ -72,8 +72,20 @@ export function autoComplete(input){
 }
 
 export function setGroupCoordinate(input){
+  const getRandomColor = () => {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
   return dispatch => {
     // console.log(input, '-----------')
+    input=input.map(e=>{
+      e.color=getRandomColor()
+      return e
+    })
     dispatch({type: 'SET_GROUP_COORD', payload: input })
   }
 }

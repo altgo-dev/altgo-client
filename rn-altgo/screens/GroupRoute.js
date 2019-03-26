@@ -21,81 +21,15 @@ class Example extends Component {
 
     this.state = {
       coordinates: [],
-      addresses: [],
       routeOptimizerResponse: {},
-      mapRegion: { latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
+      mapRegion: { latitude: -6.260708, longitude: 106.781569, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
       locationResult: null,
-      location: { coords: { latitude: 37.78825, longitude: -122.4324 } },
-      distance: '',
-      duration: '',
-      transitDistance: 0,
-      transitDuration: 0,
+      location: { coords: { latitude: -6.260708, longitude: 106.781569 } },
       cost: 0,
-      chosenPlace: {}
+      chosenPlace: null
     };
 
     this.mapView = null;
-  }
-
-  findRoute = async () => {
-    let addresses = []
-    addresses.push(await this._getLocationAsync())
-    addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
-    let response = await axios({
-      url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
-      method: 'POST',
-      data: {
-        addresses,
-        routingType: this.props.typeTrip
-      }
-    })
-    this.setState({
-      coordinates: response.data.route.map((e, i) => {
-        if (i === 0) {
-          e.addressSearchQuery = "Your location"
-        }
-        return {
-          latitude: e.lat,
-          longitude: e.lng,
-          addressSearchQuery: e.addressSearchQuery,
-          formatted_address: e.geocodingData.formatted_address
-        }
-      }),
-      routeOptimizerResponse: response.data
-    })
-  }
-
-  displayTransitRoute = () => {
-    return (
-      <>
-        {this.state.coordinates.map((e, i) => (
-          (i < this.state.coordinates.length - 1) && (
-            <MapViewDirections
-              key={i}
-              origin={this.state.coordinates[i]}
-              destination={this.state.coordinates[i + 1]}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={3}
-              mode="transit"
-              strokeColor="black"
-              optimizeWaypoints={false}
-              onStart={(params) => {
-                console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
-              }}
-              onReady={result => {
-                this.setState({
-                  transitDistance: this.state.transitDistance + result.distance,
-                  transitDuration: this.state.transitDuration + result.duration,
-                })
-              }}
-              onError={(errorMessage) => {
-                console.log('GOT AN ERROR while drawing the transit route');
-              }}
-            />
-          )
-        ))}
-      </>
-    )
   }
 
   fuelCostPrivateVehicle = (type, distance) => {
@@ -123,11 +57,9 @@ class Example extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.props.typeTrip, '=====')
-    this.findRoute()
-    console.log('-=-=-=-=', this.props.centerPlaces)
+    this._getLocationAsync()
+    console.log(this.props.groupCoordinate)
   }
-
 
   _handleMapRegionChange = mapRegion => {
     this.setState({ mapRegion });
@@ -207,9 +139,42 @@ class Example extends Component {
                 </MapView.Marker>
               )}
 
-              {this.state.chosenPlace && <MapView.Marker coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}>
-                <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[meeting point]</Text>
-              </MapView.Marker>}
+              {this.state.chosenPlace &&
+                <>
+                  <MapView.Marker coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}>
+                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[meeting point]</Text>
+                  </MapView.Marker>
+
+                  <>
+                    {this.props.groupCoordinate.map((e, i) => (
+                      (
+                        <MapViewDirections
+                          key={i}
+                          origin={{ longitude: e.long, latitude: e.lat }}
+                          destination={{ longitude: this.state.chosenPlace.long, latitude: this.state.chosenPlace.lat }}
+                          apikey={GOOGLE_MAPS_APIKEY}
+                          strokeWidth={3}
+                          mode="transit"
+                          strokeColor={e.color}
+                          optimizeWaypoints={false}
+                          onStart={(params) => {
+                            console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
+                          }}
+                          onReady={result => {
+                            this.setState({
+                              transitDistance: this.state.transitDistance + result.distance,
+                              transitDuration: this.state.transitDuration + result.duration,
+                            })
+                          }}
+                          onError={(errorMessage) => {
+                            console.log('GOT AN ERROR while drawing the transit route');
+                          }}
+                        />
+                      )
+                    ))}
+                  </>
+
+                </>}
 
               {this.state.chosenPlace && <MapView.Marker
                 // coordinate={this.state.location.coords}
@@ -218,74 +183,10 @@ class Example extends Component {
                 description="Some description"
               />}
 
-              {(this.state.coordinates.length >= 1) && (
-                <>
-                  <MapViewDirections
-                    origin={this.state.coordinates[0]}
-                    waypoints={(this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null}
-                    destination={this.state.coordinates[this.state.coordinates.length - 1]}
-                    apikey={GOOGLE_MAPS_APIKEY}
-                    strokeWidth={3}
-                    strokeColor="deepskyblue"
-                    optimizeWaypoints={false}
-                    onStart={(params) => {
-                      console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-                    }}
-                    onReady={result => {
-                      this.setState({
-                        distance: result.distance,
-                        duration: result.duration
-                      })
 
-                      this.fuelCostPrivateVehicle('car', result.distance)
-                      this.mapView.fitToCoordinates(result.coordinates, {
-                        edgePadding: {
-                          right: (width / 20),
-                          bottom: (height / 20),
-                          left: (width / 20),
-                          top: (height / 20),
-                        }
-                      });
-                    }}
-                    onError={(errorMessage) => {
-                      console.log('GOT AN ERROR while drawing the main route');
-                    }}
-                  />
-                  {this.displayTransitRoute()}
-                </>
-              )}
             </MapView>
           </View>
-          {
-            this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, margin: 50, }}>Please wait</Text></View>
-          }
-          {
-            !this.props.groupCoordinate.length && this.state.distance !== '' && <>
-              <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>Best Routes based on roadtime</Text>
-              <View style={{ margin: 5, padding: 5, backgroundColor: 'lightgray' }}>
-                <Text>Total driving distance: {this.state.distance}km</Text>
-                <Text>Total driving duration: {this.state.duration}min</Text>
-                <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
-                <Text>Total public transport distance: {this.state.transitDistance}km</Text>
-                <Text>Total public transport duration: {this.state.transitDuration}min</Text>
-              </View>
 
-              {this.state.coordinates.map((coordinate, index) => (
-                <View key={index} style={{ margin: 5, padding: 5, backgroundColor: 'white', flex: 1, flexDirection: 'row' }}>
-                  <View style={{ flex: 10, justifyContent: "center", alignItems: "center" }}>
-                    <Text style={{ fontSize: 24 }}>{index + 1}</Text>
-                  </View>
-                  <View style={{ flex: 90 }}>
-                    <Text>{coordinate.addressSearchQuery}</Text>
-                  </View>
-                  {/* <View style={{flex:10}}>
-                                        <Button title="Up" onPress={()=>{}}/>
-                                        <Button title="Dn" onPress={()=>{}}/>
-                                    </View> */}
-                </View>
-              ))}
-            </>
-          }
 
           {this.props.groupCoordinate && <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>}
           {
@@ -316,7 +217,6 @@ const soverlay = StyleSheet.create({
 })
 
 const mapState = (state) => ({
-  destList: state.Meetup.destinationList,
   groupCoordinate: state.Meetup.groupCoordinate,
   centerPlaces: state.Meetup.centerPlaces
 })
