@@ -146,6 +146,13 @@ class Home extends Component {
         })
     }
 
+
+    setShowPanel = (payload) => {
+        this.setState({
+            showPanel: payload
+        })
+    }
+
     createGroup = async (type) => {
         alert('Invitation sent!')
         const permisstionStatus = await Location.hasServicesEnabledAsync()
@@ -281,7 +288,7 @@ class Home extends Component {
                             </View>
                         }
                         {
-                            page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} />
+                            page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} setShowPanel={this.setShowPanel} />
                         }
                         {
                             page === 3 && <View style={{ backgroundColor: 'white'}}><DetailCat toPageRecom={this.toPageRecom} cat={cat} /></View>

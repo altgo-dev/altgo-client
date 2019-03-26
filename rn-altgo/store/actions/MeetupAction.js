@@ -23,6 +23,7 @@ export function setOriginCity(destination){
 }
 
 export function addDestination(destination){
+  console.log(destination.map(e=>`${e.name}, ${e.vicinity}`), '==DESTINATION==')
   return dispatch => {
       axios({
         baseURL,
@@ -33,7 +34,7 @@ export function addDestination(destination){
         }
       }).then(()=> {}).catch(()=> {})
     
-    console.log(destination)
+    // console.log(destination)
     dispatch({type: 'ADD_DESTINATION_SUCCESS', payload: destination})
     // alert(JSON.stringify(destination))
   }

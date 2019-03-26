@@ -32,6 +32,7 @@ class Recom extends Component {
     var destination = this.props.destinationList
     destination.push(objInput)
     this.props.addDestination(destination)
+    this.props.setShowPanel(true)
   }
 
   render() {

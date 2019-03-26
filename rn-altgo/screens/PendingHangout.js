@@ -26,6 +26,11 @@ class PendingHangout extends Component {
   }
 
   swipeLeft = async () => {
+    let cardShift = this.state.cards
+    cardShift.shift()
+    this.setState({
+      cards: cardShift
+    })
     let deck = this.deck._root.state
     // console.log(this.deck._root.state)
     const deleted = await db.collection('users').doc(deck.selectedItem.id).delete()
@@ -39,6 +44,11 @@ class PendingHangout extends Component {
   }
 
   swipeRight = async () => {
+    let cardShift = this.state.cards
+    cardShift.shift()
+    this.setState({
+      cards: cardShift
+    })
     let deck = this.deck._root.state
     const permisstionStatus = await Location.hasServicesEnabledAsync()
     if(permisstionStatus) {
