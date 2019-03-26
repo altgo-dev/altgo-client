@@ -23,7 +23,7 @@ import RouteOp from './RouteOptimizer'
 import PendingRequest from '../screens/PendingHangout'
 
 //ACTION SHEET
-var BUTTONS = ["One-Way-Trip", "Round-Trip","Cancel"]
+var BUTTONS = ["AtoZ", "RoundTrip","Straight","Cancel"]
 var DESTRUCTIVE_INDEX = 3
 var CANCEL_INDEX = 4
 
@@ -129,8 +129,8 @@ class Home extends Component {
     }
     showOp = () => {
         ActionSheet.show({
-            options: ['one-way', 'roundtrip', 'cancel'],
-            cancelButtonIndex: 2,
+            options: ['Point to point', 'Round Trip','Straightest Line', 'cancel'],
+            cancelButtonIndex: 3,
             title: 'route options'
         }, 
         buttonIndex => {

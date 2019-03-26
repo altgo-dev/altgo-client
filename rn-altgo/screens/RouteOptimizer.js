@@ -47,7 +47,7 @@ class Example extends Component {
             method: 'POST',
             data: {
                 addresses,
-                routingType: 'AtoZ'
+                routingType: this.props.typeTrip
             }
         })
         this.setState({
