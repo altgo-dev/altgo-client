@@ -125,9 +125,12 @@ class DetailCat extends Component {
           </Text>
           <Right></Right>
         </Header>
+        <View style={{  backgroundColor: 'rgba(255, 190, 30, 1)', flex: 1}}>
         {
           recomendationsResponse.results.map((el, i) => <SinglePlace type="ios-add" key={i} data={el} />)
         }
+
+        </View>
       </>
     )
   }

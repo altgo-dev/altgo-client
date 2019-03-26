@@ -51,7 +51,15 @@ class SearchHead extends Component {
           </Text>
         </TouchableHighlight>
        
-        {this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) =><Text key={index} style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>{each.description}</Text>)}
+        { this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => {
+          return (
+            <View style={{ backgroundColor: 'rgba(210, 210, 210, 0.9)'}}>
+
+            <Text key={index} style={{ textAlign: 'center', color: 'black', marginTop: 30, fontWeight: '500' }}>{each.description}</Text>
+            </View>
+          )
+        })
+      }
         
       </View>
     )

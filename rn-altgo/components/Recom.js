@@ -71,8 +71,8 @@ class Recom extends Component {
         </View>
         {
           this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => (<View key={index}>
-            <TouchableHighlight onPress={() => this.onClickSearch(each)}>
-              <Text style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>
+            <TouchableHighlight onPress={() => this.onClickSearch(each)} underlayColor="#ffffff00" style={{ backgroundColor: 'rgba(245, 245, 245, 1)', borderBottomColor: 'rgb(255, 190, 30)', borderBottomWidth: 0, justifyContent: 'flex-start', marginLeft: 35, marginRight: 95, position: 'absolute', zIndex: 50 }}>
+              <Text style={{ textAlign: 'left', color: 'black', margin: 5, fontWeight: '500' }}>
                 {each.description}
               </Text>
             </TouchableHighlight>

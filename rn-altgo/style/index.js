@@ -15,13 +15,16 @@ const s = StyleSheet.create({
   },
   panel: {
     flex: 1,
-    backgroundColor: 'rgba(219, 219, 219, 0.9)',
+    backgroundColor: 'rgba(219, 219, 219, 1)',
     position: 'relative',
-    height: 100
+    height: 100,
+    shadowColor: '#555556', 
+    shadowOffset: { width: 5, height: 2 }, 
+    shadowOpacity: 0.8, 
+    shadowRadius: 7,
   },
   panelHeader: {
     height: 200,
-    backgroundColor: 'rgba(219, 219, 219, 0.9)',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -34,7 +37,11 @@ const s = StyleSheet.create({
     height: 48,
     padding: 8,
     borderRadius: 24,
-    zIndex: 1
+    zIndex: 1,
+    shadowColor: '#555556', 
+    shadowOffset: { width: 5, height: 2 }, 
+    shadowOpacity: 0.8, 
+    shadowRadius: 7,
   },
   searchHead: {
       marginTop: 20

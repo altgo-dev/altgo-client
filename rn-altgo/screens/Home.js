@@ -180,7 +180,7 @@ class Home extends Component {
                     inviteFriends: true,
                     showPanel: true,
                     members: [],
-                    destinationList: [],
+                    // destinationList: [],
                     permission: '',
                     chatid: ''
                 })
@@ -390,7 +390,7 @@ class Home extends Component {
                                         }
                                     </View>
                                     <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
-                                        <Button onPress={this.showOp} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                        <Button onPress={this.showOp} style={{ backgroundColor: 'rgb(255, 190, 30)', marginRight: 20, width: 90, justifyContent: 'center', shadowColor: 'rgb(209, 152, 12)', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.5, shadowRadius: 4, }}>
                                             <Text style={{ color: 'white', fontSize: 21 }}>
                                                 Lets go!
                                             </Text>
