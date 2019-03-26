@@ -44,8 +44,6 @@ class Room extends Component {
               var input = this.state.coord
               this.props.setGroupCoordinate(this.state.coord)
               this.props.getCenterPlaces(input)
-              // console.log(input, '====')
-              // console.log(this.props.userid)
             })
           })
       }
