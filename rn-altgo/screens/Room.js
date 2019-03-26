@@ -74,7 +74,7 @@ class Room extends Component {
           {this.state.ready && <TouchableHighlight><Icon name="pin" /></TouchableHighlight>
           }
         </Header>
-        {/* <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}> */}
+        <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
         <GiftedChat
           messages={this.state.messages}
           // isAnimated={true}
@@ -122,7 +122,7 @@ class Room extends Component {
               );
             }}
             /> 
-            {/* </KeyboardAvoidingView> */}
+            </KeyboardAvoidingView>
       </View>
     )
   }

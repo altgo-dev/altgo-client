@@ -177,7 +177,8 @@ class Home extends Component {
                     user: member,
                     lat:null,
                     long: null,
-                    status: false
+                    status: false,
+                    members: this.state.members.concat(this.props.userInfo)
                 })
             })
             let location = await Location.getCurrentPositionAsync({})
@@ -190,7 +191,8 @@ class Home extends Component {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     lat: location.coords.latitude,
-                    long: location.coords.longitude
+                    long: location.coords.longitude,
+                    members: this.state.members.concat(this.props.userInfo)
                 })
             )
             await Promise.all(createGroup)
