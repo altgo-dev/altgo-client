@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHighlight } from 'react-native';
+import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHighlight, Button } from 'react-native';
 // import MapView from 'react-native-maps';
 import s from '../style'
 import { Spinner, Header, Left, Icon } from 'native-base'
@@ -234,15 +234,26 @@ class Example extends Component {
                     {
                         this.state.distance !== '' && <>
                             <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>Best Routes based on roadtime</Text>
-                            <Text>Total driving distance: {this.state.distance}km</Text>
-                            <Text>Total driving duration: {this.state.duration}min</Text>
-                            <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
-                            <Text>Total public transport distance: {this.state.transitDistance}km</Text>
-                            <Text>Total public transport duration: {this.state.transitDuration}min</Text>
+                            <View style={{margin:5,padding:5,backgroundColor:'lightgray'}}>
+                                <Text>Total driving distance: {this.state.distance}km</Text>
+                                <Text>Total driving duration: {this.state.duration}min</Text>
+                                <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
+                                <Text>Total public transport distance: {this.state.transitDistance}km</Text>
+                                <Text>Total public transport duration: {this.state.transitDuration}min</Text>
+                            </View>
 
                             {this.state.coordinates.map((coordinate, index) => (
-                                <View key={index} style={{margin:5,padding:5,backgroundColor:'white'}}>
-                                    <Text>{index + 1}.{coordinate.addressSearchQuery}</Text>
+                                <View key={index} style={{margin:5,padding:5,backgroundColor:'white',flex:1,flexDirection:'row'}}>
+                                    <View style={{flex:10,justifyContent:"center",alignItems:"center"}}>
+                                        <Text style={{fontSize:24}}>{index + 1}</Text>
+                                    </View>
+                                    <View style={{flex:90}}>
+                                        <Text>{coordinate.addressSearchQuery}</Text>
+                                    </View>
+                                    {/* <View style={{flex:10}}>
+                                        <Button title="Up" onPress={()=>{}}/>
+                                        <Button title="Dn" onPress={()=>{}}/>
+                                    </View> */}
                                 </View>
                             ))}
                         </>
