@@ -29,6 +29,9 @@ class Friend extends Component {
       })
       this.setState({
         chats: allChats
+      }, () => {
+        console.log('=================')
+        console.log(this.state.chats)
       })
     } catch (error) {
       
@@ -92,8 +95,7 @@ class Friend extends Component {
  
   render() {
     return (
-        <LinearGradient style={{ flex: 1}} colors={['#1c003d', '#4B0082']} >
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'rgba(2, 2, 2)' }}>
         {this.state.page === 1 && (
           <>
           <Header style={{ height: 50, backgroundColor: 'white',}}>
@@ -112,7 +114,6 @@ class Friend extends Component {
         )}
        {this.state.page === 2 && <Room chatid={this.state.chatId} setReady={this.setReady} backPage={this.backPage} />}
       </View>
-        </LinearGradient>
     
     )
   }
