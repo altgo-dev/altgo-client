@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableHighlight, FlatList, KeyboardAvoidingView } from 'react-native'
-import { Header, Thumbnail, Item, Content, Input, Accordion, Icon, Left } from 'native-base'
+import { Header, Thumbnail, Item, Content, Input, Accordion, Icon, Left, Button } from 'native-base'
 import s from '../style'
 import { GiftedChat, Bubble, Send, Day } from 'react-native-gifted-chat'
 import { LinearGradient } from 'expo'
@@ -10,7 +10,7 @@ import { db } from '../api/firestore'
 class Room extends Component {
   state = {
     messages: [],
-    chatId : '',
+    chatId: '',
     ready: false,
     coord: [],
     members: []
@@ -23,19 +23,20 @@ class Room extends Component {
       })
       if(!querSnapshot.data().pending.length) {
         db.collection('users').where('chatid', '==', this.props.chatid).get()
-        .then(docs => {
-          let meetUp = []
-          docs.forEach(doc => {
-            let obj = {user: doc.data().id, lat: doc.data().lat, long:doc.data().long}
+          .then(docs => {
+            let meetUp = []
+            docs.forEach(doc => {
+              let obj = { user: doc.data().id, lat: doc.data().lat, long: doc.data().long }
               meetUp.push(obj)
-          }) 
-          this.setState({
-            ready : true,
-            coord: meetUp
-          }, () => {
-            console.log(this.state.coord, '====')
+            })
+            this.setState({
+              ready: true,
+              coord: meetUp
+            }, () => {
+              console.log(this.state.coord, '====')
+              console.log(this.props.userid)
+            })
           })
-        })
       }
       let haha = []
       querSnapshot.data().messages.forEach(l => {
