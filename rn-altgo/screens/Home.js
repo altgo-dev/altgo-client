@@ -73,10 +73,7 @@ class Home extends Component {
             })
         } else {
             let heh = [...this.state.friendsList]
-<<<<<<< HEAD
-=======
             // alert(JSON.stringify(el))
->>>>>>> tidur dlu
             this.setState({
                 members: temp,
                 // friendsList: this.state.friendsList.concat(a[0])
