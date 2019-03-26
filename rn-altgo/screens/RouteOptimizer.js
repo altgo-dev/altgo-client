@@ -144,7 +144,6 @@ class Example extends Component {
         this.setState({addresses},()=>{this.findRoute()})
     }
 
-
     _handleMapRegionChange = mapRegion => {
         this.setState({ mapRegion });
     };
@@ -196,7 +195,7 @@ class Example extends Component {
                             onPress={()=>{}}
                             customMapStyle={ myMapStyle }
                             provider={ MapView.PROVIDER_GOOGLE }
-                        >
+                            >
                             {this.state.coordinates.map((coordinate, index) =>
                                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
                                     <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.75)', margin: 5, padding: 5 }}>{index + 1}</Text>

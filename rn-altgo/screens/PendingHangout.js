@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Header, Icon, Content, Container, DeckSwiper, Card, CardItem, Thumbnail, Left, Body, Button } from 'native-base'
 import { db } from '../api/firestore'
 import { Location } from 'expo'
+import noMsg from '../assets/nomsg.png'
 
 class PendingHangout extends Component {
   state = {
@@ -124,6 +125,15 @@ class PendingHangout extends Component {
   }
   render() {
     let { cards } = this.state
+    let checkMsg = () => {
+      if (cards.length === 0) {
+        return (
+          <>
+            <Image source={noMsg} style={{ height: 550, width: 390 }}/>
+          </>
+        )
+      }
+    }
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Header transparent style={{ height: 50, paddingTop: 5, borderBottomWidth: 2, borderBottomColor: '#eaeaea'}}>
@@ -136,6 +146,9 @@ class PendingHangout extends Component {
               </Text>
           </Content>
         </Header>
+        {
+          checkMsg()
+        }
         {this.state.loading && (
           <View style={{ flex: 1}}>
 
