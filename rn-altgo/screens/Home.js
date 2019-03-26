@@ -43,7 +43,8 @@ class Home extends Component {
         chatid: '',
         friendsListDef: [],
         clicked: '',
-        typeTrip:''
+        typeTrip:'',
+        groupTravel: {}
     }
 
     componentDidMount = async () => {
@@ -127,23 +128,85 @@ class Home extends Component {
         //     inviteFriends: false
         // })
     }
-    showOp = () => {
-        ActionSheet.show({
-            options: ['Point to point', 'Round Trip','Straightest Line', 'cancel'],
-            cancelButtonIndex: 3,
-            title: 'route options'
-        }, 
-        buttonIndex => {
-            this.setState({
-                typeTrip: BUTTONS[buttonIndex]
-            }, () => {
-            this.setState({
-                page: 4,
-                showPanel: false,
-                inviteFriends: false
+    showOp = async () => {
+        if(this.state.groupTravel) {
+            alert('Invitation sent!')
+            const permisstionStatus = await Location.hasServicesEnabledAsync()
+            if(permisstionStatus) {
+                const chat = await db.collection('chat').add({
+                    createdAt: new Date(),
+                    messages: [],
+                    route: {},
+                    pending: this.state.members,
+                    accept: [this.props.userInfo],
+                    status: false,
+                    type: 'travel',
+                    places : this.props.destinationList
+                })
+                this.setState({chatid: chat.id})
+                const createGroup = this.state.members.map(member => {
+                    db.collection('users').add({
+                        chatid: chat.id,
+                        id: member._id,
+                        status: true,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        user: member,
+                        lat:null,
+                        long: null,
+                        status: false,
+                        members: this.state.members.concat(this.props.userInfo)
+                    })
+                })
+                let location = await Location.getCurrentPositionAsync({})
+                createGroup.push(
+                    db.collection('users').add({
+                        chatid: chat.id,
+                        id: this.props.userInfo._id,
+                        user: this.props.userInfo,
+                        status: true,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        lat: location.coords.latitude,
+                        long: location.coords.longitude,
+                        members: this.state.members.concat(this.props.userInfo)
+                    })
+                )
+                await Promise.all(createGroup)
+                this.setState({
+                    status: true,
+                    page: 1,
+                    inviteFriends: true,
+                    showPanel: true,
+                    members: [],
+                    destinationList: [],
+                    permission: '',
+                    chatid: ''
+                })
+                this.props.navigation.navigate('Friend')
+            } else {
+    
+            }
+
+        } else {
+            ActionSheet.show({
+                options: ['Point to point', 'Round Trip','Straightest Line', 'cancel'],
+                cancelButtonIndex: 3,
+                title: 'route options'
+            }, 
+            buttonIndex => {
+                this.setState({
+                    typeTrip: BUTTONS[buttonIndex]
+                }, () => {
+                this.setState({
+                    page: 4,
+                    showPanel: false,
+                    inviteFriends: false
+                })
+                })
             })
-            })
-        })
+
+        }
     }
 
 
@@ -154,62 +217,74 @@ class Home extends Component {
     }
 
     createGroup = async (type) => {
-        alert('Invitation sent!')
-        const permisstionStatus = await Location.hasServicesEnabledAsync()
-        if(permisstionStatus) {
-            const chat = await db.collection('chat').add({
-                createdAt: new Date(),
-                messages: [],
-                route: {},
-                pending: this.state.members,
-                accept: [this.props.userInfo],
-                status: false,
-                type: type
-            })
-            this.setState({chatid: chat.id})
-            const createGroup = this.state.members.map(member => {
-                db.collection('users').add({
-                    chatid: chat.id,
-                    id: member._id,
-                    status: true,
+        if(type === "hangout") {
+            alert('Invitation sent!')
+            const permisstionStatus = await Location.hasServicesEnabledAsync()
+            if(permisstionStatus) {
+                const chat = await db.collection('chat').add({
                     createdAt: new Date(),
-                    updatedAt: new Date(),
-                    user: member,
-                    lat:null,
-                    long: null,
+                    messages: [],
+                    route: {},
+                    pending: this.state.members,
+                    accept: [this.props.userInfo],
                     status: false,
-                    members: this.state.members.concat(this.props.userInfo)
+                    type: type
                 })
-            })
-            let location = await Location.getCurrentPositionAsync({})
-            createGroup.push(
-                db.collection('users').add({
-                    chatid: chat.id,
-                    id: this.props.userInfo._id,
-                    user: this.props.userInfo,
+                this.setState({chatid: chat.id})
+                const createGroup = this.state.members.map(member => {
+                    db.collection('users').add({
+                        chatid: chat.id,
+                        id: member._id,
+                        status: true,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        user: member,
+                        lat:null,
+                        long: null,
+                        status: false,
+                        members: this.state.members.concat(this.props.userInfo)
+                    })
+                })
+                let location = await Location.getCurrentPositionAsync({})
+                createGroup.push(
+                    db.collection('users').add({
+                        chatid: chat.id,
+                        id: this.props.userInfo._id,
+                        user: this.props.userInfo,
+                        status: true,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        lat: location.coords.latitude,
+                        long: location.coords.longitude,
+                        members: this.state.members.concat(this.props.userInfo)
+                    })
+                )
+                await Promise.all(createGroup)
+                this.setState({
                     status: true,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                    lat: location.coords.latitude,
-                    long: location.coords.longitude,
-                    members: this.state.members.concat(this.props.userInfo)
+                    page: 1,
+                    inviteFriends: true,
+                    // friendsList: [], 
+                    //friend list g usah dikosongin
+                    showPanel: true,
+                    members: [],
+                    destinationList: [],
+                    permission: '',
+                    chatid: ''
                 })
-            )
-            await Promise.all(createGroup)
-            this.setState({
-                status: true,
-                page: 1,
-                inviteFriends: true,
-                // friendsList: [], 
-                //friend list g usah dikosongin
-                showPanel: true,
-                members: [],
-                destinationList: [],
-                permission: '',
-                chatid: ''
-            })
-        } else {
+            } else {
+    
+            }
 
+        } else {
+            this.setState({
+                groupTravel: {state: true}
+            }, () => {
+                this.setState({
+                    page: 2,
+                    inviteFriends: false
+                })
+            })
         }
     }
 
@@ -290,7 +365,7 @@ class Home extends Component {
                             </View>
                         }
                         {
-                            page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} setShowPanel={this.setShowPanel} />
+                            page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} setShowPanel={this.setShowPanel} groupTravel={this.state.groupTravel}  />
                         }
                         {
                             page === 3 && <View style={{ backgroundColor: 'white'}}><DetailCat toPageRecom={this.toPageRecom} cat={cat} /></View>
@@ -344,9 +419,11 @@ class Home extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
     getUserData: (token) => (dispatch(getUserData(token))),
-    getAllUser: (token) => (dispatch(getAllUser(token)))
+    getAllUser: (token) => (dispatch(getAllUser(token))),
+    
 
 })
+
 
 const mapStateToProps = (state) => ({
     isLoggedIn: state.Users.isLoggedIn,
@@ -354,7 +431,7 @@ const mapStateToProps = (state) => ({
     userInfo: state.Users.userInfo,
     myList: state.Users.myList,
     originCity: state.Meetup.originCity,
-    destinationList: state.Meetup.destinationList
+    destinationList: state.Meetup.destinationList,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

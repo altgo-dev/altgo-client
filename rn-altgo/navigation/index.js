@@ -11,6 +11,7 @@ import AuthLoading from '../screens/AuthLoading'
 import PendingHangout from '../screens/PendingHangout'
 import GroupRoute from '../screens/GroupRoute'
 import RouteOptimizer from '../screens/RouteOptimizer'
+import TravelMap from '../screens/TravelMap'
 
 const SwitchNav = createSwitchNavigator({
     App: BottomNav,
@@ -20,7 +21,8 @@ const SwitchNav = createSwitchNavigator({
     AuthLoading,
     PendingHangout,
     GroupRoute,
-    RouteOptimizer
+    RouteOptimizer,
+    TravelMap
 
 }, {
     initialRouteName: 'Auth'
