@@ -128,8 +128,9 @@ class Home extends Component {
         //     inviteFriends: false
         // })
     }
+    
     showOp = async () => {
-        if(this.state.groupTravel) {
+        if(this.state.groupTravel.state) {
             alert('Invitation sent!')
             const permisstionStatus = await Location.hasServicesEnabledAsync()
             if(permisstionStatus) {
@@ -185,7 +186,7 @@ class Home extends Component {
                 })
                 this.props.navigation.navigate('Friend')
             } else {
-    
+                
             }
 
         } else {
@@ -198,11 +199,11 @@ class Home extends Component {
                 this.setState({
                     typeTrip: BUTTONS[buttonIndex]
                 }, () => {
-                this.setState({
-                    page: 4,
-                    showPanel: false,
-                    inviteFriends: false
-                })
+                    this.setState({
+                        page: 4,
+                        showPanel: false,
+                        inviteFriends: false
+                    })
                 })
             })
 
