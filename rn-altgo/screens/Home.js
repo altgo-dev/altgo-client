@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { SafeAreaView, View, Animated, Text, Dimensions, ScrollView, TouchableHighlight, AsyncStorage } from 'react-native'
-import { Content, Container, Header, Button } from 'native-base'
+import { Content, Container, Header, Button, ActionSheet, Root } from 'native-base'
 import s from '../style'
 import SlidingUpPanel from 'rn-sliding-up-panel'
 import { connect } from 'react-redux'
@@ -22,6 +22,11 @@ import SinglePlace from '../components/SinglePlace'
 import RouteOp from './RouteOptimizer'
 import PendingRequest from '../screens/PendingHangout'
 
+//ACTION SHEET
+var BUTTONS = ["One-Way-Trip", "Round-Trip","Cancel"]
+var DESTRUCTIVE_INDEX = 3
+var CANCEL_INDEX = 4
+
 class Home extends Component {
     _draggedValue = new Animated.Value(120)
 
@@ -36,7 +41,9 @@ class Home extends Component {
         destinationList: [],
         permission: '',
         chatid: '',
-        friendsListDef: []
+        friendsListDef: [],
+        clicked: '',
+        typeTrip:''
     }
 
     componentDidMount = async () => {
@@ -113,15 +120,34 @@ class Home extends Component {
     }
 
     toPageMap = async () => {
-        this.setState({
-            page: 4,
-            showPanel: false,
-            inviteFriends: false
+        console.log('THIS')
+        // this.setState({
+        //     page: 4,
+        //     showPanel: false,
+        //     inviteFriends: false
+        // })
+    }
+    showOp = () => {
+        ActionSheet.show({
+            options: ['one-way', 'roundtrip', 'cancel'],
+            cancelButtonIndex: 2,
+            title: 'route options'
+        }, 
+        buttonIndex => {
+            this.setState({
+                typeTrip: BUTTONS[buttonIndex]
+            }, () => {
+            this.setState({
+                page: 4,
+                showPanel: false,
+                inviteFriends: false
+            })
+            })
         })
-       
     }
 
     createGroup = async (type) => {
+        alert('Invitation sent!')
         const permisstionStatus = await Location.hasServicesEnabledAsync()
         if(permisstionStatus) {
             const chat = await db.collection('chat').add({
@@ -141,6 +167,7 @@ class Home extends Component {
                     status: true,
                     createdAt: new Date(),
                     updatedAt: new Date(),
+                    user: member,
                     lat:null,
                     long: null,
                     status: false
@@ -151,6 +178,7 @@ class Home extends Component {
                 db.collection('users').add({
                     chatid: chat.id,
                     id: this.props.userInfo._id,
+                    user: this.props.userInfo,
                     status: true,
                     createdAt: new Date(),
                     updatedAt: new Date(),
@@ -163,7 +191,8 @@ class Home extends Component {
                 status: true,
                 page: 1,
                 inviteFriends: true,
-                friendsList: [],
+                // friendsList: [], 
+                //friend list g usah dikosongin
                 showPanel: true,
                 members: [],
                 destinationList: [],
@@ -186,6 +215,7 @@ class Home extends Component {
         let { destinationList, myList } = this.props
 
         return (
+            <Root>
             <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
                     <Content style={{ backgroundColor: 'rgb(255, 190, 30)'}}>
                         {
@@ -213,14 +243,14 @@ class Home extends Component {
                                     <Button onPress={() =>this.createGroup('hangout')} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22, textAlign: 'center' }}>
                                             Hangout
-                            </Text>
+                                        </Text>
                                     </Button>
                                 </View>
                                 <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
                                     <Button onPress={() =>this.createGroup('travel')}style={{ backgroundColor: 'black', marginRight: 20, width: 70, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22 }}>
                                             Travel
-                            </Text>
+                                        </Text>
                                     </Button>
                                 </View>
                             </View> : null
@@ -275,7 +305,7 @@ class Home extends Component {
                                         }
                                     </View>
                                     <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 10 }}>
-                                        <Button onPress={this.toPageMap} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                        <Button onPress={this.showOp} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
                                             <Text style={{ color: 'white', fontSize: 21 }}>
                                                 Lets go!
                                             </Text>
@@ -286,7 +316,7 @@ class Home extends Component {
                         }
                         {
                             page === 4 && <View style={{ flex: 1, height: 800 }}>
-                                <RouteOp />
+                                <RouteOp typeTrip={this.state.typeTrip}/>
                             </View>
                         }
                         {
@@ -297,6 +327,7 @@ class Home extends Component {
 
                     </Content>
             </SafeAreaView>
+            </Root>
         )
     }
 }

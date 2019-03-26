@@ -49,23 +49,22 @@ class Profile extends Component {
        {!this.state.loading && (
         <Content>
         <View style={{ flex: 2, height: 250, justifyContent: 'center', alignItems: 'center' }}>
-          <Button onPress={this.logout} style={{ width: 60, justifyContent: 'center', marginLeft: 300, height: 35, backgroundColor: 'black' }}> 
-            <Text style={{ color: 'white', fontSize: 17 }}>
-              Logout
-            </Text>
+          <Button onPress={this.logout} style={{ width: 50, justifyContent: 'center', marginLeft: 320, height: 50, backgroundColor: 'grey', borderRadius: 25 }}> 
+          <Icon style={{ fontSize: 22 }} name="log-out" />
           </Button>
           {
             this.props.userInfo.profilePicture ? <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={{uri: this.props.userInfo.profilePicture}}/> : <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={ noUser }/>
           }
-          <Text style={{ fontWeight: '500', fontSize: 25, color: 'white' }}> {this.props.userInfo.name } </Text>
+          <Text style={{ fontWeight: '500', fontSize: 28, color: 'black' }}> {this.props.userInfo.name } </Text>
         </View>
 
         <View style={{ flex: 2,  height: 100, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
-          <TouchableHighlight style={{ borderRadius: 50, backgroundColor: 'black', width: 100 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
-            <Icon name="person-add" style={{ fontSize: 80, color: 'grey' }}/>
+          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'black', width: 140 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
+            {/* <Icon name="person-add" style={{ fontSize: 80, color: 'grey' }}/> */}
+            <Text style={{ color: 'white', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '500' }}>Add friend</Text>
           </TouchableHighlight>
-          <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('PendingHangout')}>
-            <Icon name="mail-unread" style={{ fontSize: 80, color: 'grey' }}/>
+          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'black', width: 140}} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('PendingHangout')}>
+            <Text style={{ color: 'white', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '500' }}>Invitations</Text>
           </TouchableHighlight>
         </View>
 

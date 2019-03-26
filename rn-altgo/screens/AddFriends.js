@@ -23,7 +23,7 @@ class AddFriends extends Component {
   render() {
       return (
           <SafeAreaView style={{ flex: 1 }}>
-              <Header transparent style={{ height: 50, paddingTop: 5}}>
+              <Header style={{ height: 40, paddingTop: 5}}>
                     <Left>
                         <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('Profile')}>
                             <Icon name="arrow-back"/>

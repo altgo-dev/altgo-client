@@ -15,12 +15,12 @@ const s = StyleSheet.create({
   },
   panel: {
     flex: 1,
-    backgroundColor: 'rgba(219, 219, 219, 0.8)',
+    backgroundColor: 'rgba(219, 219, 219, 0.9)',
     position: 'relative'
   },
   panelHeader: {
     height: 120,
-    backgroundColor: 'rgba(219, 219, 219, 0.8)',
+    backgroundColor: 'rgba(219, 219, 219, 0.9)',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -28,7 +28,7 @@ const s = StyleSheet.create({
     position: 'absolute',
     top: -24,
     right: 24,
-    backgroundColor: 'grey',
+    backgroundColor: 'white',
     width: 48,
     height: 48,
     padding: 8,
