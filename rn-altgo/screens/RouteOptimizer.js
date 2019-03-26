@@ -96,8 +96,6 @@ class Example extends Component {
                                 console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                             }}
                             onReady={result => {
-                                console.log('============================result==========================================================')
-                                console.log(result)
                                 this.setState({
                                     transitDistance: this.state.transitDistance + result.distance,
                                     transitDuration: this.state.transitDuration + result.duration,
@@ -143,6 +141,7 @@ class Example extends Component {
         addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
         this.setState({addresses},()=>{this.findRoute()})
     }
+
 
     _handleMapRegionChange = mapRegion => {
         this.setState({ mapRegion });
@@ -195,7 +194,7 @@ class Example extends Component {
                             onPress={()=>{}}
                             customMapStyle={ myMapStyle }
                             provider={ MapView.PROVIDER_GOOGLE }
-                            >
+                        >
                             {this.state.coordinates.map((coordinate, index) =>
                                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
                                     <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.75)', margin: 5, padding: 5 }}>{index + 1}</Text>

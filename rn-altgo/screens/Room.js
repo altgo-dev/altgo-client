@@ -20,6 +20,7 @@ class Room extends Component {
   }
 
   componentDidMount = () => {
+    // console.log('======', this.props.centerPlaces)
     db.collection('chat').doc(this.props.chatid).onSnapshot(querSnapshot => {
       this.setState({
         members: querSnapshot.data().accept
@@ -80,7 +81,7 @@ class Room extends Component {
           </TouchableHighlight>
 
         </Left>
-          {this.state.ready && <TouchableHighlight onPress={() => (this.props.navigation.navigate('GroupRoute'))}><Icon name="pin" /></TouchableHighlight>
+          {this.state.ready && <TouchableHighlight onPress={() => (this.props.navigation.navigate('RouteOptimizer'))}><Icon name="pin" /></TouchableHighlight>
           }
         </Header>
         <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
@@ -138,7 +139,10 @@ class Room extends Component {
 
 const mapStatetoProps = (state) => ({
   userid: state.Users.userInfo._id,
-  userInfo: state.Users.userInfo
+  userInfo: state.Users.userInfo,
+  destList: state.Meetup.destinationList,
+  groupCoordinate: state.Meetup.groupCoordinate,
+  centerPlaces: state.Meetup.centerPlaces
 })
 
 const mapDispatchToProps = (dispatch) => ({
