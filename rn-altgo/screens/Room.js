@@ -81,7 +81,7 @@ class Room extends Component {
           </TouchableHighlight>
 
         </Left>
-          {this.state.ready && <TouchableHighlight onPress={() => (this.props.navigation.navigate('RouteOptimizer'))}><Icon name="pin" /></TouchableHighlight>
+          {this.state.ready && <TouchableHighlight onPress={() => (this.props.navigation.navigate('GroupRoute'))}><Icon name="pin" /></TouchableHighlight>
           }
         </Header>
         <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
