@@ -30,8 +30,6 @@ class Example extends Component {
             duration: '',
             transitDistance: 0,
             transitDuration: 0,
-            walkingDistance: 0,
-            walkingDuration: 0,
             cost: 0
         };
 
@@ -95,8 +93,6 @@ class Example extends Component {
                         />
                     )
                 ))}
-                {console.log("transit distance : " + this.state.transitDistance)}
-                {console.log("transit duration : " + this.state.transitDuration)}
             </>
         )
     }
@@ -206,9 +202,6 @@ class Example extends Component {
                                             console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
                                         }}
                                         onReady={result => {
-                                            console.log(`Distance: ${result.distance} km`)
-                                            console.log(`Duration: ${result.duration} min.`)
-
                                             this.setState({
                                                 distance: result.distance,
                                                 duration: result.duration
@@ -239,11 +232,17 @@ class Example extends Component {
                     {
                         this.state.distance !== '' && <>
                             <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>Best Routes based on roadtime</Text>
-                            <Text>Total road distance: {this.state.distance}km</Text>
-                            <Text>Total roadtime: {this.state.duration}min</Text>
+                            <Text>Total driving distance: {this.state.distance}km</Text>
+                            <Text>Total driving duration: {this.state.duration}min</Text>
                             <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
+                            <Text>Total public transport distance: {this.state.transitDistance}km</Text>
+                            <Text>Total public transport duration: {this.state.transitDuration}min</Text>
 
-                            {this.state.coordinates.map((coordinate, index) => <Text key={index}>{index + 1}.{coordinate.addressSearchQuery}</Text>)}
+                            {this.state.coordinates.map((coordinate, index) => (
+                                <View key={index} style={{margin:5,padding:5,backgroundColor:'white'}}>
+                                    <Text>{index + 1}.{coordinate.addressSearchQuery}</Text>
+                                </View>
+                            ))}
                         </>
                     }
 

@@ -16,7 +16,7 @@ class SinglePlace extends Component {
         var { destinationList, data } = this.props
 
         if (this.state.icon == 'ios-add') {
-            destinationList.unshift(data)
+            destinationList.push(data)
             this.setState({ destinationList })
             this.props.addDestination(destinationList)
             this.setState({ icon: 'ios-checkmark' })
