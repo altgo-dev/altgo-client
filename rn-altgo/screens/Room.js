@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, TouchableHighlight, FlatList, KeyboardAvoidingView } from 'react-native'
 import { Header, Thumbnail, Item, Content, Input, Accordion, Icon, Left } from 'native-base'
 import s from '../style'
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat'
+import { GiftedChat, Bubble, Send, Day } from 'react-native-gifted-chat'
 import { LinearGradient } from 'expo'
 import { connect } from 'react-redux'
 import { db } from '../api/firestore'
@@ -63,27 +63,24 @@ class Room extends Component {
 
   render() {
     return (
-   <LinearGradient style={{ flex: 1}} colors={['#1c003d', '#4B0082']} >
-      <View style={{ flex: 1 }}>
+      <View style={{ backgroundColor: 'rgba(235, 235, 235, 0.8)', flex: 1}}>
       <Header style={{ height: 50, backgroundColor: 'white',}}>
-        <TouchableHighlight onPress={this.props.backPage}>
-          <Text style={{ fontSize: 23, fontWeight: '500', marginBottom: 6 , color: '#231942'}}>
-                Back
-            </Text></TouchableHighlight>
-            <Text style={{ fontSize: 23, fontWeight: '500', marginBottom: 6 , color: '#231942'}}>
-                My Groups
-            </Text>
-            {this.state.ready && <Text style={{ fontSize: 23, fontWeight: '500', marginBottom: 6 , color: '#231942'}}>
-                Go To Maps
-            </Text>}
+        <Left>
+          <TouchableHighlight onPress={this.props.backPage}>
+            <Icon name="ios-arrow-back" />
+          </TouchableHighlight>
+
+        </Left>
+          {this.state.ready && <TouchableHighlight><Icon name="pin" /></TouchableHighlight>
+          }
         </Header>
-        <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
+        {/* <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}> */}
         <GiftedChat
           messages={this.state.messages}
-          isAnimated={true}
+          // isAnimated={true}
           onSend={messages => this.onSend(messages)}
           user={{
-            _id: 2,
+            _id: this.props.userid,
             avatar: this.props.userInfo.profilePicture,
             name: this.props.userInfo.name
           }}
@@ -94,9 +91,11 @@ class Room extends Component {
                 textStyle={{
                   right: {
                     color: 'white',
+                    fontSize: 19
                   },
                   left: {
-                    color: 'black'
+                    color: 'black',
+                    fontSize: 19
                   }
                 }}
                 wrapperStyle={{
@@ -108,7 +107,7 @@ class Room extends Component {
                     shadowOpacity: 1
                   },
                   right:{
-                    backgroundColor: '#af8fd6',
+                    backgroundColor: 'rgb(255, 181, 33)',
                     borderRadius: 0,
                     shadowColor: 'grey',
                     shadowRadius: 5,
@@ -116,13 +115,15 @@ class Room extends Component {
                   }
                 }}
                 renderUsernameOnMessage={true}
+                // renderDay={ props => {
+                //   <Day {...props} textStyle={{ color: 'black'}}/>
+                // }}
               />
               );
             }}
             /> 
-            </KeyboardAvoidingView>
+            {/* </KeyboardAvoidingView> */}
       </View>
-        </LinearGradient>
     )
   }
 }

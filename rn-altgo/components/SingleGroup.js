@@ -23,7 +23,10 @@ class SingleGroup extends Component {
                 }
                 </Left>
                 <Body style={{ marginTop: 4 }}>
-                    <Text style={{ fontSize: 18, fontWeight: '500' }}> Nama Semuanya </Text>
+                {/* {
+                    data
+                } */}
+                    <Text style={{ fontSize: 18, fontWeight: '500' }}> nama member </Text>
                     <Text style={{ color: 'grey', marginLeft: 4, fontWeight: '400' }}>
 
                     </Text>

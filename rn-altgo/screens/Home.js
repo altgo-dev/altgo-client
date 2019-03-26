@@ -147,6 +147,7 @@ class Home extends Component {
     }
 
     createGroup = async (type) => {
+        alert('Invitation sent!')
         const permisstionStatus = await Location.hasServicesEnabledAsync()
         if(permisstionStatus) {
             const chat = await db.collection('chat').add({
@@ -190,7 +191,8 @@ class Home extends Component {
                 status: true,
                 page: 1,
                 inviteFriends: true,
-                friendsList: [],
+                // friendsList: [], 
+                //friend list g usah dikosongin
                 showPanel: true,
                 members: [],
                 destinationList: [],
@@ -241,14 +243,14 @@ class Home extends Component {
                                     <Button onPress={() =>this.createGroup('hangout')} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22, textAlign: 'center' }}>
                                             Hangout
-                            </Text>
+                                        </Text>
                                     </Button>
                                 </View>
                                 <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
                                     <Button onPress={() =>this.createGroup('travel')}style={{ backgroundColor: 'black', marginRight: 20, width: 70, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22 }}>
                                             Travel
-                            </Text>
+                                        </Text>
                                     </Button>
                                 </View>
                             </View> : null

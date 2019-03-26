@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions, Animated, StyleSheet, View, ScrollView, Text } from 'react-native';
+import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHighlight } from 'react-native';
 // import MapView from 'react-native-maps';
 import s from '../style'
-import { Spinner } from 'native-base'
+import { Spinner, Header, Left, Icon } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -162,6 +162,13 @@ class Example extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
+                <Header style={{ height: 40, paddingTop: 0}}>
+                    <Left>
+                        <TouchableHighlight onPress={this.props.toPageRecom}>
+                            <Icon name="ios-arrow-back" style={{ margin: 5}} />
+                        </TouchableHighlight>
+                    </Left>
+                </Header>
                 <ScrollView style={{ flex: 1 }}>
                     <View style={{ height: 500 }}>
                         <MapView

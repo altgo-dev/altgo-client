@@ -44,6 +44,7 @@ class SignIn extends Component {
             this.setState({ isLoggedIn: this.props.isLoggedIn })
             if (this.props.isLoggedIn) {
                 this.props.navigation.navigate('Home')
+                console.log('----------------------------')
             } 
         }
         if (prevState.errors !== this.props.errors) {

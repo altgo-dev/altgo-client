@@ -27,17 +27,17 @@ class SinglePlace extends Component {
         // alert(JSON.stringify(destinationList[0]))
     }
     componentDidMount () {
-        // console.log(this.props.data.photos[0].html_attributions[0])
+        console.log(this.props.data)
     }
 
     render() {
         const { data } = this.props
         return (
             <CardItem style={{ marginTop: 5, marginHorizontal: 5, padding: 0, backgroundColor: 'rgba(255, 190, 30, 1)' }}>
-                {/* <Left style={{ width: 80, flex: 0 }}>
-                    <Thumbnail source={{ uri: data.icon }} />
-                </Left> */}
-                <Body style={{ marginTop: 4 }}>
+                {
+                    data.photos[0] && <Thumbnail  source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${data.photos[0].photo_reference}&maxheight=400&maxwidth=400&key=AIzaSyAbyE8RCeWnwkMeZ5aXdNlRAs7e-r5TKzc`}} />
+                }
+                <Body style={{ marginTop: 4, marginLeft: 8 }}>
                     <Text style={{ fontSize: 18, fontWeight: '400', color: 'black' }}> {data.name} </Text>
                     <Text style={{ color: 'rgb(50, 50, 50)', marginLeft: 4 }}>
                         {data.vicinity}
