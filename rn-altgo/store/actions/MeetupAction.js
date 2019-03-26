@@ -32,8 +32,7 @@ export function addDestination(destination){
           addresses:destination.map(e=>`${e.name}, ${e.vicinity}`)
         }
       }).then(()=> {}).catch(()=> {})
-    
-    console.log(destination)
+    // console.log(destination)
     dispatch({type: 'ADD_DESTINATION_SUCCESS', payload: destination})
     // alert(JSON.stringify(destination))
   }

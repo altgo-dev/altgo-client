@@ -15,23 +15,27 @@ class Friend extends Component {
     chatId : '',
     page: 1,
     chats: [],
-    ready: false
+    ready: false,
+    members: []
   }
 
   componentDidMount = async () => {
     try {
-      console.log(this.props.userid)
       const chats = await db.collection('users').where('id', '==', this.props.userid).get()
       let allChats = []
-      chats.docs.forEach(doc => {
-        let obj = {id: doc.id, ...doc.data()}
+      chats.docs.forEach( doc => {
+        let name=[]
+        if(doc.data().members) {
+          doc.data().members.forEach(member => {
+            name.push(member.name)
+          })
+        }
+        let obj = {id: doc.id, name:name  ,...doc.data()}
         allChats.push(obj)
       })
       this.setState({
         chats: allChats
       }, () => {
-        console.log('=================')
-        console.log(this.state.chats)
       })
     } catch (error) {
       

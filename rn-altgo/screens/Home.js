@@ -146,6 +146,13 @@ class Home extends Component {
         })
     }
 
+
+    setShowPanel = (payload) => {
+        this.setState({
+            showPanel: payload
+        })
+    }
+
     createGroup = async (type) => {
         alert('Invitation sent!')
         const permisstionStatus = await Location.hasServicesEnabledAsync()
@@ -170,7 +177,8 @@ class Home extends Component {
                     user: member,
                     lat:null,
                     long: null,
-                    status: false
+                    status: false,
+                    members: this.state.members.concat(this.props.userInfo)
                 })
             })
             let location = await Location.getCurrentPositionAsync({})
@@ -183,7 +191,8 @@ class Home extends Component {
                     createdAt: new Date(),
                     updatedAt: new Date(),
                     lat: location.coords.latitude,
-                    long: location.coords.longitude
+                    long: location.coords.longitude,
+                    members: this.state.members.concat(this.props.userInfo)
                 })
             )
             await Promise.all(createGroup)
@@ -281,7 +290,7 @@ class Home extends Component {
                             </View>
                         }
                         {
-                            page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} />
+                            page === 2 && <Recom toPage1={this.toPage1} toPageDetail={this.toPageDetail} setShowPanel={this.setShowPanel} />
                         }
                         {
                             page === 3 && <View style={{ backgroundColor: 'white'}}><DetailCat toPageRecom={this.toPageRecom} cat={cat} /></View>

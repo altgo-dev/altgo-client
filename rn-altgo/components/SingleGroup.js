@@ -4,16 +4,16 @@ import { Thumbnail, Left, Body, Right, CardItem, Icon } from 'native-base'
 import { connect } from 'react-redux'
 
 
-
 //ASSETS
 import noUser from '../assets/nouser.png'
 
 class SingleGroup extends Component {
-    onPress = () => {
+    // onPress = () => {
         
-    }
+    // }
 
     render() {
+        
         const { data } = this.props
         return (
             <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'rgba(245, 245, 245, 0.5)' }}>
@@ -26,7 +26,7 @@ class SingleGroup extends Component {
                 {/* {
                     data
                 } */}
-                    <Text style={{ fontSize: 18, fontWeight: '500' }}> nama member </Text>
+                    <Text style={{ fontSize: 18, fontWeight: '500' }}> {data.name.join(', ')} </Text>
                     <Text style={{ color: 'grey', marginLeft: 4, fontWeight: '400' }}>
 
                     </Text>
