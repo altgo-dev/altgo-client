@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHighlight, Button } from 'react-native';
 // import MapView from 'react-native-maps';
+import openMap from 'react-native-open-maps';
 import s from '../style'
 import { Spinner, Header, Left, Icon } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
@@ -62,20 +63,11 @@ class Example extends Component {
         })
     }
 
-    moveWaypointUp = (index) => {
-        let addresses = this.state.addresses
-        let removedAddress=addresses.splice(index,1)
-        addresses.splice(index-1,0,removedAddress[0])
-        console.log(addresses)
-        this.setState({addresses},()=>{this.findRoute()})
-    }
-
-    moveWaypointDown = (index) => {
-        let addresses = this.state.addresses
-        let removedAddress=addresses.splice(index,1)
-        addresses.splice(index+1,0,removedAddress[0])
-        console.log(addresses)
-        this.setState({addresses},()=>{this.findRoute()})
+    launchMapApp = (coordinate,travelType) => {
+      openMap({
+        end:`${coordinate.latitude},${coordinate.longitude}`,
+        travelType
+      })
     }
 
     displayTransitRoute = () => {
@@ -265,10 +257,10 @@ class Example extends Component {
                                     <View style={{flex:80}}>
                                         <Text>{coordinate.addressSearchQuery}</Text>
                                     </View>
-                                    {/* <View style={{flex:10}}>
-                                        <Button title="Up" onPress={()=>{this.moveWaypointUp(index)}}/>
-                                        <Button title="Dn" onPress={()=>{this.moveWaypointDown(index)}}/>
-                                    </View> */}
+                                    <View style={{flex:10}}>
+                                        <Icon name="car" onPress={()=>{this.launchMapApp(coordinate,'drive')}} />
+                                        <Icon name="bus" onPress={()=>{this.launchMapApp(coordinate,'public_transport')}} />
+                                    </View>
                                 </View>
                             ))}
                         </>
