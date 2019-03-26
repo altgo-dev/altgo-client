@@ -27,7 +27,7 @@ class Example extends Component {
       location: { coords: { latitude: -6.260708, longitude: 106.781569 } },
       cost: 0,
       chosenPlace: null
-    };
+    }
 
     this.mapView = null;
   }
@@ -48,17 +48,19 @@ class Example extends Component {
   }
 
   onMapPress = (e) => {
+  
     this.setState({
       addresses: [
         ...this.state.addresses,
         `${e.nativeEvent.coordinate.latitude},${e.nativeEvent.coordinate.longitude}`
       ],
-    }, () => { this.findRoute() });
+    }, () => { 
+      this.findRoute()
+    })
   }
 
   async componentDidMount() {
     this._getLocationAsync()
-    console.log(this.props.groupCoordinate)
   }
 
   _handleMapRegionChange = mapRegion => {
@@ -86,7 +88,7 @@ class Example extends Component {
       location: location,
     })
     return currentLatLng
-  };
+  }
 
   render() {
     return (
@@ -220,7 +222,7 @@ const mapState = (state) => ({
   groupCoordinate: state.Meetup.groupCoordinate,
   centerPlaces: state.Meetup.centerPlaces
 })
-export default connect(mapState)(Example);
+export default connect(mapState)(Example)
 
 const myMapStyle = [
   {

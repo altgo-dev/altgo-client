@@ -351,6 +351,7 @@ class Home extends Component {
                                         <Text style={{ color: 'white', fontSize: 22 }}>
                                             Travel
                                         </Text>
+                                        
                                     </Button>
                                 </View>
                             </View> : null
