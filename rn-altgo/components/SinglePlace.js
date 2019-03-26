@@ -4,6 +4,7 @@ import { Thumbnail, Left, Body, Right, CardItem, Icon } from 'native-base'
 import { connect } from 'react-redux'
 
 import { addDestination, removeDestination } from '../store/actions/MeetupAction'
+import defImg from '../assets/hotel.jpg'
 
 class SinglePlace extends Component {
     state = {
@@ -38,7 +39,7 @@ class SinglePlace extends Component {
                     <Thumbnail  source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${data.photos[0].photo_reference}&maxheight=400&maxwidth=400&key=AIzaSyAbyE8RCeWnwkMeZ5aXdNlRAs7e-r5TKzc`}} />
                 )
             } else {
-                return null
+                return  <Thumbnail  source={defImg} />
             }
         }
 

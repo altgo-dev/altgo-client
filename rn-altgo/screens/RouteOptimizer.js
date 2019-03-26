@@ -31,7 +31,8 @@ class Example extends Component {
             duration: '',
             transitDistance: 0,
             transitDuration: 0,
-            cost: 0
+            cost: 0,
+            typeTrip: 'AtoZ'
         };
 
         this.mapView = null;
@@ -44,7 +45,7 @@ class Example extends Component {
             method: 'POST',
             data: {
                 addresses,
-                routingType: this.props.typeTrip
+                routingType: this.state.typeTrip
             }
         })
         this.setState({
@@ -131,12 +132,12 @@ class Example extends Component {
         let addresses = []
         addresses.push(await this._getLocationAsync())
         addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
-        this.setState({addresses},()=>{this.findRoute()})
+        this.setState({addresses, typeTrip: this.props.typeTrip},()=>{this.findRoute()})
     }
 
 
     _handleMapRegionChange = mapRegion => {
-        this.setState({ mapRegion });
+        this.setState({ mapRegion })
     };
 
     _getLocationAsync = async () => {
