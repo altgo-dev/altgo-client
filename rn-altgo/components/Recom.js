@@ -25,6 +25,12 @@ class Recom extends Component {
       { title: 'others', cat: 'others', img: oth, color: '#822323' }]
   }
 
+  componentDidMount = () => {
+    if(this.props.groupTravel) {
+      
+    }
+  }
+
   onSearch = async (input) => {
     this.props.autoComplete(input)
   }
