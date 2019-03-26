@@ -74,6 +74,8 @@ class Home extends Component {
     }
 
     removeMem = (el, i) => {
+        console.log(this.state.friendsList, 'FRIENDLIST')
+        console.log(this.state.members, 'MEMBERS')
         let temp = [...this.state.members]
         temp.splice(i, 1)
 
