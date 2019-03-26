@@ -29,9 +29,9 @@ class Recom extends Component {
       vicinity: place.structured_formatting.secondary_text
     }
 
-    var input = this.props.destinationList
-    input.push(objInput)
-    this.props.addDestination(input)
+    var destination = this.props.destinationList
+    destination.push(objInput)
+    this.props.addDestination(destination)
   }
 
   render() {
@@ -57,7 +57,7 @@ class Recom extends Component {
           </TouchableHighlight>
         </View>
         {this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => (<View key={index}>
-          <TouchableHighlight onPress={(each) => this.onClickSearch(each)}>
+          <TouchableHighlight onPress={() => this.onClickSearch(each)}>
             <Text style={{ textAlign: 'center', color: 'white', marginTop: 30, fontWeight: '500' }}>
               {each.description}
             </Text>
