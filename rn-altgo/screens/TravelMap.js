@@ -137,7 +137,7 @@ class Example extends Component {
 
     var groupCoordinate = []
     users.docs.forEach(user => {
-      groupCoordinate.push({lat: user.data().lat, long: user.data().long})
+      groupCoordinate.push({ lat: user.data().lat, long: user.data().long })
     })
 
     // console.log(chat.data())
@@ -146,6 +146,16 @@ class Example extends Component {
     addresses = addresses.concat(chat.data().places.map(e => `${e.name}, ${e.vicinity}`))
     this.setState({ addresses })
     this.findRoute(addresses)
+
+    db.collection('chat').doc(this.props.navigation.state.params.chatid)
+      .onSnapshot(snapchat => {
+        let chosenPlace = snapchat.data().chosenPlace
+        if (chosenPlace) {
+          this.setState({ chosenPlace: chosenPlace.coordinate }, () => {
+            this.findRoute([`${chosenPlace.coordinate.lat},${chosenPlace.coordinate.long}`, ...this.state.addresses])
+          })
+        }
+      })
   }
 
 
@@ -176,10 +186,9 @@ class Example extends Component {
     return currentLatLng
   };
 
-  chosenPlaceSelected=(each)=>{
-    this.setState({ chosenPlace: each.coordinate },()=>{
-      let chosenPlace= this.state.chosenPlace
-      this.findRoute([`${chosenPlace.lat},${chosenPlace.long}`,...this.state.addresses])
+  chosenPlaceSelected = async (each) => {
+    await db.collection('chat').doc(this.props.navigation.state.params.chatid).update({
+      chosenPlace: each
     })
   }
 
