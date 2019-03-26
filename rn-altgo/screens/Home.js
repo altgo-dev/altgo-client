@@ -373,7 +373,7 @@ class Home extends Component {
                         {
                             (destinationList[0] && showPanel) && <SlidingUpPanel
                                 showBackdrop={false}
-                                draggableRange={{ top: height / 1.10, bottom: 100 }}
+                                draggableRange={{ top: height / 1.10, bottom: 180 }}
                                 animatedValue={this._draggedValue}>
                                 <View style={s.panel}>
                                     <Animated.View style={[s.favoriteIcon, { transform }]}>
@@ -400,7 +400,7 @@ class Home extends Component {
                         }
                         {
                             page === 4 && <View style={{ flex: 1, height: 800 }}>
-                                <RouteOp typeTrip={this.state.typeTrip}/>
+                                <RouteOp typeTrip={this.state.typeTrip} toPageRecom={this.toPageRecom}/>
                             </View>
                         }
                         {

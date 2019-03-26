@@ -16,10 +16,11 @@ const s = StyleSheet.create({
   panel: {
     flex: 1,
     backgroundColor: 'rgba(219, 219, 219, 0.9)',
-    position: 'relative'
+    position: 'relative',
+    height: 100
   },
   panelHeader: {
-    height: 120,
+    height: 200,
     backgroundColor: 'rgba(219, 219, 219, 0.9)',
     alignItems: 'center',
     justifyContent: 'center'
