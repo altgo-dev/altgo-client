@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableHighlight, FlatList } from 'react-native'
+import { Text, View, TouchableHighlight, FlatList, KeyboardAvoidingView } from 'react-native'
 import { Header, Thumbnail, Item, Content, Input, Accordion, Icon, Left } from 'native-base'
 import s from '../style'
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat'
@@ -50,12 +50,11 @@ class Room extends Component {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
     }), () => {
-      db.collection('chat').doc(this.state.chatId).update({
+      db.collection('chat').doc(this.props.chatid).update({
         messages: this.state.messages
       })
 
     })
-
   }
 
   render() {
@@ -74,12 +73,13 @@ class Room extends Component {
                 Go To Maps
             </Text>}
         </Header>
+        <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
         <GiftedChat
           messages={this.state.messages}
           isAnimated={true}
           onSend={messages => this.onSend(messages)}
           user={{
-            _id: 1,
+            _id: 2,
             avatar: this.props.userInfo.profilePicture,
             name: this.props.userInfo.name
           }}
@@ -113,9 +113,10 @@ class Room extends Component {
                 }}
                 renderUsernameOnMessage={true}
               />
-            );
-          }}
-        /> 
+              );
+            }}
+            /> 
+            </KeyboardAvoidingView>
       </View>
         </LinearGradient>
     )

@@ -71,7 +71,6 @@ class Home extends Component {
             })
         } else {
             let heh = [...this.state.friendsList]
-            alert(JSON.stringify(el))
             this.setState({
                 members: temp,
                 friendsList: this.state.friendsList.concat(el)
@@ -119,7 +118,7 @@ class Home extends Component {
        
     }
 
-    createGroup = async () => {
+    createGroup = async (type) => {
         const permisstionStatus = await Location.hasServicesEnabledAsync()
         if(permisstionStatus) {
             const chat = await db.collection('chat').add({
@@ -128,7 +127,8 @@ class Home extends Component {
                 route: {},
                 pending: this.state.members,
                 accept: [this.props.userInfo],
-                status: false
+                status: false,
+                type: type
             })
             this.setState({chatid: chat.id})
             const createGroup = this.state.members.map(member => {
@@ -157,9 +157,15 @@ class Home extends Component {
             )
             await Promise.all(createGroup)
             this.setState({
-                page: 5,
-                showPanel: false,
-                inviteFriends: false
+                status: true,
+                page: 1,
+                inviteFriends: true,
+                friendsList: [],
+                showPanel: true,
+                members: [],
+                destinationList: [],
+                permission: '',
+                chatid: ''
             })
         } else {
 
@@ -199,14 +205,14 @@ class Home extends Component {
                                 </Button>
                             </View> : (inviteFriends && page === 1) ? <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                                 <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                    <Button onPress={this.createGroup} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
+                                    <Button onPress={() =>this.createGroup('hangout')} style={{ backgroundColor: 'black', marginRight: 20, width: 90, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22, textAlign: 'center' }}>
                                             Hangout
                             </Text>
                                     </Button>
                                 </View>
                                 <View style={{ alignSelf: 'flex-end', height: 60, marginTop: 20 }}>
-                                    <Button onPress={this.toPageRecom} style={{ backgroundColor: 'black', marginRight: 20, width: 70, justifyContent: 'center' }}>
+                                    <Button onPress={() =>this.createGroup('travel')}style={{ backgroundColor: 'black', marginRight: 20, width: 70, justifyContent: 'center' }}>
                                         <Text style={{ color: 'white', fontSize: 22 }}>
                                             Travel
                             </Text>
