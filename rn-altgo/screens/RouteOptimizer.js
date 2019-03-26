@@ -37,9 +37,7 @@ class Example extends Component {
     }
 
     findRoute = async () => {
-        let addresses = []
-        addresses.push(await this._getLocationAsync())
-        addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
+        let addresses = this.state.addresses
         let response = await axios({
             url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
             method: 'POST',
@@ -62,6 +60,22 @@ class Example extends Component {
             }),
             routeOptimizerResponse: response.data
         })
+    }
+
+    moveWaypointUp = (index) => {
+        let addresses = this.state.addresses
+        let removedAddress=addresses.splice(index,1)
+        addresses.splice(index-1,0,removedAddress[0])
+        console.log(addresses)
+        this.setState({addresses},()=>{this.findRoute()})
+    }
+
+    moveWaypointDown = (index) => {
+        let addresses = this.state.addresses
+        let removedAddress=addresses.splice(index,1)
+        addresses.splice(index+1,0,removedAddress[0])
+        console.log(addresses)
+        this.setState({addresses},()=>{this.findRoute()})
     }
 
     displayTransitRoute = () => {
@@ -122,9 +136,10 @@ class Example extends Component {
     }
 
     async componentDidMount() {
-        console.log(this.props.typeTrip, '=====')
-        this.findRoute()
-
+        let addresses = []
+        addresses.push(await this._getLocationAsync())
+        addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
+        this.setState({addresses},()=>{this.findRoute()})
     }
 
 
@@ -182,7 +197,7 @@ class Example extends Component {
                         >
                             {this.state.coordinates.map((coordinate, index) =>
                                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
-                                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
+                                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.75)', margin: 5, padding: 5 }}>{index + 1}</Text>
                                 </MapView.Marker>
                             )}
                             <MapView.Marker
@@ -247,12 +262,12 @@ class Example extends Component {
                                     <View style={{flex:10,justifyContent:"center",alignItems:"center"}}>
                                         <Text style={{fontSize:24}}>{index + 1}</Text>
                                     </View>
-                                    <View style={{flex:90}}>
+                                    <View style={{flex:80}}>
                                         <Text>{coordinate.addressSearchQuery}</Text>
                                     </View>
                                     {/* <View style={{flex:10}}>
-                                        <Button title="Up" onPress={()=>{}}/>
-                                        <Button title="Dn" onPress={()=>{}}/>
+                                        <Button title="Up" onPress={()=>{this.moveWaypointUp(index)}}/>
+                                        <Button title="Dn" onPress={()=>{this.moveWaypointDown(index)}}/>
                                     </View> */}
                                 </View>
                             ))}
