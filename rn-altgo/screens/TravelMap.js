@@ -28,11 +28,12 @@ class Example extends Component {
       mapRegion: { latitude: 37.78825, longitude: -122.4324, latitudeDelta: 0.0922, longitudeDelta: 0.0421 },
       locationResult: null,
       location: { coords: { latitude: 37.78825, longitude: -122.4324 } },
-      distance: '',
-      duration: '',
+      distance: 0,
+      duration: 0,
       transitDistance: 0,
       transitDuration: 0,
       cost: 0,
+      typeTrip: 'Straight',
       chosenPlace: null,
       groupCoordinate: [],
     };
@@ -41,26 +42,35 @@ class Example extends Component {
   }
 
   findRoute = async (addresses) => {
+    let routingType = this.state.typeTrip
     let response = await axios({
       url: 'http://h8-p2-portocombo1.app.dev.arieseptian.com/route/routeOptimizer',
       method: 'POST',
       data: {
         addresses,
-        routingType: 'Straight'
+        routingType
       }
     })
+    let coordinates = response.data.route.map((e, i) => {
+      if (i === 0) {
+        e.addressSearchQuery = "Your location"
+      }
+      return {
+        latitude: e.lat,
+        longitude: e.lng,
+        addressSearchQuery: e.addressSearchQuery,
+        formatted_address: e.geocodingData.formatted_address
+      }
+    })
+    if(routingType === 'RoundTrip'){
+      coordinates.push(coordinates[0])
+    }
     this.setState({
-      coordinates: response.data.route.map((e, i) => {
-        if (i === 0) {
-          e.addressSearchQuery = "Your location"
-        }
-        return {
-          latitude: e.lat,
-          longitude: e.lng,
-          addressSearchQuery: e.addressSearchQuery,
-          formatted_address: e.geocodingData.formatted_address
-        }
-      }),
+      distance:0,
+      duration:0,
+      transitDistance:0,
+      transitDuration:0,
+      coordinates,
       routeOptimizerResponse: response.data
     })
   }
