@@ -45,33 +45,46 @@ class Profile extends Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(242, 180, 30)' }}>
-      {/* <LinearGradient style={{ flex: 1}} colors={['black', '#1f1135', 'black']} > */}
        {!this.state.loading && (
         <Content>
-        <View style={{ flex: 2, height: 250, justifyContent: 'center', alignItems: 'center' }}>
-          <Button onPress={this.logout} style={{ width: 50, justifyContent: 'center', marginLeft: 320, height: 50, backgroundColor: 'black', borderRadius: 25 }}> 
-          <Icon style={{ fontSize: 22 }} name="log-out" />
-          </Button>
-          {
-            this.props.userInfo.profilePicture ? <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={{uri: this.props.userInfo.profilePicture}}/> : <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={ noUser }/>
-          }
-          <Text style={{ fontWeight: '500', fontSize: 28, color: 'black' }}> {this.props.userInfo.name } </Text>
+          <View style={{ backgroundColor: 'rgb(242, 180, 30)', height: 150, width: 500, zIndex: 1000 }}>
+            <TouchableHighlight onPress={this.logout} style={{ width: 50, justifyContent: 'center', marginLeft: 350, height: 50, borderRadius: 25, right: 10  }}> 
+              <Icon style={{ fontSize: 28, color: 'black', fontWeight: '800' }} name="log-out" />
+            </TouchableHighlight>
+              {
+                this.props.userInfo.profilePicture ? <Thumbnail style={{ position: 'absolute', flex: 1, width: 150, height: 150, borderRadius: 75, right: 230, top: 60, borderColor: 'lightgrey', borderWidth: 1}} source={{uri: this.props.userInfo.profilePicture}}/> : <Thumbnail style={{ width: 150, height: 150, borderRadius: 75 }} source={ noUser }/>
+              }
+
+          </View>
+
+        <View style={{flex: 1, zIndex: 0,marginHorizontal: 5, flex: 2, height: 140, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', }}>
+          <Text style={{marginTop: 40, fontWeight: '500', fontSize: 28, color: 'black', marginLeft: 25 }}> {this.props.userInfo.name } </Text>
         </View>
 
-        <View style={{ flex: 2,  height: 100, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
-          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'rgb(230, 230, 230)', width: 140 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
-            <Text style={{ color: 'black', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '300' }}>Add friend</Text>
+        <View style={{ marginHorizontal: 5, backgroundColor: 'white',flex: 1,  height: 100, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
+          
+          <TouchableHighlight style={{ borderRadius: 5, width: 140 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+              <View style={{ width: 60, height: 60, backgroundColor: 'rgba(230, 230, 230, 0.6)', margin: 5, padding: 5, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+                  < Icon name="person-add" style={{ color: 'black'}} />
+              </View>
+                <Text style={{ color: 'black', paddingTop: 0, padding: 5, textAlign: 'center', fontSize: 15, fontWeight: '300' }}>Add friend</Text>
+            </View>
           </TouchableHighlight>
-          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'rgb(230, 230, 230)', width: 140}} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('PendingHangout')}>
-            <Text style={{ color: 'black', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '300' }}>Invitations</Text>
+
+          <TouchableHighlight style={{ borderRadius: 5, width: 140 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('PendingHangout')}>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+              <View style={{ width: 60, height: 60, backgroundColor: 'rgba(230, 230, 230, 0.6)', margin: 5, padding: 5, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}}>
+                  < Icon name="mail-unread" style={{ color: 'black'}} />
+              </View>
+                <Text style={{ color: 'black', paddingTop: 0, padding: 5, textAlign: 'center', fontSize: 15, fontWeight: '300' }}>Invitations</Text>
+            </View>
           </TouchableHighlight>
+
         </View>
 
-        <View style={{ flex: 5, backgroundColor: 'white', marginHorizontal: 5, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}>
-          <View style={{ borderBottomColor: 'lightgrey', borderBottomWidth: 1}}>
-            <Text style={{ textAlign: 'center', fontSize: 21, padding: 10 }}>
-              My Friends
-            </Text>
+        <View style={{ flex: 5, backgroundColor: 'white', marginHorizontal: 5, }}>
+          <View style={{ marginBottom: 40}}>
           </View>
 
             {
@@ -86,7 +99,6 @@ class Profile extends Component {
         </Content>
        )}
       
-      {/* </LinearGradient> */}
       </SafeAreaView>
     )
   }
