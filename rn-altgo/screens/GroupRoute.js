@@ -48,7 +48,6 @@ class Example extends Component {
   }
 
   onMapPress = (e) => {
-    db.collection('chat').doc()
     this.setState({
       addresses: [
         ...this.state.addresses,
@@ -98,12 +97,8 @@ class Example extends Component {
   }
 
   updatedChosenPlace = (coord) => {
-    this.setState({
+    db.collection('chat').doc(this.props.navigation.state.params.chatid).update({
       chosenPlace: coord
-    }, () => {
-      db.collection('chat').doc().update({
-        chosenPlace: coord
-      })
     })
   }
 
@@ -112,7 +107,7 @@ class Example extends Component {
       <View style={{ flex: 1 }}>
         <Header style={{ height: 40, paddingTop: 0 }}>
           <Left>
-            <TouchableHighlight onPress={this.props.toPageRecom}>
+            <TouchableHighlight onPress={this.props.navigation.navigate('Friends')}>
               <Icon name="ios-arrow-back" style={{ margin: 5 }} />
             </TouchableHighlight>
           </Left>
@@ -206,12 +201,17 @@ class Example extends Component {
 
           {this.props.groupCoordinate && <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>}
           {
-            this.props.centerPlaces && this.props.centerPlaces.map((each, index) => <View style={{ textAlign: 'center' }} key={index}>
+            this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
+              console.log(each, index)
+              return (
+                <View style={{ textAlign: 'center' }} key={index}>
               {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
               <TouchableHighlight onPress={() => this.updatedChosenPlace(each.coordinate)}> 
                 <Text>{index + 1}.{each.name} </Text>
               </TouchableHighlight>
-            </View>)
+            </View>
+              )
+            })
           }
 
         </ScrollView>

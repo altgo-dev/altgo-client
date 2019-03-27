@@ -132,7 +132,6 @@ class Home extends Component {
     }
 
     toPageMap = async () => {
-        console.log('THIS')
         // this.setState({
         //     page: 4,
         //     showPanel: false,
@@ -207,15 +206,17 @@ class Home extends Component {
                 title: 'route options'
             }, 
             buttonIndex => {
-                this.setState({
-                    typeTrip: BUTTONS[buttonIndex]
-                }, () => {
+                if(buttonIndex !== 3) {
                     this.setState({
-                        page: 4,
-                        showPanel: false,
-                        inviteFriends: false
+                        typeTrip: BUTTONS[buttonIndex]
+                    }, () => {
+                        this.setState({
+                            page: 4,
+                            showPanel: false,
+                            inviteFriends: false
+                        })
                     })
-                })
+                }
             })
 
         }
