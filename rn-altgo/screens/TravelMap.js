@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { db } from '../api/firestore'
 import { Constants, MapView, Location, Permissions } from 'expo';
 import SinglePlace from '../components/SinglePlace.js'
+import SingleFriend from '../components/SingleFriend'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -37,10 +38,13 @@ class Example extends Component {
       typeTrip: 'Straight',
       chosenPlace: null,
       groupCoordinate: [],
+      members: []
     };
 
     this.mapView = null;
   }
+
+
 
   findRoute = async (addresses) => {
     let routingType = this.state.typeTrip
@@ -109,7 +113,7 @@ class Example extends Component {
                 console.log(`public transport | distance : ${result.distance} | duration : ${result.duration}`)
               }}
               onError={(errorMessage) => {
-                console.log('GOT AN ERROR while drawing the transit route');
+                console.log('GOT AN ERROR while drawing the transit route')
               }}
             />
           )
@@ -139,22 +143,20 @@ class Example extends Component {
         ...this.state.addresses,
         `${e.nativeEvent.coordinate.latitude},${e.nativeEvent.coordinate.longitude}`
       ],
-    }, () => { this.findRoute() });
+    }, () => { this.findRoute() })
   }
 
   async componentDidMount() {
     console.log('hehehehe')
-    const chat = await db.collection('chat').doc(this.props.navigation.state.params.chatid).get()
-    // console.log('-=-=-=-=',chat)    
+    const chat = await db.collection('chat').doc(this.props.navigation.state.params.chatid).get()   
     const users = await db.collection('users').where('chatid', '==', this.props.navigation.state.params.chatid).get()
-
     var groupCoordinate = []
+    this.setState({
+      members: chat.data().accept
+    })
     users.docs.forEach(user => {
       groupCoordinate.push({ lat: user.data().lat, long: user.data().long })
     })
-
-    // console.log(chat.data())
-
     let addresses = []
     addresses = addresses.concat(chat.data().places.map(e => `${e.name}, ${e.vicinity}`))
     this.setState({ addresses })
@@ -182,7 +184,7 @@ class Example extends Component {
       this.setState({
         locationResult: 'Permission to access location was denied',
         location,
-      });
+      })
     }
     //coords.longitude, latitude
     let location = await Location.getCurrentPositionAsync({});
@@ -246,7 +248,7 @@ class Example extends Component {
                 title="My Marker"
                 description="Some description"
               />}
-{/* 
+            {/* 
               {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) => <MapView.Marker
                 key={index}
                 coordinate={{ latitude: each.lat, longitude: each.long }}
@@ -291,7 +293,7 @@ class Example extends Component {
                           left: (width / 20),
                           top: (height / 20),
                         }
-                      });
+                      })
                     }}
                     onError={(errorMessage) => {
                       console.log('GOT AN ERROR while drawing the main route');
@@ -325,6 +327,16 @@ class Example extends Component {
                             //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                           }}
                           onReady={result => {
+                            let members = this.state.members
+                            members.forEach(member => {
+                              if(member._id === e.user) {
+                                member.distance = result.distance
+                                member.duration = result.duration
+                              }
+                            })
+                            this.setState({
+                              members: members
+                            })
                             console.log(`user ${e.user} to meeting point | distance : ${result.distance} | duration : ${result.duration}`)
                           }}
                           onError={(errorMessage) => {
@@ -383,13 +395,10 @@ class Example extends Component {
                   }
                 </ScrollView>
               </Tab>
-            
               <Tab activeTextStyle={{ color: 'black', fontWeight: '500'}}  heading="Members" activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.9)'}}>
                 <ScrollView style={{ flex: 1 }}>
                   <View>
-                    <Text>
-                      page members
-                    </Text>
+                    {this.state.members.map((member, i) => <SingleFriend key={i} data={member}/>)}
                   </View>
                 </ScrollView>
               </Tab>
@@ -427,7 +436,7 @@ const mapState = (state) => ({
   groupCoordinate: state.Meetup.groupCoordinate,
   centerPlaces: state.Meetup.centerPlaces
 })
-export default connect(mapState)(Example);
+export default connect(mapState)(Example)
 
 const myMapStyle = [
   {

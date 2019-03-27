@@ -8,9 +8,6 @@ import { connect } from 'react-redux'
 import noUser from '../assets/nouser.png'
 
 class SingleGroup extends Component {
-    // onPress = () => {
-        
-    // }
 
     render() {
         
@@ -32,7 +29,10 @@ class SingleGroup extends Component {
                     </Text>
                 </Body>
                   <Right style={{ width: 30, flex: 0 }}>
-                    <Icon onPress={this.onPress} style={{ fontSize: 28, color: 'black' }} name="send" />
+                    <View style={{flexDirection:'row'}}>
+                        <Icon onPress={this.onPress} style={{ fontSize: 15, color: 'black', marginRight:10 }} name="send" />
+                        <Icon onPress={() => this.props.removeChat(data.chatid)} style={{ fontSize: 15, color: 'black' }} name="remove" />
+                    </View>
                   </Right>
             </CardItem>
         )
