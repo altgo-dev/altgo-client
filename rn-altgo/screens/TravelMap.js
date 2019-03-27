@@ -166,8 +166,8 @@ class Example extends Component {
       .onSnapshot(snapchat => {
         let chosenPlace = snapchat.data().chosenPlace
         if (chosenPlace) {
-          this.setState({ chosenPlace: chosenPlace.coordinate }, () => {
-            this.findRoute([`${chosenPlace.coordinate.lat},${chosenPlace.coordinate.long}`, ...this.state.addresses])
+          this.setState({ chosenPlace: chosenPlace }, () => {
+            this.findRoute([`${chosenPlace.lat},${chosenPlace.long}`, ...this.state.addresses])
           })
         }
       })
@@ -391,7 +391,7 @@ class Example extends Component {
               <Tab activeTextStyle={{ color: 'black', fontWeight: '500'}} heading="Meeting Point" activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.9)', borderBottomColor: 'black'}} >
                 <ScrollView style={{ flex: 1 }}>
                   {
-                    this.props.centerPlaces && this.props.centerPlaces.map((each, index) =><SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />)
+                    this.props.centerPlaces && this.props.centerPlaces.map((each, index) =><SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.chosenPlaceSelected}  />)
                   }
                 </ScrollView>
               </Tab>
