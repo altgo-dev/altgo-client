@@ -50,6 +50,10 @@ class Example extends Component {
                 routingType: this.state.typeTrip
             }
         })
+        console.log(`Routing type : ${this.state.typeTrip}`)
+        response.data.route.map(e=>{
+          console.log(e.addressSearchQuery)
+        })
         this.setState({
             coordinates: response.data.route.map((e, i) => {
                 if(i === 0){
@@ -88,7 +92,7 @@ class Example extends Component {
                             strokeColor="black"
                             optimizeWaypoints={false}
                             onStart={(params) => {
-                                console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
+                                //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                             }}
                             onReady={result => {
                                 this.setState({
@@ -134,7 +138,6 @@ class Example extends Component {
         let addresses = []
         addresses.push(await this._getLocationAsync())
         addresses = addresses.concat(this.props.destList.map(e => `${e.name}, ${e.vicinity}`))
-        // let addresses=['hacktiv8','gandaria city','monumen nasional',]
         this.setState({addresses, typeTrip: this.props.typeTrip},()=>{this.findRoute()})
     }
 
@@ -226,23 +229,27 @@ class Example extends Component {
         )
     }
 
+    changeRoutingType = (routingType) => {
+      this.setState({typeTrip: routingType},()=>{this.findRoute()})
+    }
+    
     renderRouteOption = () => {
       return (
         <>
         <View>
-          <TouchableHighlight onPress={this.props.toPageRecom} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+          <TouchableHighlight onPress={()=>this.changeRoutingType('AtoZ')} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
             <Icon name="redo" style={{ marginLeft: 4, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
           </TouchableHighlight>
           {/* <Text style={{fontSize: 13, fontWeight: '500', right: 0, justifyContent: 'center', marginRight: 15, top: 165, position: 'absolute', zIndex: 10, margin: 8,}}>Point to point</Text> */}
         </View>
         <View>
-          <TouchableHighlight onPress={this.props.toPageRecom} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 175, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+          <TouchableHighlight onPress={()=>this.changeRoutingType('RoundTrip')} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 175, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
             <Icon name="sync" style={{ marginLeft: 3, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
           </TouchableHighlight>
           {/* <Text>Round trip</Text> */}
         </View>
         <View>
-          <TouchableHighlight onPress={this.props.toPageRecom} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 230, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+          <TouchableHighlight onPress={()=>this.changeRoutingType('Straight')} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 230, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
             <Icon name="time" style={{ marginLeft: 3, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
           </TouchableHighlight>
           {/* <Text>Most efficient</Text> */}
@@ -299,7 +306,7 @@ class Example extends Component {
                                         strokeColor="rgb(239, 171, 2)"
                                         optimizeWaypoints={false}
                                         onStart={(params) => {
-                                            console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                                            //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
                                         }}
                                         onReady={result => {
                                             this.setState({
