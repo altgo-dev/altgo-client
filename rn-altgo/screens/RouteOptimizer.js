@@ -100,7 +100,6 @@ class Example extends Component {
                                 //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                             }}
                             onReady={result => {
-                                console.log(result)
                                 this.setState({
                                     transitDistance: this.state.transitDistance + result.distance,
                                     transitDuration: this.state.transitDuration + result.duration,
