@@ -219,15 +219,36 @@ class Example extends Component {
     }
 
     showButtonBack = () => {
-      // if (this.state.showDetails) {
         return (
-          // <Header style={{ position: 'absolute', }}>
           <TouchableHighlight onPress={this.props.toPageRecom} style={{ justifyContent: 'center', marginRight: 50, top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
             <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
           </TouchableHighlight>
-          // </Header>
         )
-      // }
+    }
+
+    renderRouteOption = () => {
+      return (
+        <>
+        <View>
+          <TouchableHighlight onPress={this.props.toPageRecom} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+            <Icon name="redo" style={{ marginLeft: 4, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
+          </TouchableHighlight>
+          {/* <Text style={{fontSize: 13, fontWeight: '500', right: 0, justifyContent: 'center', marginRight: 15, top: 165, position: 'absolute', zIndex: 10, margin: 8,}}>Point to point</Text> */}
+        </View>
+        <View>
+          <TouchableHighlight onPress={this.props.toPageRecom} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 175, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+            <Icon name="sync" style={{ marginLeft: 3, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
+          </TouchableHighlight>
+          {/* <Text>Round trip</Text> */}
+        </View>
+        <View>
+          <TouchableHighlight onPress={this.props.toPageRecom} style={{right: 0, justifyContent: 'center', marginRight: 15, top: 230, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+            <Icon name="time" style={{ marginLeft: 3, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
+          </TouchableHighlight>
+          {/* <Text>Most efficient</Text> */}
+        </View>
+        </>
+      )
     }
 
     render() {
@@ -235,6 +256,9 @@ class Example extends Component {
             <View style={{ flex: 1, backgroundColor: 'white' }}>
              {
                this.showButtonBack()
+             }
+             {
+               this.renderRouteOption()
              }
                 {/* <ScrollView style={{ flex: 1 }}> */}
                   <TouchableHighlight style={{ zIndex: -1}} underlayColor="#ffffff00" onLongPress={ () => this.setState({ showDetails: !this.state.showDetails })}>
@@ -254,7 +278,9 @@ class Example extends Component {
                         >
                             {this.state.coordinates.map((coordinate, index) =>
                                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
-                                    <Text style={{ backgroundColor: 'rgba(239, 171, 2, 0.7)', margin: 5, padding: 5, borderRadius: 50 }}>{index + 1}</Text>
+                                <View style={{ backgroundColor: 'rgba(239, 171, 2, 1)', borderRadius: 50, width: 26, justifyContent: 'center' }}>
+                                    <Text style={{ textAlign: 'center', margin: 3, padding: 3,}}>{index + 1}</Text>
+                                </View>
                                 </MapView.Marker>
                             )}
                             <MapView.Marker

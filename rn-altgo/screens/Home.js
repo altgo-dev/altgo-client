@@ -353,11 +353,11 @@ class Home extends Component {
                                         this.state.friendsList.map((el, i) => {
                                             if (el.UserId2._id === this.props.userInfo._id) {
                                                 return <TouchableHighlight underlayColor="#ffffff00" key={i} onPress={() => this.addMember(el.UserId1, i)}>
-                                                    <SingleFriend icon="no" data={el.UserId1} />
+                                                    <SingleFriend color='rgb(242, 180, 30)' icon="no" data={el.UserId1} />
                                                 </TouchableHighlight>
                                             } else {
                                                 return <TouchableHighlight underlayColor="#ffffff00" key={i} onPress={() => this.addMember(el.UserId2, i)}>
-                                                    <SingleFriend icon="no" data={el.UserId2} />
+                                                    <SingleFriend color='rgb(242, 180, 30)' icon="no" data={el.UserId2} />
                                                 </TouchableHighlight>
                                             }
                                         })
