@@ -219,7 +219,7 @@ class Example extends Component {
               {
                 this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
                   return (
-                    <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />
+                    <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}   />
             
                   )
                 })

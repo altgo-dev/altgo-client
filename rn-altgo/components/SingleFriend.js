@@ -11,6 +11,13 @@ import Users from '../store/reducers/Users';
 import noUser from '../assets/nouser.png'
 
 class SingleFriend extends Component {
+
+    componentDidMount = () => {
+        if(this.props.data.distance) {
+            console.log(this.props.data.distance)
+        }
+    }
+
     onPress = () => {
         var friendId= this.props.data._id
         var friendName = this.props.data.name
@@ -40,7 +47,7 @@ class SingleFriend extends Component {
                     </Text>
                 </Body>
                 {
-                    !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) === -1 && 
+                    !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) === -1 && !data.distance &&
                     <Right style={{ width: 30, flex: 0 }}>
                         <Icon onPress={this.onPress} style={{ fontSize: 28, color: 'black' }} name="add" />
                     </Right>
@@ -49,6 +56,13 @@ class SingleFriend extends Component {
                     !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) !== -1 && 
                 <Right style={{ width: 100, flex: 0 }}>
                     <Icon onPress={this.removeFriend} style={{ fontSize: 28, color: 'black' }} name="close" />
+                </Right>
+                }
+
+                {
+                   data.distance &&
+                <Right style={{ width: 100, flex: 0 }}>
+                   <Text>{data.distance} Km || {data.duration} minutes</Text>
                 </Right>
                 }
                 
