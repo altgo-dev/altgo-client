@@ -92,9 +92,9 @@ class Example extends Component {
                             origin={this.state.coordinates[i]}
                             destination={this.state.coordinates[i + 1]}
                             apikey={GOOGLE_MAPS_APIKEY}
-                            strokeWidth={3}
+                            strokeWidth={5}
                             mode="transit"
-                            strokeColor="black"
+                            strokeColor="brown"
                             optimizeWaypoints={false}
                             onStart={(params) => {
                                 //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
@@ -307,7 +307,7 @@ class Example extends Component {
                                         waypoints={(this.state.coordinates.length > 2) ? this.state.coordinates.slice(1, -1) : null}
                                         destination={this.state.coordinates[this.state.coordinates.length - 1]}
                                         apikey={GOOGLE_MAPS_APIKEY}
-                                        strokeWidth={3}
+                                        strokeWidth={7}
                                         strokeColor="rgb(239, 171, 2)"
                                         optimizeWaypoints={false}
                                         onStart={(params) => {
