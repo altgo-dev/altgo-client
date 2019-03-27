@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const baseURL = 'http://h8-p2-portocombo1.app.dev.arieseptian.com'
+// const baseURL  = 'http://172.20.10.5:3000'
 
 export function getCoordinate(input) {
   return dispatch => {
@@ -18,11 +19,16 @@ export function getCoordinate(input) {
 export function getCenterPlaces(origins){
   return async dispatch => {
     try{
+      origins = origins.map(e => {
+        return {lat: e.lat, long: e.long}
+      })
+      // console.log(origins)
       var response = await axios.post(`${baseURL}/meetups`, {origins})
       var payload = response.data.data.reccommendations
       // console.log(response.data, 'STORE')
       // console.log(payload)
       dispatch({type: 'SET_CENTER_PLACES', payload})
+      // console.log('aman')
     } catch (error){
       console.log('ERROR')
     }
