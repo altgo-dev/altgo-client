@@ -16,14 +16,18 @@ class Room extends Component {
     chatId: '',
     ready: false,
     coord: [],
-    members: []
+    members: [],
+    mapType: ''
   }
 
   componentDidMount = () => {
     // console.log('======', this.props.centerPlaces)
     db.collection('chat').doc(this.props.chatid).onSnapshot(querSnapshot => {
+      console.log(querSnapshot.data().type)
+
       this.setState({
-        members: querSnapshot.data().accept
+        members: querSnapshot.data().accept,
+        mapType: querSnapshot.data().type
       })
       if(!querSnapshot.data().pending.length) {
         db.collection('users').where('chatid', '==', this.props.chatid).get()
@@ -81,8 +85,8 @@ class Room extends Component {
           </TouchableHighlight>
 
         </Left>
-          {this.state.ready && <TouchableHighlight onPress={() => (this.props.navigation.navigate('TravelMap', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>
-          }
+          {this.state.ready && this.state.mapType === 'travel' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('TravelMap', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
+          {this.state.ready && this.state.mapType === 'hangout' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('GroupRoute', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
         </Header>
         <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
         <GiftedChat
