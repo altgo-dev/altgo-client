@@ -28,7 +28,8 @@ class Example extends Component {
       location: { coords: { latitude: -6.260708, longitude: 106.781569 } },
       cost: 0,
       chosenPlace: null,
-      chooseName: ''
+      chooseName: '',
+      distance: null
     }
 
     this.mapView = null;
@@ -55,7 +56,7 @@ class Example extends Component {
         ...this.state.addresses,
         `${e.nativeEvent.coordinate.latitude},${e.nativeEvent.coordinate.longitude}`
       ],
-    }, () => { 
+    }, () => {
       this.findRoute()
     })
   }
@@ -63,9 +64,9 @@ class Example extends Component {
   async componentDidMount() {
     this._getLocationAsync()
     await db.collection('chat').doc(this.props.navigation.state.params.chatid).onSnapshot(querySnapshot => {
-      if(querySnapshot.data().chosenPlace) {
+      if (querySnapshot.data().chosenPlace) {
         this.setState({
-          chosenPlace : querySnapshot.data().chosenPlace
+          chosenPlace: querySnapshot.data().chosenPlace
         })
       }
     })
@@ -105,16 +106,18 @@ class Example extends Component {
     db.collection('chat').doc(this.props.navigation.state.params.chatid).update({
       chosenPlace: coord
     })
+
+    this.setState({ chosenPlace: coord })
   }
 
   showButtonBack = () => {
     return (
-      <TouchableHighlight onPress={() => this.props.navigation.navigate('Friend', {chatid: this.props.navigation.getParam('chatid')})} style={{ justifyContent: 'center', marginRight: 50, top: 30, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+      <TouchableHighlight onPress={() => this.props.navigation.navigate('Friend', { chatid: this.props.navigation.getParam('chatid') })} style={{ justifyContent: 'center', marginRight: 50, top: 30, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
         <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
       </TouchableHighlight>
     )
   }
-  
+
   render() {
 
     return (
@@ -141,7 +144,7 @@ class Example extends Component {
                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
                   <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
                 </MapView.Marker>
-                )}
+              )}
 
               {!this.props.groupCoordinate.length && <MapView.Marker
                 coordinate={this.state.location.coords}
@@ -159,7 +162,7 @@ class Example extends Component {
 
               {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) =>
                 <MapView.Marker key={index} style={{ zIndex: 100 }} coordinate={{ latitude: each.lat, longitude: each.long }} >
-                  <View style={{ width: 20, backgroundColor: 'rgba(255, 190, 30, 0.8)', borderRadius: 30, padding: 3, margin: 3, justifyContent: 'center', alignItems: 'center'}}>
+                  <View style={{ width: 20, backgroundColor: 'rgba(255, 190, 30, 0.8)', borderRadius: 30, padding: 3, margin: 3, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ marginHorizontal: 3 }}>{index + 1}</Text>
                   </View>
                 </MapView.Marker>
@@ -192,6 +195,7 @@ class Example extends Component {
                             this.setState({
                               transitDistance: this.state.transitDistance + result.distance,
                               transitDuration: this.state.transitDuration + result.duration,
+                              distance: result.distance
                             })
                           }}
                           onError={(errorMessage) => {
@@ -214,20 +218,26 @@ class Example extends Component {
 
 
           {/* {this.props.groupCoordinate && <Text style={{ color: 'black', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>} */}
-          <View style={{ height: 300, marginTop: 20}}>
+          <View style={{ height: 300, marginTop: 20 }}>
             <ScrollView style={{ flex: 1 }}>
               {
                 this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
-                  return (
-                    <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}   />
-            
-                  )
+                  if (each.coordinate == this.state.chosenPlace) {
+                    return (
+                      <SinglePlace type="ios-send" key={index} data={each} distance={this.state.distance} updatedChosenPlace={this.updatedChosenPlace} />
+                    )
+                  }
+
+                  else {
+                    return (
+                      <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace} />
+                    )
+                  }
                 })
               }
 
             </ScrollView>
-          </View>
-
+          </View >
         </ScrollView>
 
       </View>

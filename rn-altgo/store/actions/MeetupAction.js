@@ -28,7 +28,7 @@ export function getCenterPlaces(origins){
       // console.log(response.data, 'STORE')
       // console.log(payload)
       dispatch({type: 'SET_CENTER_PLACES', payload})
-      console.log('aman')
+      // console.log('aman')
     } catch (error){
       console.log('ERROR')
     }
