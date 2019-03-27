@@ -59,7 +59,7 @@ class SinglePlace extends Component {
                 <Right style={{ width: 30, flex: 0 }}>
                 {
                     data.photo_path ? 
-                <TouchableHighlight underlayColor="#ffffff00" onPress={() =>  this.props.updatedChosenPlace(data.coordinate)}>
+                <TouchableHighlight underlayColor="#ffffff00" onPress={() =>  this.props.updatedChosenPlace(data.coordinate, data.name)}>
                     <Icon style={{ fontSize: 28, color: 'black' }} name={this.state.icon} />
                 </TouchableHighlight>
                 :

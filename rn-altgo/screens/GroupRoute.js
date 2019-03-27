@@ -27,7 +27,8 @@ class Example extends Component {
       locationResult: null,
       location: { coords: { latitude: -6.260708, longitude: 106.781569 } },
       cost: 0,
-      chosenPlace: null
+      chosenPlace: null,
+      chooseName: ''
     }
 
     this.mapView = null;
@@ -97,7 +98,10 @@ class Example extends Component {
     return currentLatLng
   }
 
-  updatedChosenPlace = (coord) => {
+  updatedChosenPlace = (coord, name) => {
+    this.setState({
+      chooseName: name
+    })
     db.collection('chat').doc(this.props.navigation.state.params.chatid).update({
       chosenPlace: coord
     })
@@ -110,7 +114,7 @@ class Example extends Component {
       </TouchableHighlight>
     )
   }
-
+  
   render() {
 
     return (
@@ -145,26 +149,28 @@ class Example extends Component {
                 description="Some description"
               />}
 
-              {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) => <MapView.Marker
+              {/* {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) => <MapView.Marker
                 key={index}
                 // coordinate={this.state.location.coords}
                 coordinate={{ latitude: each.lat, longitude: each.long }}
                 title="My Marker"
                 description="Some description"
-              />)}
+              />)} */}
 
               {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) =>
-                <MapView.Marker key={index} coordinate={{ latitude: each.lat, longitude: each.long }}>
-                  <View style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)'}}>
-                    <Text style={{  }}>{index + 1}</Text>
+                <MapView.Marker key={index} style={{ zIndex: 100 }} coordinate={{ latitude: each.lat, longitude: each.long }} >
+                  <View style={{ width: 20, backgroundColor: 'rgba(255, 190, 30, 0.8)', borderRadius: 30, padding: 3, margin: 3, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{ marginHorizontal: 3 }}>{index + 1}</Text>
                   </View>
                 </MapView.Marker>
               )}
 
               {this.state.chosenPlace &&
                 <>
-                  <MapView.Marker coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}>
-                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)', padding: 3, }}>meeting point</Text>
+                  <MapView.Marker title={this.state.chooseName} style={{ zIndex: 100 }} coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}>
+                    <View style={{ backgroundColor: 'rgba(255, 190, 30, 0.8)', borderRadius: 30, }}>
+                      <Text style={{ padding: 3, fontWeight: '500' }}>meeting point</Text>
+                    </View>
                   </MapView.Marker>
 
                   <>
@@ -197,12 +203,12 @@ class Example extends Component {
                   </>
                 </>}
 
-              {this.state.chosenPlace && <MapView.Marker
+              {/* {this.state.chosenPlace && <MapView.Marker
                 // coordinate={this.state.location.coords}
                 coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}
                 title="My Marker"
                 description="Some description"
-              />}
+              />} */}
             </MapView>
           </View>
 
