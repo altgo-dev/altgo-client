@@ -218,15 +218,9 @@ class Example extends Component {
             <ScrollView style={{ flex: 1 }}>
               {
                 this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
-                  // console.log(each, index)
                   return (
                     <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />
-                //     <View style={{ textAlign: 'center' }} key={index}>
-                //   {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
-                //   <TouchableHighlight onPress={() => this.updatedChosenPlace(each.coordinate)}> 
-                //     <Text>{index + 1}.{each.name} </Text>
-                //   </TouchableHighlight>
-                // </View>
+            
                   )
                 })
               }

@@ -3,12 +3,13 @@ import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHigh
 // import MapView from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import s from '../style'
-import { Spinner, Header, Left, Icon } from 'native-base'
+import { Spinner, Header, Left, Icon, Tabs, Tab } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { db } from '../api/firestore'
 import { Constants, MapView, Location, Permissions } from 'expo';
+import SinglePlace from '../components/SinglePlace.js'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -52,9 +53,9 @@ class Example extends Component {
       }
     })
     let coordinates = response.data.route.map((e, i) => {
-      if (i === 0) {
-        e.addressSearchQuery = "Your location"
-      }
+      // if (i === 0) {
+      //   e.addressSearchQuery = "Your location"
+      // }
       return {
         latitude: e.lat,
         longitude: e.lng,
@@ -95,7 +96,7 @@ class Example extends Component {
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={5}
               mode="transit"
-              strokeColor="brown"
+              strokeColor='rgba(63,142,252, 0.6)'
               optimizeWaypoints={false}
               onStart={(params) => {
                 //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
@@ -203,17 +204,20 @@ class Example extends Component {
       chosenPlace: each
     })
   }
+  showButtonBack = () => {
+    return (
+      <TouchableHighlight onPress={() => this.props.navigation.navigate('Friend', {chatid: this.props.navigation.getParam('chatid')})} style={{ justifyContent: 'center', marginRight: 50, top: 30, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+        <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
+      </TouchableHighlight>
+    )
+  }
 
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header style={{ height: 40, paddingTop: 0 }}>
-          <Left>
-            <TouchableHighlight onPress={this.props.toPageRecom}>
-              <Icon name="ios-arrow-back" style={{ margin: 5 }} />
-            </TouchableHighlight>
-          </Left>
-        </Header>
+        {
+          this.showButtonBack()
+        }
         <ScrollView style={{ flex: 1 }}>
           <View style={{ height: 500 }}>
             <MapView
@@ -229,9 +233,11 @@ class Example extends Component {
               customMapStyle={myMapStyle}
               provider={MapView.PROVIDER_GOOGLE}
             >
-              {!this.props.groupCoordinate.length && this.state.coordinates.map((coordinate, index) =>
+              {this.state.coordinates.map((coordinate, index) =>
                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
-                  <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
+                  <View style={{ width: 20, backgroundColor: 'rgba(63,142,252, 0.8)', borderRadius: 30, padding: 3, margin: 3, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{ marginHorizontal: 3 }}>{index + 1}</Text>
+                  </View>
                 </MapView.Marker>
               )}
 
@@ -240,18 +246,19 @@ class Example extends Component {
                 title="My Marker"
                 description="Some description"
               />}
-
+{/* 
               {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) => <MapView.Marker
                 key={index}
-                // coordinate={this.state.location.coords}
                 coordinate={{ latitude: each.lat, longitude: each.long }}
                 title="My Marker"
                 description="Some description"
-              />)}
+              />)} */}
 
               {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) =>
                 <MapView.Marker key={index} coordinate={{ latitude: each.lat, longitude: each.long }}>
-                  <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
+                  <View style={{ width: 20, backgroundColor: 'rgba(255, 190, 30, 0.8)', borderRadius: 30, padding: 3, margin: 3, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{ marginHorizontal: 3 }}>{index + 1}</Text>
+                  </View>
                 </MapView.Marker>
               )}
 
@@ -264,7 +271,7 @@ class Example extends Component {
                     destination={this.state.coordinates[this.state.coordinates.length - 1]}
                     apikey={GOOGLE_MAPS_APIKEY}
                     strokeWidth={7}
-                    strokeColor="rgb(239, 171, 2)"
+                    strokeColor="rgba(255, 190, 30, 0.6)"
                     optimizeWaypoints={false}
                     onStart={(params) => {
                       //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
@@ -297,7 +304,9 @@ class Example extends Component {
               {this.state.chosenPlace &&
                 <>
                   <MapView.Marker coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}>
-                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[meeting point]</Text>
+                    <View style={{ backgroundColor: 'rgba(255, 190, 30, 0.8)', borderRadius: 30, }}>
+                      <Text style={{ padding: 3, fontWeight: '500' }}>meeting point</Text>
+                    </View>
                   </MapView.Marker>
 
                 {/* DISPLAY USER TO MEETING POINT */}
@@ -328,22 +337,19 @@ class Example extends Component {
 
                 </>}
 
-              {this.state.chosenPlace && <MapView.Marker
+              {/* {this.state.chosenPlace && <MapView.Marker
                 // coordinate={this.state.location.coords}
                 coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}
                 title="My Marker"
                 description="Some description"
-              />}
+              />} */}
 
             </MapView>
           </View>
-          {
-            // this.props.groupCoordinate.length !== 0 && this.state.distance === '' && <View style={soverlay.overlay}><Text style={{ color: 'black', fontSize: 29, fontWeight: '600', zIndex: 6, alignSelf: 'center', backgroundColor: 'white', borderRadius: 30, padding: 30, margin: 50, }}>Please wait</Text></View>
-          }
-          {
+          {/* {
             this.props.groupCoordinate.length === 0 && this.state.distance !== '' && <>
               <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>Best Routes based on roadtime</Text>
-              <View style={{ margin: 5, padding: 5, backgroundColor: 'lightgray' }}>
+              <View style={{ zIndex: 999, margin: 5, padding: 5, backgroundColor: 'lightgray' }}>
                 <Text>Total driving distance: {this.state.distance}km</Text>
                 <Text>Total driving duration: {this.state.duration}min</Text>
                 <Text>Fuel cost (by car): Rp {this.state.cost.toLocaleString()}</Text>
@@ -352,7 +358,7 @@ class Example extends Component {
               </View>
 
               {this.state.coordinates.map((coordinate, index) => (
-                <View key={index} style={{ margin: 5, padding: 5, backgroundColor: 'white', flex: 1, flexDirection: 'row' }}>
+                <View key={index} style={{ margin: 5, padding: 5, backgroundColor: 'white', flex: 1, flexDirection: 'row', zIndex: 1000 }}>
                   <View style={{ flex: 10, justifyContent: "center", alignItems: "center" }}>
                     <Text style={{ fontSize: 24 }}>{index + 1}</Text>
                   </View>
@@ -366,18 +372,38 @@ class Example extends Component {
                 </View>
               ))}
             </>
-          }
+          } */}
 
-          {this.props.groupCoordinate && <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>}
-          {
-            this.props.centerPlaces && this.props.centerPlaces.map((each, index) => <View style={{ textAlign: 'center' }} key={index}>
-              {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
-              <TouchableHighlight onPress={() => this.chosenPlaceSelected(each)}>
-                <Text>{index + 1}.{each.name} </Text>
-              </TouchableHighlight>
-            </View>)
-          }
-
+          <View style={{ height: 400}}>
+            <Tabs tabBarUnderlineStyle={{ borderBottomColor: 'black', backgroundColor: 'black'}} activeTextStyle={{ color: 'black', fontWeight: '500'}}  activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.6)'}}>
+              <Tab activeTextStyle={{ color: 'black', fontWeight: '500'}} heading="Meeting Point" activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.9)', borderBottomColor: 'black'}} >
+                <ScrollView style={{ flex: 1 }}>
+                  {
+                    this.props.centerPlaces && this.props.centerPlaces.map((each, index) =><SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />)
+                  }
+                </ScrollView>
+              </Tab>
+            
+              <Tab activeTextStyle={{ color: 'black', fontWeight: '500'}}  heading="Members" activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.9)'}}>
+                <ScrollView style={{ flex: 1 }}>
+                  <View>
+                    <Text>
+                      page members
+                    </Text>
+                  </View>
+                </ScrollView>
+              </Tab>
+              <Tab activeTextStyle={{ color: 'black', fontWeight: '500'}}  heading="Routes" activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.9)'}}>
+                <ScrollView style={{ flex: 1 }}>
+                  <View>
+                    <Text>
+                      page routes
+                    </Text>
+                  </View>
+                </ScrollView>
+              </Tab>
+            </Tabs>
+          </View>
         </ScrollView>
 
       </View>
