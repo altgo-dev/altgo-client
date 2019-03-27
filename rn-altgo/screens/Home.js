@@ -152,6 +152,7 @@ class Home extends Component {
     showOp = async () => {
         if(this.state.groupTravel.state) {
             alert('Invitation sent!')
+            console.log(this.state.members, '=====')
             const permisstionStatus = await Location.hasServicesEnabledAsync()
             if(permisstionStatus) {
                 const chat = await db.collection('chat').add({
@@ -205,6 +206,9 @@ class Home extends Component {
                     chatid: ''
                 })
                 this.props.navigation.navigate('Friend')
+                this.setState({
+                    members: []
+                })
             } else {
                 
             }
@@ -307,8 +311,7 @@ class Home extends Component {
             }, () => {
                 this.setState({
                     page: 2,
-                    inviteFriends: false,
-                    members: []
+                    inviteFriends: false
                 })
             })
         }
