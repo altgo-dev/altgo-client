@@ -20,27 +20,35 @@ class Friend extends Component {
   }
 
   componentDidMount = async () => {
-    try {
-      const chats = await db.collection('users').where('id', '==', this.props.userid).get()
-      let allChats = []
-      chats.docs.forEach( doc => {
-        let name=[]
-        if(doc.data().members) {
-          doc.data().members.forEach(member => {
-            name.push(member.name)
-          })
-        }
-        let obj = {id: doc.id, name:name  ,...doc.data()}
-        allChats.push(obj)
-      })
+    if ( this.props.navigation.getParam('chatid') ) {
       this.setState({
-        chats: allChats
-      }, () => {
-        // console.log('=================')
-        // console.log(this.state.chats)
+        page: 2, 
+        chatId:  this.props.navigation.getParam('chatid')
       })
-    } catch (error) {
-      
+    } else {
+      try {
+        const chats = await db.collection('users').where('id', '==', this.props.userid).get()
+        let allChats = []
+        chats.docs.forEach( doc => {
+          let name=[]
+          if(doc.data().members) {
+            doc.data().members.forEach(member => {
+              name.push(member.name)
+            })
+          }
+          let obj = {id: doc.id, name:name  ,...doc.data()}
+          allChats.push(obj)
+        })
+        this.setState({
+          chats: allChats
+        }, () => {
+          // console.log('=================')
+          // console.log(this.state.chats)
+        })
+      } catch (error) {
+        
+      }
+
     }
   }
 
@@ -68,36 +76,6 @@ class Friend extends Component {
       ready: true
     })
   }
-  // async componentWillMount() {
-  //   const user = await db.collection('users').where('id', '==', `${this.props.userid}`).orderBy('createdAt', 'desc').get()
-  //   this.setState({
-  //     chatId: user.docs[0].data().chatid
-  //   })
-    
-  //   db.collection('chat').doc(user.docs[0].data().chatid).onSnapshot((querySnapshot) => {
-     
-  //       let haha = []
-  //       querySnapshot.data().messages.forEach(l => {
-  //        let lol= (l.createdAt.seconds * 1000)
-  //        l.createdAt = lol
-  //        haha.push(l)
-  //       })
-  //       this.setState({
-  //         messages: haha
-  //       })
-  //   })
-  // }
- 
-  // onSend(messages = []) {
-  //   this.setState(previousState => ({
-  //     messages: GiftedChat.append(previousState.messages, messages),
-  //   }), () => {
-  //     db.collection('chat').doc(this.state.chatId).update({
-  //       messages: this.state.messages
-  //     })
-  //   })
-
-  // }
  
   render() {
     return (

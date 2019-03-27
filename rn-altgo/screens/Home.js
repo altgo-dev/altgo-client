@@ -242,7 +242,6 @@ class Home extends Component {
     createGroup = async (type) => {
         await this.setState({
             friendsList: this.state.allFriends,
-            members: []
         })
         if(type === "hangout") {
             alert('Invitation sent!')
@@ -309,7 +308,8 @@ class Home extends Component {
             }, () => {
                 this.setState({
                     page: 2,
-                    inviteFriends: false
+                    inviteFriends: false,
+                    members:[]
                 })
             })
         }
