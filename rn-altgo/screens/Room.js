@@ -39,6 +39,7 @@ class Room extends Component {
             })
             this.setState({
               ready: true,
+              
               coord: meetUp
             }, () => {
               var input = this.state.coord
@@ -82,8 +83,10 @@ class Room extends Component {
             <Icon name="ios-arrow-back" />
           </TouchableHighlight>
         </Left>
+          
           {this.state.ready && this.state.mapType === 'travel' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('TravelMap', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
           {this.state.ready && this.state.mapType === 'hangout' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('GroupRoute', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
+  
         </Header>
         <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
         <GiftedChat
