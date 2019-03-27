@@ -141,20 +141,17 @@ class Example extends Component {
         ...this.state.addresses,
         `${e.nativeEvent.coordinate.latitude},${e.nativeEvent.coordinate.longitude}`
       ],
-    }, () => { this.findRoute() });
+    }, () => { this.findRoute() })
   }
 
   async componentDidMount() {
     console.log('hehehehe')
-    const chat = await db.collection('chat').doc(this.props.navigation.state.params.chatid).get()
-    // console.log('-=-=-=-=',chat)    
+    const chat = await db.collection('chat').doc(this.props.navigation.state.params.chatid).get()   
     const users = await db.collection('users').where('chatid', '==', this.props.navigation.state.params.chatid).get()
-
     var groupCoordinate = []
     users.docs.forEach(user => {
       groupCoordinate.push({ lat: user.data().lat, long: user.data().long })
     })
-    // console.log(chat.data())
     let addresses = []
     addresses = addresses.concat(chat.data().places.map(e => `${e.name}, ${e.vicinity}`))
     this.setState({ addresses })
@@ -246,7 +243,7 @@ class Example extends Component {
                 title="My Marker"
                 description="Some description"
               />}
-{/* 
+            {/* 
               {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) => <MapView.Marker
                 key={index}
                 coordinate={{ latitude: each.lat, longitude: each.long }}
@@ -291,7 +288,7 @@ class Example extends Component {
                           left: (width / 20),
                           top: (height / 20),
                         }
-                      });
+                      })
                     }}
                     onError={(errorMessage) => {
                       console.log('GOT AN ERROR while drawing the main route');
@@ -325,6 +322,7 @@ class Example extends Component {
                             //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                           }}
                           onReady={result => {
+                            
                             console.log(`user ${e.user} to meeting point | distance : ${result.distance} | duration : ${result.duration}`)
                           }}
                           onError={(errorMessage) => {
