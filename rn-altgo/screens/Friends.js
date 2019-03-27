@@ -97,7 +97,7 @@ class Friend extends Component {
         )}
        {this.state.page === 2 && <Room chatid={this.state.chatId} setReady={this.setReady} navigation={this.props.navigation} backPage={this.backPage} />}
       </View>
-    
+  
     )
   }
 }

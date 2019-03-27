@@ -18,8 +18,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyBN6anoHdSlaMME70z1wRzRTntP9CiKRYw';
 
 class Example extends Component {
     constructor(props) {
-        super(props);
-
+        super(props)
         this.state = {
             coordinates: [],
             addresses: [],
