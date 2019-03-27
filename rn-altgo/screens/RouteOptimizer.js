@@ -100,6 +100,7 @@ class Example extends Component {
                                 //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                             }}
                             onReady={result => {
+                                console.log(result)
                                 this.setState({
                                     transitDistance: this.state.transitDistance + result.distance,
                                     transitDuration: this.state.transitDuration + result.duration,
@@ -228,7 +229,7 @@ class Example extends Component {
 
     showButtonBack = () => {
         return (
-          <TouchableHighlight onPress={this.props.toPageRecom} style={{ justifyContent: 'center', marginRight: 50, top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+          <TouchableHighlight onPress={() => this.props.toPageRecom(true)} style={{ justifyContent: 'center', marginRight: 50, top: 120, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
             <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
           </TouchableHighlight>
         )

@@ -7,7 +7,8 @@ import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { Constants, MapView, Location, Permissions } from 'expo';
-
+import { db } from '../api/firestore'
+import SinglePlace from '../components/SinglePlace'
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -27,7 +28,7 @@ class Example extends Component {
       location: { coords: { latitude: -6.260708, longitude: 106.781569 } },
       cost: 0,
       chosenPlace: null
-    };
+    }
 
     this.mapView = null;
   }
@@ -53,28 +54,36 @@ class Example extends Component {
         ...this.state.addresses,
         `${e.nativeEvent.coordinate.latitude},${e.nativeEvent.coordinate.longitude}`
       ],
-    }, () => { this.findRoute() });
+    }, () => { 
+      this.findRoute()
+    })
   }
 
   async componentDidMount() {
     this._getLocationAsync()
-    console.log(this.props.groupCoordinate)
+    await db.collection('chat').doc(this.props.navigation.state.params.chatid).onSnapshot(querySnapshot => {
+      if(querySnapshot.data().chosenPlace) {
+        this.setState({
+          chosenPlace : querySnapshot.data().chosenPlace
+        })
+      }
+    })
   }
 
   _handleMapRegionChange = mapRegion => {
-    this.setState({ mapRegion });
+    this.setState({ mapRegion })
   };
 
   _getLocationAsync = async () => {
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    let { status } = await Permissions.askAsync(Permissions.LOCATION)
     if (status !== 'granted') {
       this.setState({
         locationResult: 'Permission to access location was denied',
         location,
-      });
+      })
     }
     //coords.longitude, latitude
-    let location = await Location.getCurrentPositionAsync({});
+    let location = await Location.getCurrentPositionAsync({})
     var currentLatLng = `${location.coords.latitude},${location.coords.longitude}`
 
     this.setState({
@@ -86,14 +95,21 @@ class Example extends Component {
       location: location,
     })
     return currentLatLng
-  };
+  }
+
+  updatedChosenPlace = (coord) => {
+    db.collection('chat').doc(this.props.navigation.state.params.chatid).update({
+      chosenPlace: coord
+    })
+  }
 
   render() {
+
     return (
       <View style={{ flex: 1 }}>
         <Header style={{ height: 40, paddingTop: 0 }}>
           <Left>
-            <TouchableHighlight onPress={this.props.toPageRecom}>
+            <TouchableHighlight onPress={this.props.navigation.navigate('Friends')}>
               <Icon name="ios-arrow-back" style={{ margin: 5 }} />
             </TouchableHighlight>
           </Left>
@@ -117,7 +133,7 @@ class Example extends Component {
                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
                   <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
                 </MapView.Marker>
-              )}
+                )}
 
               {!this.props.groupCoordinate.length && <MapView.Marker
                 coordinate={this.state.location.coords}
@@ -173,7 +189,6 @@ class Example extends Component {
                       )
                     ))}
                   </>
-
                 </>}
 
               {this.state.chosenPlace && <MapView.Marker
@@ -182,20 +197,24 @@ class Example extends Component {
                 title="My Marker"
                 description="Some description"
               />}
-
-
             </MapView>
           </View>
 
 
           {this.props.groupCoordinate && <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>}
           {
-            this.props.centerPlaces && this.props.centerPlaces.map((each, index) => <View style={{ textAlign: 'center' }} key={index}>
-              {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
-              <TouchableHighlight onPress={() => this.setState({ chosenPlace: each.coordinate })}>
-                <Text>{index + 1}.{each.name} </Text>
-              </TouchableHighlight>
-            </View>)
+            this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
+              console.log(each, index)
+              return (
+                <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />
+            //     <View style={{ textAlign: 'center' }} key={index}>
+            //   {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
+            //   <TouchableHighlight onPress={() => this.updatedChosenPlace(each.coordinate)}> 
+            //     <Text>{index + 1}.{each.name} </Text>
+            //   </TouchableHighlight>
+            // </View>
+              )
+            })
           }
 
         </ScrollView>
@@ -220,7 +239,7 @@ const mapState = (state) => ({
   groupCoordinate: state.Meetup.groupCoordinate,
   centerPlaces: state.Meetup.centerPlaces
 })
-export default connect(mapState)(Example);
+export default connect(mapState)(Example)
 
 const myMapStyle = [
   {

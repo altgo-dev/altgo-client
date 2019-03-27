@@ -169,19 +169,18 @@ class PendingHangout extends Component {
                             </CardItem>
                   })
                 }
-                <CardItem style={{ flex: 1, justifyContent: 'flex-end'}}>
+                {/* <CardItem style={{ flex: 1, justifyContent: 'flex-end'}}>
                   <Button style={{ width: 70, justifyContent: 'center', margin: 5 }}>
                     <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>
                       Accept
                     </Text>
-                  </Button>
+                  </Button> */}
                   {/* <Button style={{ width: 70, justifyContent: 'center', margin: 5 }}>
                     <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>
                       Reject
                     </Text>
                   </Button> */}
-                </CardItem>
-
+                {/* </CardItem> */}
               </Card>
             }
           />

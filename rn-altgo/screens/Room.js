@@ -44,8 +44,6 @@ class Room extends Component {
               var input = this.state.coord
               this.props.setGroupCoordinate(this.state.coord)
               this.props.getCenterPlaces(input)
-              // console.log(input, '====')
-              // console.log(this.props.userid)
             })
           })
       }
@@ -83,7 +81,6 @@ class Room extends Component {
           <TouchableHighlight onPress={this.props.backPage}>
             <Icon name="ios-arrow-back" />
           </TouchableHighlight>
-
         </Left>
           {this.state.ready && this.state.mapType === 'travel' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('TravelMap', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
           {this.state.ready && this.state.mapType === 'hangout' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('GroupRoute', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
