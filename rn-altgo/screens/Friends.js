@@ -20,35 +20,28 @@ class Friend extends Component {
   }
 
   componentDidMount = async () => {
-    if ( this.props.navigation.getParam('chatid') ) {
-      this.setState({
-        page: 2, 
-        chatId:  this.props.navigation.getParam('chatid')
+    db.collection('users').where('id', '==', this.props.userid).orderBy('createdAt', 'desc').onSnapshot(querySnapshot => {
+      let allChats = []
+      querySnapshot.forEach(doc => {
+        let name=[]
+        if(doc.data().members) {
+          doc.data().members.forEach(member => {
+            name.push(member.name)
+          })
+        }
+        let obj = {id: doc.id, name:name  ,...doc.data()}
+        allChats.push(obj)
       })
-    } 
-      try {
-        const chats = await db.collection('users').where('id', '==', this.props.userid).get()
-        let allChats = []
-        chats.docs.forEach( doc => {
-          let name=[]
-          if(doc.data().members) {
-            doc.data().members.forEach(member => {
-              name.push(member.name)
+      this.setState({
+              chats: allChats
+            }, () => {
             })
-          }
-          let obj = {id: doc.id, name:name  ,...doc.data()}
-          allChats.push(obj)
-        })
-        this.setState({
-          chats: allChats
-        }, () => {
-          // console.log('=================')
-          // console.log(this.state.chats)
-        })
-      } catch (error) {
-        
-      }
+    })
+  }
 
+  removeChat = async (chatid) => {
+    const getChat = await db.collection('chat').doc(chatid).get()
+    console.log(getChat, '=====')
   }
 
 
@@ -90,14 +83,14 @@ class Friend extends Component {
           keyExtractor={(item, index) => 'key'+index}
           data={this.state.chats}
           renderItem={({ item }) => <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.clickedGroup(item.chatid)}>
-           <SingleGroup data={item}/>
+           <SingleGroup data={item} removeChat={this.removeChat}/>
           </TouchableHighlight>}
         />
         </>
         )}
        {this.state.page === 2 && <Room chatid={this.state.chatId} setReady={this.setReady} navigation={this.props.navigation} backPage={this.backPage} />}
       </View>
-  
+    
     )
   }
 }

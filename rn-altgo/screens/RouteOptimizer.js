@@ -52,7 +52,7 @@ class Example extends Component {
         })
         let coordinates = response.data.route.map((e, i) => {
           if(i === 0){
-              e.addressSearchQuery = "Your location"
+              e.addressSearchQuery = e.geocodingData.formatted_address
           }
           return {
               latitude: e.lat,
@@ -203,15 +203,15 @@ class Example extends Component {
                 <View key={index} style={{marginTop: 10, margin: 5, padding: 5, backgroundColor: 'white', flex: 1, flexDirection: 'row', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.5, shadowRadius: 3}}>
                   <Left>
                     <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-                        <Text style={{fontSize:24, textAlign: 'center'}}>{index + 1}</Text>
+                        <Text style={{fontSize:20, textAlign: 'center'}}>{index + 1}</Text>
                     </View>
 
                   </Left>
                     <View style={{flex:5, justifyContent: 'center'}}>
-                        <Text style={{ textAlign: 'left', fontSize: 19, fontWeight: '500'}}>{coordinate.addressSearchQuery} </Text>
+                        <Text style={{ textAlign: 'left', fontSize: 18, fontWeight: '400'}}>{coordinate.addressSearchQuery} </Text>
                     </View>
                   <Right>
-                    <View style={{flex:1}}>
+                    <View style={{flex:1, justifyContent:'center'}}>
                         <Icon name="car" onPress={()=>{this.launchMapApp(coordinate,'drive')}} />
                         <Icon name="bus" onPress={()=>{this.launchMapApp(coordinate,'public_transport')}} />
                     </View>

@@ -42,6 +42,8 @@ class Example extends Component {
     this.mapView = null;
   }
 
+
+
   findRoute = async (addresses) => {
     let routingType = this.state.typeTrip
     let response = await axios({
@@ -152,9 +154,7 @@ class Example extends Component {
     users.docs.forEach(user => {
       groupCoordinate.push({ lat: user.data().lat, long: user.data().long })
     })
-
     // console.log(chat.data())
-
     let addresses = []
     addresses = addresses.concat(chat.data().places.map(e => `${e.name}, ${e.vicinity}`))
     this.setState({ addresses })
@@ -182,7 +182,7 @@ class Example extends Component {
       this.setState({
         locationResult: 'Permission to access location was denied',
         location,
-      });
+      })
     }
     //coords.longitude, latitude
     let location = await Location.getCurrentPositionAsync({});
