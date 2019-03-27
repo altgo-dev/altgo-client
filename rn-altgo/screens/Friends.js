@@ -25,7 +25,7 @@ class Friend extends Component {
         page: 2, 
         chatId:  this.props.navigation.getParam('chatid')
       })
-    } else {
+    } 
       try {
         const chats = await db.collection('users').where('id', '==', this.props.userid).get()
         let allChats = []
@@ -49,7 +49,6 @@ class Friend extends Component {
         
       }
 
-    }
   }
 
 
