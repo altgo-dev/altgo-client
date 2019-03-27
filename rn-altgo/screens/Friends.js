@@ -20,10 +20,10 @@ class Friend extends Component {
   }
 
   componentDidMount = async () => {
-    try {
-      const chats = await db.collection('users').where('id', '==', this.props.userid).get()
+    console.log(this.props.userid)
+    db.collection('users').where('id', '==', this.props.userid).orderBy('createdAt', 'desc').onSnapshot(querySnapshot => {
       let allChats = []
-      chats.docs.forEach( doc => {
+      querySnapshot.forEach(doc => {
         let name=[]
         if(doc.data().members) {
           doc.data().members.forEach(member => {
@@ -36,12 +36,8 @@ class Friend extends Component {
       this.setState({
         chats: allChats
       }, () => {
-        // console.log('=================')
-        // console.log(this.state.chats)
       })
-    } catch (error) {
-      
-    }
+    })
   }
 
 
@@ -68,36 +64,6 @@ class Friend extends Component {
       ready: true
     })
   }
-  // async componentWillMount() {
-  //   const user = await db.collection('users').where('id', '==', `${this.props.userid}`).orderBy('createdAt', 'desc').get()
-  //   this.setState({
-  //     chatId: user.docs[0].data().chatid
-  //   })
-    
-  //   db.collection('chat').doc(user.docs[0].data().chatid).onSnapshot((querySnapshot) => {
-     
-  //       let haha = []
-  //       querySnapshot.data().messages.forEach(l => {
-  //        let lol= (l.createdAt.seconds * 1000)
-  //        l.createdAt = lol
-  //        haha.push(l)
-  //       })
-  //       this.setState({
-  //         messages: haha
-  //       })
-  //   })
-  // }
- 
-  // onSend(messages = []) {
-  //   this.setState(previousState => ({
-  //     messages: GiftedChat.append(previousState.messages, messages),
-  //   }), () => {
-  //     db.collection('chat').doc(this.state.chatId).update({
-  //       messages: this.state.messages
-  //     })
-  //   })
-
-  // }
  
   render() {
     return (

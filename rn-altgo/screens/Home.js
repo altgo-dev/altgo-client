@@ -242,7 +242,7 @@ class Home extends Component {
     createGroup = async (type) => {
         await this.setState({
             friendsList: this.state.allFriends,
-            members: []
+            // members: []
         })
         if(type === "hangout") {
             alert('Invitation sent!')
@@ -258,6 +258,7 @@ class Home extends Component {
                     type: type
                 })
                 this.setState({chatid: chat.id})
+                console.log(this.state.members, '=====')
                 const createGroup = this.state.members.map(member => {
                     db.collection('users').add({
                         chatid: chat.id,
@@ -291,8 +292,6 @@ class Home extends Component {
                     status: true,
                     page: 1,
                     inviteFriends: true,
-                    // friendsList: [], 
-                    //friend list g usah dikosongin
                     showPanel: true,
                     members: [],
                     destinationList: [],
@@ -309,7 +308,8 @@ class Home extends Component {
             }, () => {
                 this.setState({
                     page: 2,
-                    inviteFriends: false
+                    inviteFriends: false,
+                    members: []
                 })
             })
         }
