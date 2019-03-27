@@ -24,9 +24,9 @@ class SingleFriend extends Component {
     }
 
     render() {
-        const { data } = this.props
+        const { data, icon, color } = this.props
         return (
-            <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'rgba(245, 245, 245, 0)', borderBottomColor: 'rgb(242, 180, 30)', borderBottomWidth: 2 }}>
+              <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'white', borderBottomColor: color, borderBottomWidth: 2 }}> 
                 <Left style={{ width: 80, flex: 0 }}>
                 {
                     data && data.profilePicture ? <Thumbnail source={{ uri: data.profilePicture }} /> : <Thumbnail source={ noUser } />

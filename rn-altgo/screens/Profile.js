@@ -44,12 +44,12 @@ class Profile extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(230, 230, 230)' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(242, 180, 30)' }}>
       {/* <LinearGradient style={{ flex: 1}} colors={['black', '#1f1135', 'black']} > */}
        {!this.state.loading && (
         <Content>
         <View style={{ flex: 2, height: 250, justifyContent: 'center', alignItems: 'center' }}>
-          <Button onPress={this.logout} style={{ width: 50, justifyContent: 'center', marginLeft: 320, height: 50, backgroundColor: 'grey', borderRadius: 25 }}> 
+          <Button onPress={this.logout} style={{ width: 50, justifyContent: 'center', marginLeft: 320, height: 50, backgroundColor: 'black', borderRadius: 25 }}> 
           <Icon style={{ fontSize: 22 }} name="log-out" />
           </Button>
           {
@@ -59,18 +59,17 @@ class Profile extends Component {
         </View>
 
         <View style={{ flex: 2,  height: 100, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row' }}>
-          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'black', width: 140 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
-            {/* <Icon name="person-add" style={{ fontSize: 80, color: 'grey' }}/> */}
-            <Text style={{ color: 'white', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '500' }}>Add friend</Text>
+          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'rgb(230, 230, 230)', width: 140 }} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('AddFriend')}>
+            <Text style={{ color: 'black', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '300' }}>Add friend</Text>
           </TouchableHighlight>
-          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'black', width: 140}} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('PendingHangout')}>
-            <Text style={{ color: 'white', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '500' }}>Invitations</Text>
+          <TouchableHighlight style={{ borderRadius: 5, backgroundColor: 'rgb(230, 230, 230)', width: 140}} underlayColor="#ffffff00" onPress={() => this.props.navigation.navigate('PendingHangout')}>
+            <Text style={{ color: 'black', margin: 5, padding: 5, textAlign: 'center', fontSize: 19, fontWeight: '300' }}>Invitations</Text>
           </TouchableHighlight>
         </View>
 
-        <View style={{ flex: 5, backgroundColor: 'rgb(255, 190, 30)', marginHorizontal: 5 }}>
-          <View style={{ borderBottomColor: 'white', borderBottomWidth: 4}}>
-            <Text style={{ textAlign: 'center', fontSize: 18 }}>
+        <View style={{ flex: 5, backgroundColor: 'white', marginHorizontal: 5, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }}>
+          <View style={{ borderBottomColor: 'lightgrey', borderBottomWidth: 1}}>
+            <Text style={{ textAlign: 'center', fontSize: 21, padding: 10 }}>
               My Friends
             </Text>
           </View>
@@ -78,9 +77,9 @@ class Profile extends Component {
             {
               this.props.userInfo && this.props.userInfo.friends.map((el, i) => {
               if(el.UserId2._id === this.props.userInfo._id) {
-                return   <SingleFriend icon="no" data={el.UserId1} key={i} />
+                return   <SingleFriend color="white" icon="no" data={el.UserId1} key={i} />
               } else {
-                return  <SingleFriend icon="no" data={el.UserId2} key={i} />
+                return  <SingleFriend color="white" icon="no" data={el.UserId2} key={i} />
               } })
             }
         </View>
