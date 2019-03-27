@@ -14,6 +14,10 @@ class AddFriends extends Component {
         email: ''
     }
 
+    componentDidMount(){
+        this.props.searchFriend('')
+    }
+
     search = () => {
         let{ email } = this.state
         this.props.searchFriend(email)

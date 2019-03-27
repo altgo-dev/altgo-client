@@ -44,7 +44,8 @@ class Home extends Component {
         friendsListDef: [],
         clicked: '',
         typeTrip:'',
-        groupTravel: {}
+        groupTravel: {},
+        allFriends: []
     }
 
     componentDidMount = async () => {
@@ -55,6 +56,7 @@ class Home extends Component {
             // await AsyncStorage.removeItem('token')
             this.setState({
                 friendsList: this.props.userInfo.friends,
+                allFriends: this.props.userInfo.friends
                 // friendsListDef: this.props.userInfo.friends
             })
         } catch (error) {
@@ -74,16 +76,23 @@ class Home extends Component {
     removeMem = (el, i) => {
         let temp = [...this.state.members]
         temp.splice(i, 1)
+
         // alert(JSON.stringify(a))
         if (i === 0 && temp.length === 0) {
+            let heh = [...this.state.friendsList]
+            heh.push({UserId1: this.state.friendsList[0].UserId1, UserId2: el })
+
             this.setState({
-                members: []
+                members: [],
+                friendsList: heh
             })
         } else {
             let heh = [...this.state.friendsList]
+            heh.push({UserId1: this.state.friendsList[0].UserId1, UserId2: el })
             // alert(JSON.stringify(el))
             this.setState({
                 members: temp,
+                friendsList: heh
                 // friendsList: this.state.friendsList.concat(a[0])
             })
         }
@@ -218,6 +227,10 @@ class Home extends Component {
     }
 
     createGroup = async (type) => {
+        await this.setState({
+            friendsList: this.state.allFriends,
+            members: []
+        })
         if(type === "hangout") {
             alert('Invitation sent!')
             const permisstionStatus = await Location.hasServicesEnabledAsync()

@@ -84,6 +84,18 @@ class DetailCat extends Component {
         arrResult = response1.data.results.concat(response2.data.results).concat(response3.data.results)
         // .concat(response2.data.results)
         result = { results: arrResult }
+      } else if (this.props.cat == 'hotel'){
+        let response = await axios({
+          baseURL: 'http://h8-p2-portocombo1.app.dev.arieseptian.com',
+          url: '/recommendations',
+          method: 'POST',
+          data: {
+            type: 'lodging',
+            city: this.props.originCity
+          }
+        })
+        result = response.data
+
       } else {
         let response = await axios({
           baseURL: 'http://h8-p2-portocombo1.app.dev.arieseptian.com',

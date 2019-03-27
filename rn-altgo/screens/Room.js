@@ -23,6 +23,8 @@ class Room extends Component {
   componentDidMount = () => {
     // console.log('======', this.props.centerPlaces)
     db.collection('chat').doc(this.props.chatid).onSnapshot(querSnapshot => {
+      console.log(querSnapshot.data().type)
+
       this.setState({
         members: querSnapshot.data().accept,
         mapType: querSnapshot.data().type
@@ -84,7 +86,7 @@ class Room extends Component {
 
         </Left>
           {this.state.ready && this.state.mapType === 'travel' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('TravelMap', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
-          {this.state.ready && this.state.mapType === 'hangout' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('roupRoute', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
+          {this.state.ready && this.state.mapType === 'hangout' && <TouchableHighlight onPress={() => (this.props.navigation.navigate('GroupRoute', { chatid: this.props.chatid}))}><Icon name="pin" /></TouchableHighlight>}
         </Header>
         <KeyboardAvoidingView behavior={'padding'} style={{flex:1}} keyboardVerticalOffset={30}>
         <GiftedChat
