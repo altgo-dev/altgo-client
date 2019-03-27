@@ -185,7 +185,6 @@ class Example extends Component {
                           destination={{ longitude: this.state.chosenPlace.long, latitude: this.state.chosenPlace.lat }}
                           apikey={GOOGLE_MAPS_APIKEY}
                           strokeWidth={3}
-                          mode="transit"
                           strokeColor={e.color}
                           optimizeWaypoints={false}
                           onStart={(params) => {

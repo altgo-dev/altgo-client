@@ -4,7 +4,8 @@ const defaultState = {
   destinationList: [],
   autocompleteResult: [],
   groupCoordinate: [],
-  centerPlaces: []
+  centerPlaces: [],
+  visible: true
 }
 
 export default function (state = defaultState, action){
@@ -23,7 +24,8 @@ export default function (state = defaultState, action){
       return {...state, groupCoordinate: payload}
     case 'SET_CENTER_PLACES':
       return {...state, centerPlaces: payload}
-    
+    case 'SET_VISIBILITY':
+      return {...state, groupCoordinate: payload}
     case 'REMOVE_DESTINATION_SUCCESS':
       return {...state, destinationList: payload}
       

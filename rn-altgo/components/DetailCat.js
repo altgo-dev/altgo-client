@@ -124,6 +124,7 @@ class DetailCat extends Component {
 
   render() {
     let { recomendationsResponse } = this.state
+    let pageFrom = 'detailCat'
     return (
       <>
         <Header style={{ height: 30, paddingTop: 0 }}>
@@ -139,7 +140,7 @@ class DetailCat extends Component {
         </Header>
         <View style={{  backgroundColor: 'rgba(255, 190, 30, 1)', flex: 1}}>
         {
-          recomendationsResponse.results.map((el, i) => <SinglePlace type="ios-add" key={i} data={el} />)
+          recomendationsResponse.results.map((el, i) => <SinglePlace type="ios-add" key={i} data={el} pageFrom='gada'/>)
         }
 
         </View>

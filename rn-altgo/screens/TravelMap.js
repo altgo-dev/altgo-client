@@ -3,7 +3,7 @@ import { Dimensions, Animated, StyleSheet, View, ScrollView, Text, TouchableHigh
 // import MapView from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import s from '../style'
-import { Spinner, Header, Left, Icon, Tabs, Tab } from 'native-base'
+import { Spinner, Header, Left, Icon, Tabs, Tab, Right } from 'native-base'
 import MapViewDirections from 'react-native-maps-directions';
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -11,6 +11,7 @@ import { db } from '../api/firestore'
 import { Constants, MapView, Location, Permissions } from 'expo';
 import SinglePlace from '../components/SinglePlace.js'
 import SingleFriend from '../components/SingleFriend'
+import { setUserVisibility } from '../store/actions/MeetupAction'
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -57,9 +58,9 @@ class Example extends Component {
       }
     })
     let coordinates = response.data.route.map((e, i) => {
-      // if (i === 0) {
-      //   e.addressSearchQuery = "Your location"
-      // }
+      if (i === 0) {
+        e.addressSearchQuery = "Your meeting point"
+      }
       return {
         latitude: e.lat,
         longitude: e.lng,
@@ -214,6 +215,60 @@ class Example extends Component {
     )
   }
 
+  clickUser = (userid) => {
+    this.props.setUserVisibility(userid,this.props.groupCoordinate)
+    console.log(this.props.centerPlaces)
+  }
+
+  showDetailnya = () => {
+    // alert('masuk wo')
+      return (
+        <View >
+
+          <View style={{ flex:1 , flexDirection: 'row',  }}>
+            <View style={{ width: 50, position: 'absolute', marginLeft: 73, backgroundColor: 'rgb(239, 171, 2)', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
+              <Icon style={{ fontSize: 35 }} name="car" />
+            </View>
+
+            <View style={{ minHeight: 150, alignItems: 'center', flex: 1, padding: 5, backgroundColor: 'rgba(180, 180, 180, 0.2)', marginRight: 3, marginTop: 39, marginLeft: 3, paddingTop: 30, borderRadius: 25, }}>
+              <Text style={{ fontSize: 19, marginTop: 5, }}> {Math.floor(this.state.distance * 100) / 100} km</Text>
+              <Text style={{ fontSize: 19, marginTop: 5 }}>{ Math.floor(this.state.duration * 100 )/100} min</Text>
+              <Text style={{ fontSize: 19, marginTop: 5 }}>Rp {Math.floor(this.state.cost).toLocaleString()}</Text>
+            </View>
+
+            <View style={{ width: 50, position: 'absolute', right: 73, backgroundColor: 'rgb(2,128,144)', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
+              <Icon style={{ fontSize: 35, color: 'white' }} name="bus" />
+            </View>
+
+            <View style={{ flex: 1, alignItems: 'center', padding: 5, backgroundColor: 'rgba(180, 180, 180, 0.2)', marginRight: 3, marginTop: 39, marginLeft: 3, paddingTop: 30, borderRadius: 25, }}>
+              <Text style={{ fontSize: 19, marginTop: 5 }}> {Math.floor(this.state.transitDistance * 100) / 100} km</Text>
+              <Text style={{ fontSize: 19, marginTop: 5 }}>{Math.floor(this.state.transitDuration * 100) / 100} min</Text>
+            </View>
+
+          </View>
+          {this.state.coordinates.map((coordinate, index) => (
+              <View key={index} style={{marginTop: 10, margin: 5, padding: 5, backgroundColor: 'white', flex: 1, flexDirection: 'row', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.5, shadowRadius: 3}}>
+                <Left>
+                  <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+                      <Text style={{fontSize:20, textAlign: 'center'}}>{index + 1}</Text>
+                  </View>
+
+                </Left>
+                  <View style={{flex:5, justifyContent: 'center'}}>
+                      <Text style={{ textAlign: 'left', fontSize: 18, fontWeight: '400'}}>{coordinate.addressSearchQuery} </Text>
+                  </View>
+                <Right>
+                  <View style={{flex:1, justifyContent:'center'}}>
+                      <Icon name="car" onPress={()=>{this.launchMapApp(coordinate,'drive')}} />
+                      <Icon name="bus" onPress={()=>{this.launchMapApp(coordinate,'public_transport')}} />
+                  </View>
+                </Right>
+              </View>
+          ))}
+          </View>
+      )
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -313,38 +368,43 @@ class Example extends Component {
 
                 {/* DISPLAY USER TO MEETING POINT */}
                   <>
-                    {this.props.groupCoordinate.map((e, i) => (
-                      (
-                        <MapViewDirections
-                          key={i}
-                          origin={{ longitude: e.long, latitude: e.lat }}
-                          destination={{ longitude: this.state.chosenPlace.long, latitude: this.state.chosenPlace.lat }}
-                          apikey={GOOGLE_MAPS_APIKEY}
-                          strokeWidth={3}
-                          strokeColor={e.color}
-                          optimizeWaypoints={false}
-                          onStart={(params) => {
-                            //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
-                          }}
-                          onReady={result => {
-                            let members = this.state.members
-                            members.forEach(member => {
-                              if(member._id === e.user) {
-                                member.distance = result.distance
-                                member.duration = result.duration
-                              }
-                            })
-                            this.setState({
-                              members: members
-                            })
-                            console.log(`user ${e.user} to meeting point | distance : ${result.distance} | duration : ${result.duration}`)
-                          }}
-                          onError={(errorMessage) => {
-                            console.log('GOT AN ERROR while drawing the transit route');
-                          }}
-                        />
-                      )
-                    ))}
+                    { this.props.groupCoordinate.map((e, i) => {
+                      if(e.visible) {
+                        return (
+                          <MapViewDirections
+                            key={i}
+                            origin={{ longitude: e.long, latitude: e.lat }}
+                            destination={{ longitude: this.state.chosenPlace.long, latitude: this.state.chosenPlace.lat }}
+                            apikey={GOOGLE_MAPS_APIKEY}
+                            strokeWidth={3}
+                            strokeColor={e.color}
+                            optimizeWaypoints={false}
+                            onStart={(params) => {
+                              //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
+                            }}
+                            onReady={result => {
+                              let members = this.state.members
+                              members.forEach(member => {
+                                if(member._id === e.user) {
+                                  member.distance = result.distance
+                                  member.duration = result.duration
+                                }
+                              })
+                              this.setState({
+                                members: members
+                              })
+                              console.log(`user ${e.user} to meeting point | distance : ${result.distance} | duration : ${result.duration}`)
+                            }}
+                            onError={(errorMessage) => {
+                              console.log('GOT AN ERROR while drawing the transit route');
+                            }}
+                          />
+                        )
+                      } else {
+                        return null
+                      }
+                      
+                        })}
                   </>
 
                 </>}
@@ -398,17 +458,15 @@ class Example extends Component {
               <Tab activeTextStyle={{ color: 'black', fontWeight: '500'}}  heading="Members" activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.9)'}}>
                 <ScrollView style={{ flex: 1 }}>
                   <View>
-                    {this.state.members.map((member, i) => <SingleFriend key={i} data={member}/>)}
+                    {this.state.members.map((member, i) => <TouchableHighlight key={i} onPress={()=> this.clickUser(member._id)}><SingleFriend data={member} /></TouchableHighlight>)}
                   </View>
                 </ScrollView>
               </Tab>
               <Tab activeTextStyle={{ color: 'black', fontWeight: '500'}}  heading="Routes" activeTabStyle={{ color: 'black', backgroundColor: 'rgba(255, 190, 30, 0.9)'}}>
                 <ScrollView style={{ flex: 1 }}>
-                  <View>
-                    <Text>
-                      page routes
-                    </Text>
-                  </View>
+                  {
+                  this.showDetailnya()
+                  }
                 </ScrollView>
               </Tab>
             </Tabs>
@@ -436,7 +494,10 @@ const mapState = (state) => ({
   groupCoordinate: state.Meetup.groupCoordinate,
   centerPlaces: state.Meetup.centerPlaces
 })
-export default connect(mapState)(Example)
+const dispatchState = (dispatch) => ({
+  setUserVisibility: (userid,groupCoordinate) => (dispatch(setUserVisibility(userid,groupCoordinate)))
+})
+export default connect(mapState, dispatchState)(Example)
 
 const myMapStyle = [
   {

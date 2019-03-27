@@ -67,11 +67,11 @@ class SinglePlace extends Component {
                     }
 
                 </Body>
-                <Left style={{ width: 30, flex: 0 }}>
+                {this.props.pageFrom !== 'gada' && <Left style={{ width: 30, flex: 0 }}>
                     <View style={{ flex: 1 }}>
                         <Icon name="car" onPress={() => { this.launchMapApp('drive') }} />
                     </View>
-                </Left>
+                </Left>}
                 <Right style={{ width: 30, flex: 0 }}>
                 {
                     data.photo_path ? 

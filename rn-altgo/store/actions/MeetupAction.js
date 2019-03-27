@@ -78,6 +78,22 @@ export function autoComplete(input){
   }
 }
 
+export function setUserVisibility(userid,groupCoordinate) {
+  return dispatch => {
+    let data = groupCoordinate.map((e,i)=>{
+      if(e.user===userid){
+        if(e.visible===true){
+          e.visible=false
+        }else{
+          e.visible=true
+        }
+      }
+      return e
+    })
+    dispatch({type:'SET_VISIBILITY',payload:data})
+  }
+}
+
 export function setGroupCoordinate(input){
   const getRandomColor = () => {
     var letters = '0123456789ABCDEF';
@@ -99,6 +115,7 @@ export function setGroupCoordinate(input){
     // console.log(input, '-----------')
     input=input.map(e=>{
       e.color=getRandomColor()
+      e.visible=true
       return e
     })
     dispatch({type: 'SET_GROUP_COORD', payload: input })
