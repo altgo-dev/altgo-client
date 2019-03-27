@@ -38,6 +38,8 @@ class SinglePlace extends Component {
                 return (
                     <Thumbnail  source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${data.photos[0].photo_reference}&maxheight=400&maxwidth=400&key=AIzaSyAbyE8RCeWnwkMeZ5aXdNlRAs7e-r5TKzc`}} />
                 )
+            } else if(data.photo_path) {
+                return <Thumbnail  source={{uri: `https://maps.googleapis.com/maps/api/place/photo?photoreference=${data.photo_path}&maxheight=400&maxwidth=400&key=AIzaSyAbyE8RCeWnwkMeZ5aXdNlRAs7e-r5TKzc`}} />
             } else {
                 return  <Thumbnail  source={defImg} />
             }
@@ -55,9 +57,17 @@ class SinglePlace extends Component {
                     </Text>
                 </Body>
                 <Right style={{ width: 30, flex: 0 }}>
-                    <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.addToMyList()}>
-                        <Icon style={{ fontSize: 28, color: 'black' }} name={this.state.icon} />
-                    </TouchableHighlight>
+                {
+                    data.photo_path ? 
+                <TouchableHighlight underlayColor="#ffffff00" onPress={() =>  this.props.updatedChosenPlace(data.coordinate)}>
+                    <Icon style={{ fontSize: 28, color: 'black' }} name={this.state.icon} />
+                </TouchableHighlight>
+                :
+                <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.addToMyList()}>
+                    <Icon style={{ fontSize: 28, color: 'black' }} name={this.state.icon} />
+                </TouchableHighlight>   
+                }
+
                 </Right>
             </CardItem>
         )
