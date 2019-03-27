@@ -72,6 +72,7 @@ class Example extends Component {
     })
   }
 
+  //DISPLAY PUBLIC TRANSIT
   displayTransitRoute = () => {
     return (
       <>
@@ -87,13 +88,14 @@ class Example extends Component {
               strokeColor="black"
               optimizeWaypoints={false}
               onStart={(params) => {
-                console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
+                //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
               }}
               onReady={result => {
                 this.setState({
                   transitDistance: this.state.transitDistance + result.distance,
                   transitDuration: this.state.transitDuration + result.duration,
                 })
+                console.log(`public transport | distance : ${result.distance} | duration : ${result.duration}`)
               }}
               onError={(errorMessage) => {
                 console.log('GOT AN ERROR while drawing the transit route');
@@ -243,6 +245,7 @@ class Example extends Component {
                 </MapView.Marker>
               )}
 
+              {/* DRIVING DIRECTION */}
               {this.props.groupCoordinate.length !== 0 && (this.state.coordinates.length >= 1) && (
                 <>
                   <MapViewDirections
@@ -254,13 +257,14 @@ class Example extends Component {
                     strokeColor="deepskyblue"
                     optimizeWaypoints={false}
                     onStart={(params) => {
-                      console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
+                      //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
                     }}
                     onReady={result => {
                       this.setState({
                         distance: result.distance,
                         duration: result.duration
                       })
+                      console.log(`driving | distance : ${result.distance} | duration : ${result.duration}`)
 
                       this.fuelCostPrivateVehicle('car', result.distance)
                       this.mapView.fitToCoordinates(result.coordinates, {
@@ -286,6 +290,7 @@ class Example extends Component {
                     <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[meeting point]</Text>
                   </MapView.Marker>
 
+                {/* DISPLAY USER TO MEETING POINT */}
                   <>
                     {this.props.groupCoordinate.map((e, i) => (
                       (
@@ -295,17 +300,13 @@ class Example extends Component {
                           destination={{ longitude: this.state.chosenPlace.long, latitude: this.state.chosenPlace.lat }}
                           apikey={GOOGLE_MAPS_APIKEY}
                           strokeWidth={3}
-                          mode="transit"
                           strokeColor={e.color}
                           optimizeWaypoints={false}
                           onStart={(params) => {
-                            console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
+                            //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
                           }}
                           onReady={result => {
-                            this.setState({
-                              transitDistance: this.state.transitDistance + result.distance,
-                              transitDuration: this.state.transitDuration + result.duration,
-                            })
+                            console.log(`user ${e.user} to meeting point | distance : ${result.distance} | duration : ${result.duration}`)
                           }}
                           onError={(errorMessage) => {
                             console.log('GOT AN ERROR while drawing the transit route');
