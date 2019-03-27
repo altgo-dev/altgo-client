@@ -94,7 +94,7 @@ class Example extends Component {
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={5}
                             mode="transit"
-                            strokeColor="brown"
+                            strokeColor="rgba(2,128,144, 0.6)"
                             optimizeWaypoints={false}
                             onStart={(params) => {
                                 //console.log(`Started transit routing between "${params.origin}" and "${params.destination}"`);
@@ -190,7 +190,7 @@ class Example extends Component {
                 <Text style={{ fontSize: 19, marginTop: 5 }}>Rp {Math.floor(this.state.cost).toLocaleString()}</Text>
               </View>
 
-              <View style={{ width: 50, position: 'absolute', right: 73, backgroundColor: 'black', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
+              <View style={{ width: 50, position: 'absolute', right: 73, backgroundColor: 'rgb(2,128,144)', borderRadius: 50, marginTop: 20, zIndex: 15, padding: 5, alignItems: 'center', justifyContent: 'center', shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.6, shadowRadius: 5, }}>
                 <Icon style={{ fontSize: 35, color: 'white' }} name="bus" />
               </View>
 
@@ -290,16 +290,19 @@ class Example extends Component {
                         >
                             {this.state.coordinates.map((coordinate, index) =>
                                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
-                                <View style={{ backgroundColor: 'rgba(239, 171, 2, 1)', borderRadius: 50, width: 26, justifyContent: 'center' }}>
-                                    <Text style={{ textAlign: 'center', margin: 3, padding: 3,}}>{index + 1}</Text>
-                                </View>
+                                  <View style={{ backgroundColor: 'rgba(239, 171, 2, 1)', borderRadius: 50, width: 26, justifyContent: 'center' }}>
+                                      <Text style={{ textAlign: 'center', margin: 3, padding: 3,}}>{index + 1}</Text>
+                                  </View>
                                 </MapView.Marker>
                             )}
-                            <MapView.Marker
-                                coordinate={this.state.location.coords}
+                            <MapView.Marker style={{ zIndex: 100,  }} coordinate={this.state.location.coords}
                                 title="My Marker"
-                                description="Some description"
-                            />
+                                description="Some description">
+                              <View  style={{ backgroundColor: 'white', borderRadius: 50, width: 30, justifyContent: 'center', alignItems: 'center'}}>
+                                <Icon name="contact" />
+                              </View>
+                            </MapView.Marker>
+
                             {(this.state.coordinates.length >= 1) && (
                                 <>
                                     <MapViewDirections
@@ -308,7 +311,7 @@ class Example extends Component {
                                         destination={this.state.coordinates[this.state.coordinates.length - 1]}
                                         apikey={GOOGLE_MAPS_APIKEY}
                                         strokeWidth={7}
-                                        strokeColor="rgb(239, 171, 2)"
+                                        strokeColor="rgba(239, 171, 2, 0.6)"
                                         optimizeWaypoints={false}
                                         onStart={(params) => {
                                             //console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
