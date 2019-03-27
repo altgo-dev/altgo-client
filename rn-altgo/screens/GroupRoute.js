@@ -8,6 +8,7 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { Constants, MapView, Location, Permissions } from 'expo';
 import { db } from '../api/firestore'
+import SinglePlace from '../components/SinglePlace'
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -103,6 +104,7 @@ class Example extends Component {
   }
 
   render() {
+
     return (
       <View style={{ flex: 1 }}>
         <Header style={{ height: 40, paddingTop: 0 }}>
@@ -131,7 +133,7 @@ class Example extends Component {
                 <MapView.Marker key={`coordinate_${index}`} coordinate={coordinate} >
                   <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
                 </MapView.Marker>
-              )}
+                )}
 
               {!this.props.groupCoordinate.length && <MapView.Marker
                 coordinate={this.state.location.coords}
@@ -204,12 +206,13 @@ class Example extends Component {
             this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
               console.log(each, index)
               return (
-                <View style={{ textAlign: 'center' }} key={index}>
-              {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
-              <TouchableHighlight onPress={() => this.updatedChosenPlace(each.coordinate)}> 
-                <Text>{index + 1}.{each.name} </Text>
-              </TouchableHighlight>
-            </View>
+                <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />
+            //     <View style={{ textAlign: 'center' }} key={index}>
+            //   {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
+            //   <TouchableHighlight onPress={() => this.updatedChosenPlace(each.coordinate)}> 
+            //     <Text>{index + 1}.{each.name} </Text>
+            //   </TouchableHighlight>
+            // </View>
               )
             })
           }

@@ -20,6 +20,7 @@ export function getCenterPlaces(origins){
     try{
       var response = await axios.post(`${baseURL}/meetups`, {origins})
       var payload = response.data.data.reccommendations
+      // console.log(response.data, 'STORE')
       // console.log(payload)
       dispatch({type: 'SET_CENTER_PLACES', payload})
     } catch (error){

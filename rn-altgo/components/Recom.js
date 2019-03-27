@@ -14,6 +14,7 @@ import attr from '../assets/attr.jpeg'
 import lfsty from '../assets/lifestyle.jpeg'
 import oth from '../assets/hospit.jpeg'
 
+
 class Recom extends Component {
   state = {
     category: [
@@ -26,9 +27,7 @@ class Recom extends Component {
   }
 
   componentDidMount = () => {
-    if(this.props.groupTravel) {
-      
-    }
+    // console.log(ths)
   }
 
   onSearch = async (input) => {

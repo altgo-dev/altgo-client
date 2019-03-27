@@ -49,6 +49,7 @@ class Home extends Component {
     }
 
     componentDidMount = async () => {
+        console.log(this.props.destinationList, '===')
         try {
             const token = await AsyncStorage.getItem('token')
             await this.props.getUserData(token)
@@ -112,14 +113,23 @@ class Home extends Component {
         })
     }
 
-    toPageRecom = () => {
+    toPageRecom = (type = false) => {
         if (!this.props.originCity) {
             alert(`destination can't be empty`)
         } else {
-            this.setState({
-                page: 2,
-                inviteFriends: false
-            })
+            if(type) {
+                console.log('THIS')
+                this.setState({
+                    page: 2,
+                    inviteFriends: false,
+                    showPanel: true
+                }) 
+            } else {
+                this.setState({
+                    page: 2,
+                    inviteFriends: false
+                })
+            }
         }
     }
 
