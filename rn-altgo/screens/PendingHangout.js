@@ -134,6 +134,7 @@ class PendingHangout extends Component {
         )
       }
     }
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Header transparent style={{ height: 50, paddingTop: 5, borderBottomWidth: 2, borderBottomColor: '#eaeaea'}}>
@@ -150,7 +151,7 @@ class PendingHangout extends Component {
           checkMsg()
         }
         {this.state.loading && (
-          <View style={{ flex: 1}}>
+          <View style={{ flex: 1, backgroundColor: 'rgba(230, 230, 230, 0.5)'}}>
 
           <DeckSwiper
             ref={(deck) => this.deck = deck}
@@ -158,10 +159,15 @@ class PendingHangout extends Component {
             onSwipeLeft={this.swipeLeft}
             onSwipeRight={this.swipeRight}
             renderItem={item =>
-              <Card style={{ elevation: 3 }}>
+              <Card style={{ elevation: 3, 
+                shadowColor: '#555556', 
+                shadowOffset: { width: 5, height: 2 }, 
+                shadowOpacity: 0.5, 
+                shadowRadius: 4,
+                marginHorizontal: 20}}>
                 {
                   item && item.member.map((el, i) => {
-                    return  <CardItem key={i} style={{ flex: 1, flexDirection: 'row'}}>
+                    return  <CardItem key={i} style={{ flex: 1, flexDirection: 'row', }}>
                                 <Thumbnail source={{ uri: el.img}} />
                                 <Text style={{ fontSize: 19, fontWeight: '500', marginLeft: 8}}>
                                   { el.name }
@@ -169,18 +175,7 @@ class PendingHangout extends Component {
                             </CardItem>
                   })
                 }
-                {/* <CardItem style={{ flex: 1, justifyContent: 'flex-end'}}>
-                  <Button style={{ width: 70, justifyContent: 'center', margin: 5 }}>
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>
-                      Accept
-                    </Text>
-                  </Button> */}
-                  {/* <Button style={{ width: 70, justifyContent: 'center', margin: 5 }}>
-                    <Text style={{ color: 'white', fontSize: 18, fontWeight: '500' }}>
-                      Reject
-                    </Text>
-                  </Button> */}
-                {/* </CardItem> */}
+                
               </Card>
             }
           />

@@ -242,7 +242,6 @@ class Home extends Component {
     createGroup = async (type) => {
         await this.setState({
             friendsList: this.state.allFriends,
-            // members: []
         })
         if(type === "hangout") {
             alert('Invitation sent!')

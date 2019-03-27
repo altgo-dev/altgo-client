@@ -103,17 +103,21 @@ class Example extends Component {
     })
   }
 
+  showButtonBack = () => {
+    return (
+      <TouchableHighlight onPress={() => this.props.navigation.navigate('Friend', {chatid: this.props.navigation.getParam('chatid')})} style={{ justifyContent: 'center', marginRight: 50, top: 30, backgroundColor: 'white', borderRadius: 50, position: 'absolute', zIndex: 10, width: 45, height: 45, margin: 8, shadowColor: '#555556', shadowOffset: { width: 5, height: 2 }, shadowOpacity: 0.8, shadowRadius: 7, }} >
+        <Icon name="ios-arrow-back" style={{ marginRight: 5, textAlign: 'center', color: 'grey', textAlign: 'center', alignSelf: 'center' }} />
+      </TouchableHighlight>
+    )
+  }
+
   render() {
 
     return (
       <View style={{ flex: 1 }}>
-        <Header style={{ height: 40, paddingTop: 0 }}>
-          <Left>
-            <TouchableHighlight onPress={this.props.navigation.navigate('Friends')}>
-              <Icon name="ios-arrow-back" style={{ margin: 5 }} />
-            </TouchableHighlight>
-          </Left>
-        </Header>
+        {
+          this.showButtonBack()
+        }
         <ScrollView style={{ flex: 1 }}>
           <View style={{ height: 500 }}>
             <MapView

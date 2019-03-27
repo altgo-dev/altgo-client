@@ -69,9 +69,9 @@ class Recom extends Component {
           </TouchableHighlight>
         </View>
         {
-          this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => (<View key={index}>
-            <TouchableHighlight onPress={() => this.onClickSearch(each)} underlayColor="#ffffff00" style={{ backgroundColor: 'rgba(245, 245, 245, 1)', borderBottomColor: 'rgb(255, 190, 30)', borderBottomWidth: 0, justifyContent: 'flex-start', marginLeft: 35, marginRight: 95, position: 'absolute', zIndex: 50 }}>
-              <Text style={{ textAlign: 'left', color: 'black', margin: 5, fontWeight: '500' }}>
+          this.props.autocompleteResult && this.props.autocompleteResult.map((each, index) => (<View key={index} style={{ width: 250, }}>
+            <TouchableHighlight onPress={() => this.onClickSearch(each)} underlayColor="#ffffff00" style={{ position: 'absolute', width: 250, height: 50, top: 50*index, borderBottomColor: 'grey', borderBottomWidth: 1, backgroundColor: 'rgba(245, 245, 245, 1)', borderBottomColor: 'rgb(255, 190, 30)', borderBottomWidth: 0, justifyContent: 'flex-start', marginLeft: 35, marginRight: 95, }}>
+              <Text style={{ textAlign: 'left', color: 'black', margin: 5, fontWeight: '500', borderBottomColor: 'grey', borderBottomWidth: 1, padding: 2 }}>
                 {each.description}
               </Text>
             </TouchableHighlight>
@@ -79,6 +79,7 @@ class Recom extends Component {
           ))
         }
         <FlatList
+         style={{ zIndex: -1,}}
           numColumns={2}
           keyExtractor={(item) => item.title}
           data={this.state.category}

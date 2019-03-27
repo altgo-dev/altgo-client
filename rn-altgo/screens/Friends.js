@@ -20,24 +20,36 @@ class Friend extends Component {
   }
 
   componentDidMount = async () => {
-    console.log(this.props.userid)
-    db.collection('users').where('id', '==', this.props.userid).orderBy('createdAt', 'desc').onSnapshot(querySnapshot => {
-      let allChats = []
-      querySnapshot.forEach(doc => {
-        let name=[]
-        if(doc.data().members) {
-          doc.data().members.forEach(member => {
-            name.push(member.name)
-          })
-        }
-        let obj = {id: doc.id, name:name  ,...doc.data()}
-        allChats.push(obj)
-      })
+    if ( this.props.navigation.getParam('chatid') ) {
       this.setState({
-        chats: allChats
-      }, () => {
+        page: 2, 
+        chatId:  this.props.navigation.getParam('chatid')
       })
-    })
+    } else {
+      try {
+        const chats = await db.collection('users').where('id', '==', this.props.userid).get()
+        let allChats = []
+        chats.docs.forEach( doc => {
+          let name=[]
+          if(doc.data().members) {
+            doc.data().members.forEach(member => {
+              name.push(member.name)
+            })
+          }
+          let obj = {id: doc.id, name:name  ,...doc.data()}
+          allChats.push(obj)
+        })
+        this.setState({
+          chats: allChats
+        }, () => {
+          // console.log('=================')
+          // console.log(this.state.chats)
+        })
+      } catch (error) {
+        
+      }
+
+    }
   }
 
 
