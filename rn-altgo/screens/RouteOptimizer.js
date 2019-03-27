@@ -51,10 +51,6 @@ class Example extends Component {
                 routingType
             }
         })
-        console.log(`Routing type : ${this.state.typeTrip}`)
-        response.data.route.map(e=>{
-          console.log(e.addressSearchQuery)
-        })
         let coordinates = response.data.route.map((e, i) => {
           if(i === 0){
               e.addressSearchQuery = "Your location"
