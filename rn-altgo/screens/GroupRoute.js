@@ -155,14 +155,16 @@ class Example extends Component {
 
               {this.props.groupCoordinate.length && this.props.groupCoordinate.map((each, index) =>
                 <MapView.Marker key={index} coordinate={{ latitude: each.lat, longitude: each.long }}>
-                  <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[{index + 1}]</Text>
+                  <View style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)'}}>
+                    <Text style={{  }}>{index + 1}</Text>
+                  </View>
                 </MapView.Marker>
               )}
 
               {this.state.chosenPlace &&
                 <>
                   <MapView.Marker coordinate={{ latitude: this.state.chosenPlace.lat, longitude: this.state.chosenPlace.long }}>
-                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)' }}>[meeting point]</Text>
+                    <Text style={{ backgroundColor: 'rgba(196, 196, 196, 0.5)', padding: 3, }}>meeting point</Text>
                   </MapView.Marker>
 
                   <>
@@ -205,21 +207,26 @@ class Example extends Component {
           </View>
 
 
-          {this.props.groupCoordinate && <Text style={{ color: 'white', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>}
-          {
-            this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
-              console.log(each, index)
-              return (
-                <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />
-            //     <View style={{ textAlign: 'center' }} key={index}>
-            //   {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
-            //   <TouchableHighlight onPress={() => this.updatedChosenPlace(each.coordinate)}> 
-            //     <Text>{index + 1}.{each.name} </Text>
-            //   </TouchableHighlight>
-            // </View>
-              )
-            })
-          }
+          {/* {this.props.groupCoordinate && <Text style={{ color: 'black', fontSize: 20, fontWeight: '500', textAlign: 'center' }}>recommended meeting places:</Text>} */}
+          <View style={{ height: 300, marginTop: 20}}>
+            <ScrollView style={{ flex: 1 }}>
+              {
+                this.props.centerPlaces && this.props.centerPlaces.map((each, index) => {
+                  // console.log(each, index)
+                  return (
+                    <SinglePlace type="ios-send" key={index} data={each} updatedChosenPlace={this.updatedChosenPlace}  />
+                //     <View style={{ textAlign: 'center' }} key={index}>
+                //   {/* <Text>{JSON.stringify(each.coordinate)}</Text> */}
+                //   <TouchableHighlight onPress={() => this.updatedChosenPlace(each.coordinate)}> 
+                //     <Text>{index + 1}.{each.name} </Text>
+                //   </TouchableHighlight>
+                // </View>
+                  )
+                })
+              }
+
+            </ScrollView>
+          </View>
 
         </ScrollView>
 
