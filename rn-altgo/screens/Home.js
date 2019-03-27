@@ -141,13 +141,7 @@ class Home extends Component {
         })
     }
 
-    toPageMap = async () => {
-        // this.setState({
-        //     page: 4,
-        //     showPanel: false,
-        //     inviteFriends: false
-        // })
-    }
+    toPageMap = async () => {}
     
     showOp = async () => {
         if(this.state.groupTravel.state) {
