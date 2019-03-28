@@ -39,10 +39,6 @@ class Friend extends Component {
     })
   }
 
-  removeChat = async (chatid) => {
-    const getChat = await db.collection('chat').doc(chatid).get()
-    console.log(getChat, '=====')
-  }
 
 
   clickedGroup = (chatid) => {
@@ -83,7 +79,7 @@ class Friend extends Component {
           keyExtractor={(item, index) => 'key'+index}
           data={this.state.chats}
           renderItem={({ item }) => <TouchableHighlight underlayColor="#ffffff00" onPress={() => this.clickedGroup(item.chatid)}>
-           <SingleGroup data={item} removeChat={this.removeChat}/>
+           <SingleGroup data={item}/>
           </TouchableHighlight>}
         />
         </>

@@ -62,6 +62,11 @@ class Example extends Component {
   }
 
   async componentDidMount() {
+    // setInterval(() => {
+    //   db.collection('user').where('chatid', '==', 'this', this.props.navigation.state.params.chatid).update({
+
+    //   })
+    // }, 10000)
     this._getLocationAsync()
     await db.collection('chat').doc(this.props.navigation.state.params.chatid).onSnapshot(querySnapshot => {
       if (querySnapshot.data().chosenPlace) {
@@ -118,8 +123,9 @@ class Example extends Component {
     )
   }
 
-  render() {
 
+
+  render() {
     return (
       <View style={{ flex: 1 }}>
         {

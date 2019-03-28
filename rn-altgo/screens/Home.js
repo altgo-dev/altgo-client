@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, Animated, Text, Dimensions, ScrollView, TouchableHighlight, AsyncStorage } from 'react-native'
+import { SafeAreaView, View, Animated, Text, Dimensions, ScrollView, TouchableHighlight, AsyncStorage, Alert } from 'react-native'
 import { Content, Container, Header, Button, ActionSheet, Root } from 'native-base'
 import s from '../style'
 import SlidingUpPanel from 'rn-sliding-up-panel'
@@ -9,6 +9,7 @@ const { height, width } = Dimensions.get('window')
 import { db } from '../api/firestore'
 import { LinearGradient } from 'expo'
 import { Location } from 'expo'
+import {removeDestination} from '../store/actions/MeetupAction'
 
 //COMPONENTS
 import ResList from '../components/ResList'
@@ -79,9 +80,14 @@ class Home extends Component {
         console.log(this.state.members, 'MEMBERS')
         let temp = [...this.state.members]
         temp.splice(i, 1)
-
-        // alert(JSON.stringify(a))
-        if (i === 0 && temp.length === 0) {
+        if(this.state.friendsList.length === 0) {
+            let heh = []
+            heh.push({UserId2: el })
+            this.setState({
+                members: temp,
+                friendsList: heh
+            })
+        } else if (i === 0 && temp.length === 0) {
             let heh = [...this.state.friendsList]
             heh.push({UserId1: this.state.friendsList[0].UserId1, UserId2: el })
 
@@ -203,6 +209,8 @@ class Home extends Component {
                 this.setState({
                     members: []
                 })
+                this.props.removeDestination()
+           
             } else {
                 
             }
@@ -255,7 +263,6 @@ class Home extends Component {
                     type: type
                 })
                 this.setState({chatid: chat.id})
-                console.log(this.state.members, '=====')
                 const createGroup = this.state.members.map(member => {
                     db.collection('users').add({
                         chatid: chat.id,
@@ -300,14 +307,25 @@ class Home extends Component {
             }
 
         } else {
-            this.setState({
-                groupTravel: {state: true}
-            }, () => {
+            if(this.props.originCity) {
                 this.setState({
-                    page: 2,
-                    inviteFriends: false
+                    groupTravel: {state: true}
+                }, () => {
+                    this.setState({
+                        page: 2,
+                        inviteFriends: false
+                    })
                 })
-            })
+            } else {
+                Alert.alert(
+                    'Oops',
+                    'Destination City Cannot be empty!',
+                    [
+                      {text: 'Ok', onPress: () => console.log('Ask me later pressed')}
+                    ],
+                    {cancelable: true},
+                  )
+            }
         }
     }
 
@@ -444,7 +462,7 @@ class Home extends Component {
 const mapDispatchToProps = (dispatch) => ({
     getUserData: (token) => (dispatch(getUserData(token))),
     getAllUser: (token) => (dispatch(getAllUser(token))),
-    
+    removeDestination: () => (dispatch(removeDestination([])))
 
 })
 
