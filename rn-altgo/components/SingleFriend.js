@@ -4,68 +4,79 @@ import { Thumbnail, Left, Body, Right, CardItem, Icon, } from 'native-base'
 import { connect } from 'react-redux'
 
 //actions
-import { addFriend,removeFriend } from '../store/actions/UsersAction'
+import { addFriend, removeFriend } from '../store/actions/UsersAction'
 import Users from '../store/reducers/Users';
 
 //ASSETS
 import noUser from '../assets/nouser.png'
 
 class SingleFriend extends Component {
+    state = {
+        added: false
+    }
 
     componentDidMount = () => {
-        if(this.props.data.distance) {
+        if (this.props.data.distance) {
             console.log(this.props.data.distance)
         }
     }
 
-    onPress = () => {
-        var friendId= this.props.data._id
+    onPress = async () => {
+        var friendId = this.props.data._id
         var friendName = this.props.data.name
-        this.props.addFriend(friendId, friendName)
+        await this.props.addFriend(friendId, friendName)
+        this.setState({ added: true })
     }
 
     removeFriend = () => {
         let friendId = this.props.data._id
         let friendName = this.props.data.name
-        this.props.removeFriend(friendId,friendName)
+        this.props.removeFriend(friendId, friendName)
     }
 
     render() {
         const { data, icon, color } = this.props
         return (
-              <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'white', borderBottomColor: color, borderBottomWidth: 2 }}> 
+            <CardItem style={{ margin: 0, padding: 0, backgroundColor: 'white', borderBottomColor: color, borderBottomWidth: 2 }}>
                 <Left style={{ width: 80, flex: 0 }}>
-                {
-                    data && data.profilePicture ? <Thumbnail source={{ uri: data.profilePicture }} /> : <Thumbnail source={ noUser } />
-                }
-                    
+                    {
+                        data && data.profilePicture ? <Thumbnail source={{ uri: data.profilePicture }} /> : <Thumbnail source={noUser} />
+                    }
+
                 </Left>
                 <Body style={{ marginTop: 4 }}>
                     <Text style={{ fontSize: 18, fontWeight: '500' }}> {data ? data.name : null} </Text>
                     <Text style={{ color: 'grey', marginLeft: 4, fontWeight: '400' }}>
-                        { data && data.friends && data.friends.length !== 0 && data.friends.length + ' friends on altgo'} 
+                        {data && data.friends && data.friends.length !== 0 && data.friends.length + ' friends on altgo'}
                     </Text>
                 </Body>
                 {
-                    !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) === -1 && !data.distance &&
+                    !this.state.added && !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) === -1 && !data.distance &&
                     <Right style={{ width: 30, flex: 0 }}>
                         <Icon onPress={this.onPress} style={{ fontSize: 28, color: 'black' }} name="add" />
                     </Right>
                 }
                 {
-                    !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) !== -1 && 
-                <Right style={{ width: 100, flex: 0 }}>
-                    <Icon onPress={this.removeFriend} style={{ fontSize: 28, color: 'black' }} name="close" />
-                </Right>
+                    !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) !== -1 &&
+                    <Right style={{ width: 100, flex: 0 }}>
+                        <Icon onPress={this.removeFriend} style={{ fontSize: 28, color: 'black' }} name="close" />
+                    </Right>
                 }
 
                 {
-                   data.distance &&
-                <Right style={{ width: 100, flex: 0 }}>
-                   <Text>{data.distance} Km || {data.duration} minutes</Text>
-                </Right>
+                    this.state.added && !this.props.icon && data && data.friends && data.friends.map((el, i) => el._id).indexOf(this.props.userid) === -1 && !data.distance &&
+                    <Right style={{ width: 30, flex: 0 }}>
+                        <Icon onPress={this.onPress} style={{ fontSize: 28, color: 'black' }} name="close" />
+                    </Right>
                 }
-                
+
+                {
+                    data.distance &&
+                    <Right style={{ width: 100, flex: 0 }}>
+                        <Text>{data.distance} Km || {data.duration} minutes</Text>
+                    </Right>
+                }
+
             </CardItem>
         )
     }

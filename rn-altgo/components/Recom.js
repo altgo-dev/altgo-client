@@ -35,6 +35,7 @@ class Recom extends Component {
   }
 
   onClickSearch = async (place) => {
+    await this.props.autoComplete('')
     var objInput = {
       name: place.structured_formatting.main_text,
       vicinity: place.structured_formatting.secondary_text
