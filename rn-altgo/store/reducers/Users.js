@@ -21,7 +21,7 @@ export default function (state = defaultState, action){
     case 'SEARCH_FRIEND_SUCCESS':
       return {...state, searchFriendResult: payload}
     case 'ADD_FRIEND_SUCCESS':
-      return {...state, searchFriendResult: []}
+      return {...state}
     case 'REMOVE_FRIEND_SUCCESS':
       return {...state}
     case 'ERROR':

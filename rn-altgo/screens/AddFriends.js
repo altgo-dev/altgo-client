@@ -53,7 +53,7 @@ class AddFriends extends Component {
 
                         <Content>
                             {
-                                this.props.searchFriendResult.map((el, i) => <SingleFriend key={i} data={el} />)
+                                this.props.searchFriendResult.map((el, i) => <SingleFriend key={i} data={el} pageFrom='addFriend' />)
                             }
                         </Content>
                     </View>

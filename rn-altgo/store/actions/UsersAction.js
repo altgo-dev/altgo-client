@@ -110,13 +110,13 @@ export function getAllUser(token) {
 export function addFriend(friendId, friendName){
   return async dispatch => {
     try{
+      alert(`${friendName} has been added to your friend list`)
       let token = await AsyncStorage.getItem('token')
       let response = await axios.post(`${baseURL}/users/friend`, {friendId}, {
         headers: {token}
       })
-      alert(`${friendName} has been added to your friend list`)
+      await getUserData(token)
       dispatch({type: 'ADD_FRIEND_SUCCESS'})
-      getUserData(token)
     } catch (error){
       console.log(JSON.stringify(error.response,null,2))
       alert(error.response.data.error)
