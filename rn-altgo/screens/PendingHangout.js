@@ -62,6 +62,7 @@ class PendingHangout extends Component {
       let data = deck.selectedItem.data
       let chatData = await db.collection('chat').doc(deck.selectedItem.chatid).get()
       chatData = chatData.data()
+     
       chatData.pending = data.pending.filter((user, index) => {
         if(user._id == this.props.userInfo._id) {
           chatData.accept.push(user)
@@ -69,8 +70,41 @@ class PendingHangout extends Component {
         return user._id !== this.props.userInfo._id
       })
       const updatedChat = await db.collection('chat').doc(deck.selectedItem.chatid).update(chatData)
+    } else {
+      console.log('===')
     }
     //isi lat long, user id & chatid nya itu, updat chat yang id nya chat id jadi accept 
+  }
+
+  click = async (id, chat) => {
+    let cardShift = this.state.cards
+    cardShift.shift()
+    this.setState({
+      cards: cardShift
+    })
+    let deck = this.deck._root.state
+    const permisstionStatus = await Location.hasServicesEnabledAsync()
+    if(permisstionStatus) {
+      let location = await Location.getCurrentPositionAsync({})
+      const updatedUser = await db.collection('users').doc(chatid).update({
+        lat: location.coords.latitude,
+        long: location.coords.longitude,
+        status: true
+      })
+      let data = deck.selectedItem.data
+      let chatData = await db.collection('chat').doc(chatid).get()
+      chatData = chatData.data()
+     
+      chatData.pending = data.pending.filter((user, index) => {
+        if(user._id == this.props.userInfo._id) {
+          chatData.accept.push(user)
+        }
+        return user._id !== this.props.userInfo._id
+      })
+      const updatedChat = await db.collection('chat').doc(deck.selectedItem.chatid).update(chatData)
+    } else {
+      console.log('===')
+    }
   }
 
   componentDidMount = async () => {
@@ -167,13 +201,14 @@ class PendingHangout extends Component {
                 marginHorizontal: 20}}>
                 {
                   item && item.member.map((el, i) => {
-                    return  <CardItem key={i} style={{ flex: 1, flexDirection: 'row', }}>
+                    return <CardItem key={i} style={{ flex: 1, flexDirection: 'row', }}>
                                 <Thumbnail source={{ uri: el.img}} />
                                 <Text style={{ fontSize: 19, fontWeight: '500', marginLeft: 8}}>
                                   { el.name }
                                 </Text>
                             </CardItem>
                   })
+                  
                 }
                 
               </Card>
